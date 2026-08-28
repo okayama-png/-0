@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>みなみと結南の思い出アルバム</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f7f5f0;
+      font-family: "游明朝", "Yu Mincho", "Hiragino Mincho ProN", serif;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      margin-top: 20px;
+      text-align: center;
+      padding: 0 15px;
+    }
+
+    h1 {
+      font-weight: normal;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: #888;
+      letter-spacing: 1px;
+    }
+
+    /* アルバム（本）の3D空間 */
+    .album-container {
+      width: 820px;
+      max-width: 90vw;
+      height: 520px;
+      margin: 15px auto;
+      perspective: 1500px;
+      position: relative;
+    }
+
+    /* ページの基本スタイル */
+    .page {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      display: flex;
+      padding: 25px;
+      box-sizing: border-box;
+      transform-origin: left center;
+      transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.5s ease;
+      backface-visibility: hidden;
+      overflow: hidden;
+      gap: 20px;
+    }
+
+    .page.flipped {
+      transform: rotateY(-180deg);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    /* 写真エリア */
+    .photo-frame {
+      flex: 1;
+      background: #faf8f5;
+      padding: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #f0ede6;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    /* 文章エリア */
+    .diary-entry {
+      flex: 1;
+      padding-left: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px dashed #e5e0d8;
+      overflow-y: auto;
+    }
+
+    .page-tag {
+      font-size: 0.75rem;
+      color: #b5a995;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .date-title {
+      font-size: 1rem;
+      color: #444;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .text {
+      font-size: 0.82rem;
+      line-height: 1.65;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      color: #4a4a4a;
+    }
+
+    .author {
+      text-align: right;
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 8px;
+    }
+
+    .page-indicator {
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .controls {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: #f0ebe1;
+      border: 1px solid #dcd3c3;
+      padding: 8px 20px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: #555;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e2d9c8;
+      color: #333;
+    }
+
+    button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* スマホ表示（画面幅768px以下）用の最適化 */
+    @media (max-width: 768px) {
+      .album-container {
+        width: 92vw;
+        height: 72vh; /* 画面高さに合わせて縦長カード風にする */
+        max-height: 580px;
+      }
+
+      .page {
+        flex-direction: column; /* 写真を上、文章を下に並べる */
+        padding: 15px;
+        gap: 12px;
+      }
+
+      .photo-frame {
+        height: 40%; /* 上部40%を写真にする */
+        flex: none;
+      }
+
+      .diary-entry {
+        height: 60%;
+        flex: none;
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px dashed #e5e0d8;
+        padding-top: 10px;
+      }
+
+      h1 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>みなみと結南の思い出アルバム</h1>
+    <div class="subtitle">Minami & Yuna's Story</div>
+  </header>
+
+  <div class="album-container">
+
+    <!-- プロローグ -->
+    <div class="page" id="page1">
+      <div class="photo-frame"><img src="prologue.png" alt="ふたりの始まり"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">PROLOGUE</div>
+          <div class="date-title">000 - Prologue</div>
+          <div class="text">きっかけはあの日入ったバー。あの時私がそのまま帰っていたら、みなみさんが別の予定のままだったら……そう思うと本当に奇跡や運命ってあるんだと感じます。見えなくなるまで改札で手を振り続けてくれた姿は、今も脳裏に焼き付いています。
+
+会話が驚くほど楽しくて「この人のためなら」と思えたこと。公務員として働きつつ大好きなダンスを楽しむ真っ直ぐさや、緊張する私を「楽しい」と優しく包み込んでくれる笑顔に惹かれていきました。両思いだと分かっていても、「好きです。付き合ってください」と手を震わせて告白したあの夜の緊張は、大切な宝物です。
+
+どの思い出も一つだって忘れたくないから。普段上手く伝えられない「大好き」を込めて、このアルバムを作りました。喜んでくれるといいな。
+
+これからもたくさん思い出増やしていこう。その度更新するから、時々は見に来てね。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 001 -->
+    <div class="page" id="page2">
+      <div class="photo-frame"><img src="page01.png" alt="付き合った日"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 01</div>
+          <div class="date-title">001 - 付き合った日</div>
+          <div class="text">2026.07.03
+みなみさんの仕事終わりに職場までお迎えに行って、近くでもんじゃ焼きを食べた日。昔バイトしてたみたいで、張り切って焼いてくれたのがめちゃくちゃ可愛かったな。
+
+そのあとカラオケに行って、まだ付き合ってもないのにキスしちゃって……もう心臓バクバクで破裂するかと思った（笑）。
+
+みなみさんの最寄り駅に着いてからは、公園までゆっくりお散歩。
+実は私、告白するために花束と手紙をこっそり用意してて。そしたらみなみさんも、私の誕生日プレゼントにマグカップ用意してくれてたんだよね。
+
+公園で花束を取り出して、緊張で声を震わせながら告白。無事にお付き合いスタート！
+最初は隣を歩くだけで照れくさいのに、みなみさんが無意識にぐいぐい寄ってくるから私の歩く道なくなっちゃうのも愛おしかった（笑）。
+
+公園でずっとキスしてたのも今じゃ最高の思い出。すごくコーヒーの味がしたのを覚えてる。
+ふたりの距離がぐんと縮まった、人生でいっちばん最高の夜！</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 002 -->
+    <div class="page" id="page3">
+      <div class="photo-frame"><img src="page02.png" alt="初めてダンスを見た日"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 02</div>
+          <div class="date-title">002 - 初めてダンスを見た日</div>
+          <div class="text">2026.07.05
+みなみさんが招待してくれて「Be Creators」という公演を見に行った日！
+
+ステージの上のみなみさんは、とにかく格好良くて……！目に映るグループみんなのパフォーマンスが圧巻で、ずっと圧倒されっぱなしだった。こんなに素晴らしい景色を見せてもらえたのも、みなみさんと付き合えたからこそだな〜って心から感謝。
+
+公演が終わったあとに花束を渡したら、めちゃくちゃ喜んでくれて嬉しかったな。
+
+そのあとは、みなみさんの打ち上げが始まる時間まで二人で公園に行ったりお散歩したり。アイスを食べたりスムージーを飲んだりしながらのんびり過ごす時間が、本当に幸せで愛おしかった！</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 003 -->
+    <div class="page" id="page4">
+      <div class="photo-frame"><img src="page03.png" alt="七夕"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 03</div>
+          <div class="date-title">003 - 七夕</div>
+          <div class="text">2026.07.07
+お互いに短冊を書き合って送り合った七夕の夜。
+
+「ずっと隣で笑い合える関係でいられますように」って願いを込めて書いたんだけど、みなみさんの書いた字が美しすぎて……またさらに惚れ直してしまったな。しかも「大好き」なんて言葉まで短冊に書いてくれて、たまらなく幸せだった！
+
+笑顔でいられることが一番大切だと思うけれど、みなみとならどんな壁があっても乗り越えていける気がした。
+これからも一生をかけて、みなみさんのことをもっと知っていきたいなと願った特別な夜でした。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 004 -->
+    <div class="page" id="page5">
+      <div class="photo-frame"><img src="page04.png" alt="初めてのお弁当"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 04</div>
+          <div class="date-title">004 - 初めてのお弁当</div>
+          <div class="text">2026.07.10
+初めて手作りのお弁当を食べてもらった日。
+
+朝少し寝ぼけながら炊いた炊き込みご飯は、水の量を間違えて失敗しちゃったけれど、「味はすごく美味しいよ」って優しく微笑んで食べてくれたみなみさん。その温もりに触れるたび、私の中の「好き」の芽がまた深く根を張っていくのを感じていました。
+
+すごく緊張していたけれど、朝のやわらかな光の中で大好きな人と会えて本当に幸せだったな。
+いつか同じ家で「いってらっしゃい」を言う日が来たら、毎日私のお弁当を食べてほしいな。そんな愛おしい未来を、静かに思い描いた朝でした。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 005 -->
+    <div class="page" id="page6">
+      <div class="photo-frame"><img src="page05.png" alt="水族館と初お泊り"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 05</div>
+          <div class="date-title">005 - 水族館と初お泊り</div>
+          <div class="text">2026.07.11 - 07.12
+ダンスで一日中踊って疲れてるはずなのに、嫌な顔ひとつせず仕事終わりに迎えに来てくれたみなみさん。その深い優しさに包まれながら、ふたりですみだ水族館へ。
+
+正直、展示の内容はあんまり覚えていないけれど（笑）、青い光の中に浮かび上がるみなみさんがただただ綺麗で。水族館っていう幻想的な空間で隣に並んで話すだけで、世界でいちばん幸せな時間が流れてたなぁ。
+
+そのあとは、私の家で初めてのお泊り。
+ふたりで過ごした静かな一夜は、これまでのどんな夜よりも愛おしくて、心まで温かくなるような時間でした。
+
+ふと目を覚ました朝、隣で穏やかに眠るみなみさんの姿がある——そのかけがえのない景色に、胸がぎゅっとなるくらいの幸せを感じていたよ。何にも代えられない愛しい朝を、本当にありがとう。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 006 -->
+    <div class="page" id="page7">
+      <div class="photo-frame"><img src="page06.png" alt="お泊り"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 06</div>
+          <div class="date-title">006 - お泊り</div>
+          <div class="text">2026.07.12 - 07.13
+私の「会いたい」っていうわがままを受け止めてくれて、そのままみなみさんの家にお泊り。
+最初は少し戸惑っていたけれど、最後は「いいよ、おいで」って微笑んでくれたのが本当に嬉しかったなぁ。
+
+カメラを向けたら少し照れながらそっぽを向いちゃうところも、アイスを食べている時に目が合うだけで恥ずかしそうにする顔も、見るもの全部が愛おしくて。
+
+まだまだぎこちない、ふたりの距離感。
+でも、その少しずつ縮まっていく距離さえも宝物のように感じています。
+
+ずっとずっと、こんな優しい幸せをふたりで作っていこうね。心から、愛してるよ。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 007 -->
+    <div class="page" id="page8">
+      <div class="photo-frame"><img src="page07.png" alt="映画とお泊り"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 07</div>
+          <div class="date-title">007 - 映画とお泊り</div>
+          <div class="text">2026.07.14 - 07.15
+ふたりで『トイ・ストーリー4』を見に行った日！
+どうしても一番後ろの席を取りたくて（変な意味じゃないよ笑）、必死になりすぎてなぜかチケットを1枚しか取ってなかったという謎の大ポカ（笑）。
+
+結局、映画の内容をあんまり覚えていないくらいにはイチャイチャしちゃったし、ポップコーンは美味しすぎたし、何より映画館でキスした時の写真がずっとお気に入り。
+
+そのあとはカラオケに行って、みなみさんの家でお泊り。
+翌朝、みなみさんがお弁当を作ってくれて……一口食べた瞬間「好きな人が作ってくれたお弁当って、こんなに美味しいんだ」って胸がいっぱいになりました。優しさと美味しくて愛おしい味を、ありがとう。
+
+毎日が幸せすぎて、もう滅！</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 008 -->
+    <div class="page" id="page9">
+      <div class="photo-frame"><img src="page08.png" alt="お泊り"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 08</div>
+          <div class="date-title">008 - お泊り</div>
+          <div class="text">2026.07.16 - 07.17
+「明日お弁当持っていきたい」って言ったら、なぜかそのままお泊りすることになった日（笑）。
+まさかみなみさんのほうからお泊りに誘ってくれるなんて思ってもなかったなぁ。あ、でも出会った頃に「酔わせて持ち帰る」なんて言ってたから、密かに変態疑惑はあったんだけどね（笑）。
+
+二人とも「今日は疲れたから即寝るっ！」って意気込んでたはずなのに、気づいたら始まっちゃう不思議。双方そろって忍耐力がなさすぎるのも愛おしい。
+ちょっぴりSっ気満載なみなみさん、本当にメロすぎます。
+
+毎日「またお泊りだね、会いすぎだよね」って笑い合ってるけれど、お互いに「会いたい」が爆発してるんだからしょうがない！
+
+会うたびに好きが深まっていく、愛おしい日々。いつも本当にありがとう。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 009 -->
+    <div class="page" id="page10">
+      <div class="photo-frame"><img src="page09.png" alt="飲みとお泊り"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 09</div>
+          <div class="date-title">009 - 飲みとお泊り</div>
+          <div class="text">2026.07.18 - 07.19
+馬場で私の友達と一緒に飲んで、そのままみなみさんの家にお泊りした日！
+みなみさんが「チンチロしたい！」って言い出して、案の定メガジョッキを引き当ててた（笑）。……のはいいんだけど、結局その半分くらい私が飲んでたのはなんで？？いい加減にして？（笑）
+きっと私を酔わせたかったんだろうな〜って思ってるけど、真相はいかに……！
+
+みなみさんと一緒にいる時しか味わえない幸せがあって、言葉にするのは少し難しいけれど。
+みなみさんが思っている以上に、みなみさんは周りのみんなに素敵な影響を与えているんだよ、ってことを伝えたいな。
+
+飾らない、ありのままのみなみさんが大好きだよ。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 010 -->
+    <div class="page" id="page11">
+      <div class="photo-frame"><img src="page10.png" alt="ダンスの送迎"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 10</div>
+          <div class="date-title">010 - ダンスの送迎</div>
+          <div class="text">2026.07.19
+明日のダンス公演に行けないから、少しわがままを言って埼玉会館まで送迎した日！
+最初は送るだけのつもりだったけれど、やっぱり我慢できなくて「お迎えも行く！」って言っちゃった（笑）。待ち時間のスタバでの勉強がすごく捗ったからよしとしよう！
+
+明日の公演に行けない代わりに、帰ってから手間を取らせないで形に残るものを……と考えて、お揃いのコップをプレゼント。
+さらに内緒でお揃いのスマホケースも買いたくて、帰りの電車でみなみさんからスマホを借りて設定画面をコソコソいじっていたら、「なにしたの？」ってずっと気にしていてめちゃくちゃ可愛かったな。
+
+そしたら「スマホケース買おうかな」とか言い出して大焦り！思わずその場で「あ、買っちゃった……」って白状してサプライズは大失敗（笑）。でも、嬉しそうな笑顔が見られたから前もって言っちゃうのもアリだなって思えたよ。
+
+明日、みなみさんが全力でダンスを楽しめるように、私のパワーは届いたかな。
+みなみさんと出会えた奇跡に、感謝する毎日です。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 011 -->
+    <div class="page" id="page12">
+      <div class="photo-frame"><img src="page11.png" alt="お泊り"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 11</div>
+          <div class="date-title">011 - お泊り</div>
+          <div class="text">2026.07.23 - 07.24
+仕事終わりにみなみさんの家へ直行して、一緒に豚の角煮を作った日！
+手際よく料理を作ってくれる姿も格好良かったし、何より全部本当に美味しかったな。普段はあんまり野菜が好きじゃないのに、みなみさんが作ってくれたきゅうりや焼き浸しがあまりにも美味しすぎて、胸がいっぱいになりました。また作ってほしいな。
+
+そのあと「プレゼントがあります！」って、にっこにこ顔で渡された袋を開けると……なんとサウナハット！
+前に私が「今は実家にあるんだよね」ってポロッと言ったのを覚えていてくれたみたいで、その気持ちが本当に嬉しかった！
+
+早く一緒にサウナに行ったり、温泉旅行に行きたいな。
+今日も心から、愛しています。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 012 -->
+    <div class="page" id="page13">
+      <div class="photo-frame"><img src="page12.png" alt="お泊まり"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 12</div>
+          <div class="date-title">012 - お泊まり</div>
+          <div class="text">2026.07.26 - 07.27
+前日に急きょ会うことが決まって、馬場でお寿司を食べた日！
+そのあとはゲーセンへ行って、太鼓の達人にマリカー、モグラ叩きまで大はしゃぎ（笑）。ゲーセンでこんなに夢中になって最高の時間を過ごせるのも、みなみさんとだからこそだな〜って感謝の気持ちでいっぱいでした。
+
+そのままみなみさんの家にお泊りして、翌朝はキスマをつけるかつけさせないかの真剣勝負（笑）。じゃれ合っていたら、いつも出かけるギリギリの時間になっちゃうのもお約束だね。
+
+会ったら会った分だけ、次に会えない日が寂しくなっちゃうけれど。
+一緒に過ごす時間も離れている時間も、全部ふたりを成長させてくれているんだなって感じています。
+
+やっぱり私には、みなみさんじゃなきゃダメです。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 013 -->
+    <div class="page" id="page14">
+      <div class="photo-frame"><img src="page13.png" alt="花火大会"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 13</div>
+          <div class="date-title">013 - 花火大会</div>
+          <div class="text">2026.07.28
+本当はこの日に告白しようと思って予定をもらっていた日。
+まさか恋人同士として、手をつないで花火を見に行けるなんて思ってもなかったなぁ。
+
+夜空を見上げて「きれいだね」ってつぶやくみなみさんの横顔が、咲き誇るどの花火よりも一番きれいでした。これから先、どんな花火を見たとしても、今日ふたりで見上げたこの景色をずっと思い出すんだろうな。
+
+途中で少し雨が降ってきて、傘という二人だけの小さな死角の中でいちゃいちゃしたのも鮮明な宝物。
+そして、あの時流れていた『愛は勝つ』。この曲はきっと、一生忘れられない特別なソングになりました（笑）。
+
+素敵な思い出を、本当にありがとう。
+来年も、再来年も、この先もずーっと、みなみさんの隣で花火を見続けられますように。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+    <!-- 014 -->
+    <div class="page" id="page15">
+      <div class="photo-frame"><img src="page14.png" alt="葛西臨海公園"></div>
+      <div class="diary-entry">
+        <div>
+          <div class="page-tag">MEMORY 14</div>
+          <div class="date-title">014 - 葛西臨海公園</div>
+          <div class="text">2026.08.09
+みなみさんのダンスの送迎をした日。待ち時間の勉強もバッチリ捗って大満足！
+ダンスが終わったあと「お散歩したいね」って話になって、ふたりで葛西臨海公園へ向かった。
+
+ドーナツを食べて、焼きそばを食べて、かき氷まで頬張って。美味しいものを一緒に食べる時間はやっぱり最高！
+
+そのあとは海辺へ移動して、ふたりでずーーっとキス。
+ほんのり明るかった空が深い闇に包まれていくまで、どれくらいの時間重ね合っていたのか分からないくらい夢中だったなぁ。心から幸せだと感じた時間でした。
+
+夜のひまわりのライトアップに照らされたみなみさん。今日も本当に綺麗で、可愛かったな。
+
+これから先も、ふたりでたくさんの景色を見に行こうね。</div>
+        </div>
+        <div class="author">結南</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-indicator">
+    <span id="pageNum">1</span> / <span id="totalPages">15</span> ページ
+  </div>
+
+  <div class="controls">
+    <button id="prevBtn" disabled>◀ 前のページ</button>
+    <button id="nextBtn">ページをめくる ▶</button>
+  </div>
+
+  <script>
+    const pages = Array.from(document.querySelectorAll('.page'));
+    let currentPage = 0;
+
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageNum = document.getElementById('pageNum');
+    const totalPages = document.getElementById('totalPages');
+
+    totalPages.textContent = pages.length;
+
+    function initPages() {
+      pages.forEach((page, index) => {
+        page.style.zIndex = pages.length - index;
+      });
+    }
+
+    initPages();
+
+    nextBtn.addEventListener('click', () => {
+      if (currentPage < pages.length - 1) {
+        pages[currentPage].classList.add('flipped');
+        currentPage++;
+        updateUI();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        pages[currentPage].classList.remove('flipped');
+        updateUI();
+      }
+    });
+
+    function updateUI() {
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = currentPage === pages.length - 1;
+      pageNum.textContent = currentPage + 1;
+    }
+  </script>
+</body>
+</html>
