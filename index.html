@@ -18,7 +18,7 @@
     }
 
     header {
-      margin-top: 20px;
+      margin-top: 25px;
       text-align: center;
       padding: 0 15px;
     }
@@ -41,7 +41,7 @@
       width: 820px;
       max-width: 90vw;
       height: 520px;
-      margin: 15px auto;
+      margin: 20px auto;
       perspective: 1500px;
       position: relative;
     }
@@ -76,7 +76,7 @@
     .photo-frame {
       flex: 1;
       background: #faf8f5;
-      padding: 8px;
+      padding: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       border-radius: 4px;
       display: flex;
@@ -97,12 +97,29 @@
     /* 文章エリア */
     .diary-entry {
       flex: 1;
-      padding-left: 15px;
+      padding-left: 20px;
+      padding-right: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       border-left: 1px dashed #e5e0d8;
       overflow-y: auto;
+      /* カスタムスクロールバー（PC/モダンブラウザ用） */
+      scrollbar-width: thin;
+      scrollbar-color: #c5bbb0 #f0ede6;
+    }
+
+    /* Webkit（スマホ・Chrome・Safari）のスクロールバー指定 */
+    .diary-entry::-webkit-scrollbar {
+      width: 6px;
+    }
+    .diary-entry::-webkit-scrollbar-track {
+      background: #f0ede6;
+      border-radius: 10px;
+    }
+    .diary-entry::-webkit-scrollbar-thumb {
+      background: #c5bbb0;
+      border-radius: 10px;
     }
 
     .page-tag {
@@ -121,9 +138,9 @@
     }
 
     .text {
-      font-size: 0.82rem;
-      line-height: 1.65;
-      margin-top: 10px;
+      font-size: 0.85rem;
+      line-height: 1.75;
+      margin-top: 12px;
       white-space: pre-wrap;
       color: #4a4a4a;
     }
@@ -132,7 +149,8 @@
       text-align: right;
       font-size: 0.8rem;
       color: #777;
-      margin-top: 8px;
+      margin-top: 15px;
+      padding-bottom: 5px;
     }
 
     .page-indicator {
@@ -172,29 +190,41 @@
     /* スマホ表示（画面幅768px以下）用の最適化 */
     @media (max-width: 768px) {
       .album-container {
-        width: 92vw;
-        height: 72vh; /* 画面高さに合わせて縦長カード風にする */
-        max-height: 580px;
+        width: 88vw;
+        height: 75vh; /* スマホ画面の高さに合わせたゆったりサイズ */
+        max-height: 620px;
+        margin: 15px auto 25px auto;
       }
 
       .page {
-        flex-direction: column; /* 写真を上、文章を下に並べる */
-        padding: 15px;
-        gap: 12px;
+        flex-direction: column; /* 上下に配置 */
+        padding: 20px; /* カード全体の内部余白を拡大 */
+        gap: 18px; /* 写真と文章の間のゆとり */
       }
 
       .photo-frame {
-        height: 40%; /* 上部40%を写真にする */
+        width: 100%;
+        aspect-ratio: 1 / 1; /* 写真を正方形に指定 */
+        max-height: 230px; /* 縦に大きくなりすぎないよう調整 */
         flex: none;
+        margin: 0 auto;
       }
 
       .diary-entry {
-        height: 60%;
-        flex: none;
+        flex: 1;
+        width: 100%;
         padding-left: 0;
+        padding-right: 8px; /* スクロールバー用の右余白 */
         border-left: none;
         border-top: 1px dashed #e5e0d8;
-        padding-top: 10px;
+        padding-top: 15px; /* 文章領域の上余白 */
+        box-sizing: border-box;
+        -webkit-overflow-scrolling: touch; /* iOSでの滑らかなスクロール */
+      }
+
+      .text {
+        font-size: 0.85rem;
+        line-height: 1.8; /* 文章の行間をゆったり化 */
       }
 
       h1 {
@@ -519,7 +549,7 @@
           <div class="page-tag">MEMORY 14</div>
           <div class="date-title">014 - 葛西臨海公園</div>
           <div class="text">2026.08.09
-みなみさんのダンスの送迎をした日。待ち時間の勉強もバッチリ捗って大満足！
+みなみさんのダンスの送迎をした日。待ち時間の勉強もバッチリ捗った大満足！
 ダンスが終わったあと「お散歩したいね」って話になって、ふたりで葛西臨海公園へ向かった。
 
 ドーナツを食べて、焼きそばを食べて、かき氷まで頬張って。美味しいものを一緒に食べる時間はやっぱり最高！
