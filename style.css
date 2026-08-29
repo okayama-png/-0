@@ -70,30 +70,30 @@ h1 {
 
 .cover-content {
   text-align: center;
-  padding: 40px 25px;
+  padding: 35px 20px;
   border: 1px solid #d4af37;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.1);
-  max-width: 80vw;
+  max-width: 75vw;
   box-sizing: border-box;
   position: relative;
   z-index: 2;
 }
 
 .cover-title {
-  font-size: 1.8rem;
-  letter-spacing: 4px;
-  margin-bottom: 12px;
+  font-size: 1.7rem;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
   color: #6b5744;
   font-weight: normal;
 }
 
 .cover-sub {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #8c7e70;
   letter-spacing: 2px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .open-btn {
@@ -116,7 +116,7 @@ h1 {
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
 }
 
-/* === オープニング背景に浮かぶポラロイド（PC用8枚配置） === */
+/* === オープニング背景のポラロイド（PC用8枚配置） === */
 #random-photos-container {
   position: absolute;
   top: 0; left: 0;
@@ -129,8 +129,8 @@ h1 {
 .random-polaroid {
   position: absolute;
   background: #ffffff;
-  padding: 6px 6px 18px 6px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1), 0 0 8px rgba(212, 175, 55, 0.2);
+  padding: 5px 5px 16px 5px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12), 0 0 8px rgba(212, 175, 55, 0.2);
   border-radius: 4px;
   opacity: 0;
   transform: scale(0.8) translateY(15px);
@@ -145,15 +145,15 @@ h1 {
   display: block;
 }
 
-/* PC用の8枚配置 */
-.polaroid-1 { top: 5%; left: 3%; width: 120px; height: 120px; transform: rotate(-6deg); }
-.polaroid-2 { top: 5%; right: 3%; width: 120px; height: 120px; transform: rotate(6deg); }
-.polaroid-3 { bottom: 6%; left: 3%; width: 125px; height: 125px; transform: rotate(5deg); }
-.polaroid-4 { bottom: 6%; right: 3%; width: 125px; height: 125px; transform: rotate(-5deg); }
-.polaroid-5 { top: 45%; left: 2%; width: 110px; height: 110px; transform: rotate(-8deg); }
-.polaroid-6 { top: 45%; right: 2%; width: 110px; height: 110px; transform: rotate(8deg); }
-.polaroid-7 { top: 3%; left: 38%; width: 115px; height: 115px; transform: rotate(-3deg); }
-.polaroid-8 { bottom: 3%; left: 38%; width: 115px; height: 115px; transform: rotate(4deg); }
+/* PC用の8枚位置 */
+.polaroid-1 { top: 4%; left: 3%; width: 120px; height: 120px; transform: rotate(-5deg); }
+.polaroid-2 { top: 4%; right: 3%; width: 120px; height: 120px; transform: rotate(5deg); }
+.polaroid-3 { bottom: 5%; left: 3%; width: 125px; height: 125px; transform: rotate(4deg); }
+.polaroid-4 { bottom: 5%; right: 3%; width: 125px; height: 125px; transform: rotate(-4deg); }
+.polaroid-5 { top: 42%; left: 2%; width: 110px; height: 110px; transform: rotate(-7deg); }
+.polaroid-6 { top: 42%; right: 2%; width: 110px; height: 110px; transform: rotate(7deg); }
+.polaroid-7 { top: 3%; left: 38%; width: 115px; height: 115px; transform: rotate(-2deg); }
+.polaroid-8 { bottom: 3%; left: 38%; width: 115px; height: 115px; transform: rotate(3deg); }
 
 #countdown-overlay {
   position: absolute;
@@ -354,7 +354,7 @@ button:disabled {
   box-shadow: none;
 }
 
-/* === スマホ専用：8枚の写真が独立してきれいに並ぶ絶対分散配置 === */
+/* === スマホ専用：8枚が絶対に被らない上下格子の分散配置 === */
 @media (max-width: 768px) {
   .album-container {
     width: 88vw;
@@ -385,14 +385,15 @@ button:disabled {
     padding-top: 10px;
   }
 
-  /* スマホ用 8枚配置（画面外周に独立して配置・被り徹底防止） */
-  .polaroid-1 { top: 2%; left: 2%; width: 62px; height: 62px; transform: rotate(-5deg); display: block !important; }
-  .polaroid-2 { top: 2%; right: 2%; width: 62px; height: 62px; transform: rotate(5deg); display: block !important; }
-  .polaroid-3 { bottom: 2%; left: 2%; width: 65px; height: 65px; transform: rotate(4deg); display: block !important; }
-  .polaroid-4 { bottom: 2%; right: 2%; width: 65px; height: 65px; transform: rotate(-4deg); display: block !important; }
-  
-  .polaroid-5 { top: 2%; left: 26%; width: 60px; height: 60px; transform: rotate(-2deg); display: block !important; }
-  .polaroid-6 { top: 2%; right: 26%; width: 60px; height: 60px; transform: rotate(3deg); display: block !important; }
-  .polaroid-7 { bottom: 2%; left: 26%; width: 62px; height: 62px; transform: rotate(-3deg); display: block !important; }
-  .polaroid-8 { bottom: 2%; right: 26%; width: 62px; height: 62px; transform: rotate(2deg); display: block !important; }
+  /* 上エリア 4枚 (横並びに均等配置) */
+  .polaroid-1 { top: 1.5%; left: 2%; width: 52px; height: 52px; transform: rotate(-4deg); display: block !important; }
+  .polaroid-2 { top: 1.5%; left: 27%; width: 52px; height: 52px; transform: rotate(3deg); display: block !important; }
+  .polaroid-3 { top: 1.5%; left: 52%; width: 52px; height: 52px; transform: rotate(-3deg); display: block !important; }
+  .polaroid-4 { top: 1.5%; left: 77%; width: 52px; height: 52px; transform: rotate(4deg); display: block !important; }
+
+  /* 下エリア 4枚 (横並びに均等配置) */
+  .polaroid-5 { bottom: 1.5%; left: 2%; width: 54px; height: 54px; transform: rotate(3deg); display: block !important; }
+  .polaroid-6 { bottom: 1.5%; left: 27%; width: 54px; height: 54px; transform: rotate(-4deg); display: block !important; }
+  .polaroid-7 { bottom: 1.5%; left: 52%; width: 54px; height: 54px; transform: rotate(4deg); display: block !important; }
+  .polaroid-8 { bottom: 1.5%; left: 77%; width: 54px; height: 54px; transform: rotate(-2deg); display: block !important; }
 }

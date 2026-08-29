@@ -54,41 +54,50 @@ function animateParticles() {
 }
 animateParticles();
 
-// === オープニング＆ランダムポラロイド（8枚対応） ===
+// === オープニング＆ランダムポラロイド（確実に8枚生成する全画像リスト指定） ===
 const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
 
+// アルバム内およびextraフォルダの画像リスト
+const masterPhotoList = [
+  'images/prologue.png',
+  'images/page01.png', 'images/page02.png', 'images/page03.png', 'images/page04.png',
+  'images/page05.png', 'images/page06.png', 'images/page07.png', 'images/page08.png',
+  'images/page09.png', 'images/page10.png', 'images/page11.png', 'images/page12.png',
+  'images/page13.png', 'images/page14.png', 'images/page15.png', 'images/page16.png',
+  'images/page17.png',
+  'images/extra1.png', 'images/extra2.png', 'images/extra3.png', 'images/extra4.png',
+  'images/extra5.png', 'images/extra6.png', 'images/extra7.png', 'images/extra8.png',
+  'images/extra9.png', 'images/extra10.png'
+];
+
 window.addEventListener('load', () => {
   try {
-    const allImgs = Array.from(document.querySelectorAll('.photo-frame img'))
-      .map(img => img.getAttribute('src'))
-      .filter(src => src && src.trim() !== '');
+    // リストからランダムにシャッフルして8枚抽出
+    const shuffled = masterPhotoList.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 8);
 
-    if (allImgs.length > 0) {
-      const shuffled = allImgs.sort(() => 0.5 - Math.random());
-      // 8枚抽出に拡大
-      const selected = shuffled.slice(0, Math.min(8, shuffled.length));
+    selected.forEach((src, idx) => {
+      const pDiv = document.createElement('div');
+      pDiv.className = `random-polaroid polaroid-${idx + 1}`;
+      
+      const pImg = document.createElement('img');
+      pImg.src = src;
+      
+      // 画像が存在しない場合は自動削除してエラー防止
+      pImg.onerror = () => { pDiv.remove(); };
 
-      selected.forEach((src, idx) => {
-        const pDiv = document.createElement('div');
-        pDiv.className = `random-polaroid polaroid-${idx + 1}`;
-        
-        const pImg = document.createElement('img');
-        pImg.src = src;
-        pImg.onerror = () => { pDiv.remove(); };
+      pDiv.appendChild(pImg);
+      randomContainer.appendChild(pDiv);
 
-        pDiv.appendChild(pImg);
-        randomContainer.appendChild(pDiv);
-
-        setTimeout(() => {
-          pDiv.style.opacity = '0.92';
-        }, 200 + idx * 150);
-      });
-    }
+      setTimeout(() => {
+        pDiv.style.opacity = '0.95';
+      }, 150 + idx * 120);
+    });
   } catch (e) {
-    console.log("スキップ:", e);
+    console.log("ポラロイド生成エラー防止:", e);
   }
 });
 
