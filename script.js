@@ -97,7 +97,7 @@ window.addEventListener('load', () => {
   }
 });
 
-// === オープニングボタン動作（拡大フェードアウト） ===
+// === オープニングボタン動作 ===
 const startBtn = document.getElementById('startBtn');
 const coverContent = document.querySelector('.cover-content');
 
@@ -130,7 +130,7 @@ startBtn.addEventListener('click', () => {
       setTimeout(() => {
         openingCover.classList.add('open-book');
         launchSparkles();
-        triggerCameraFlash(); // 開いた瞬間のカメラフラッシュ
+        triggerCameraFlash();
       }, 400);
     }
   }, 700);
@@ -150,6 +150,7 @@ totalPages.textContent = pages.length;
 function initPages() {
   pages.forEach((page, index) => {
     page.style.zIndex = pages.length - index;
+    setupPageReaction(page, index);
   });
   updateActivePage();
 }
@@ -164,6 +165,49 @@ function updateActivePage() {
   });
 }
 
+// ★ 全ページに5種類のマルチリアクションバーを設置 ★
+function setupPageReaction(pageEl, pageIdx) {
+  const diaryEntry = pageEl.querySelector('.diary-entry');
+  if (!diaryEntry) return;
+
+  const reactionWrapper = document.createElement('div');
+  reactionWrapper.className = 'page-reaction-wrapper';
+
+  const reactions = [
+    { id: 'like', icon: '💖', label: 'すき' },
+    { id: 'emo',  icon: '✨', label: 'エモい' },
+    { id: 'cry',  icon: '😭', label: '泣ける' },
+    { id: 'laugh',icon: '🤣', label: 'ウケる' },
+    { id: 'go',   icon: '🎆', label: '行こう' }
+  ];
+
+  reactions.forEach(item => {
+    const storageKey = `minami_p${pageIdx + 1}_${item.id}`;
+    let countVal = parseInt(localStorage.getItem(storageKey) || '0', 10);
+
+    const btn = document.createElement('button');
+    btn.className = 'stamp-btn';
+    btn.innerHTML = `${item.icon} <span class="stamp-count">${countVal}</span>`;
+    btn.title = item.label;
+
+    btn.addEventListener('click', (e) => {
+      countVal++;
+      localStorage.setItem(storageKey, countVal);
+      btn.querySelector('.stamp-count').textContent = countVal;
+
+      btn.classList.add('pop-anim');
+      setTimeout(() => btn.classList.remove('pop-anim'), 300);
+
+      // 押した絵文字に応じたフライング演出
+      launchStampEffect(item.icon, e.clientX, e.clientY);
+    });
+
+    reactionWrapper.appendChild(btn);
+  });
+
+  diaryEntry.appendChild(reactionWrapper);
+}
+
 initPages();
 
 nextBtn.addEventListener('click', () => {
@@ -173,7 +217,7 @@ nextBtn.addEventListener('click', () => {
     updateActivePage();
     updateUI();
     launchSparkles();
-    triggerCameraFlash(); // めくった瞬間のスポットフラッシュ
+    triggerCameraFlash();
   }
 });
 
@@ -184,7 +228,7 @@ prevBtn.addEventListener('click', () => {
     updateActivePage();
     updateUI();
     launchSparkles();
-    triggerCameraFlash(); // めくった瞬間のスポットフラッシュ
+    triggerCameraFlash();
   }
 });
 
@@ -194,7 +238,37 @@ function updateUI() {
   pageNum.textContent = currentPage + 1;
 }
 
-// === カメラフラッシュ（画面が一瞬ふわっと光るスポット効果） ===
+// === スタンプに応じた画面演出 ===
+function launchStampEffect(icon, originX, originY) {
+  for (let i = 0; i < 20; i++) {
+    const h = document.createElement('div');
+    h.textContent = icon;
+    h.style.position = 'fixed';
+    h.style.fontSize = Math.random() * 1.5 + 1.2 + 'rem';
+    h.style.left = (originX || window.innerWidth / 2) + (Math.random() * 60 - 30) + 'px';
+    h.style.top = (originY || window.innerHeight / 2) + 'px';
+    h.style.zIndex = '9999';
+    h.style.pointerEvents = 'none';
+    h.style.opacity = '1';
+    h.style.transition = 'transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.3s ease-out';
+
+    document.body.appendChild(h);
+
+    const moveX = (Math.random() - 0.5) * 200;
+    const moveY = -(Math.random() * 230 + 90);
+
+    setTimeout(() => {
+      h.style.opacity = '0';
+      h.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.4) rotate(${(Math.random() - 0.5) * 60}deg)`;
+    }, 20);
+
+    setTimeout(() => {
+      h.remove();
+    }, 1400);
+  }
+}
+
+// === カメラフラッシュ効果 ===
 function triggerCameraFlash() {
   const flash = document.createElement('div');
   flash.style.position = 'fixed';
