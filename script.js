@@ -1,4 +1,4 @@
-// === 背景の浮遊ゴールド粒子 Canvas ===
+// === 背景の明るいゴールド粒子 Canvas ===
 const canvas = document.createElement('canvas');
 canvas.id = 'bg-canvas';
 document.body.prepend(canvas);
@@ -23,7 +23,7 @@ class Particle {
     this.size = Math.random() * 2.5 + 0.5;
     this.speedY = -(Math.random() * 0.4 + 0.15);
     this.speedX = (Math.random() - 0.5) * 0.3;
-    this.opacity = Math.random() * 0.7 + 0.3;
+    this.opacity = Math.random() * 0.6 + 0.2;
   }
   update() {
     this.y += this.speedY;
@@ -33,14 +33,14 @@ class Particle {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-    ctx.shadowBlur = 8;
+    ctx.fillStyle = `rgba(190, 150, 40, ${this.opacity})`;
+    ctx.shadowBlur = 6;
     ctx.shadowColor = '#d4af37';
     ctx.fill();
   }
 }
 
-for (let i = 0; i < 65; i++) {
+for (let i = 0; i < 60; i++) {
   particles.push(new Particle());
 }
 
@@ -54,7 +54,7 @@ function animateParticles() {
 }
 animateParticles();
 
-// === オープニング＆ランダムポラロイド（絶対停止しないエラー制御付き） ===
+// === オープニング＆ランダムポラロイド制御 ===
 const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
@@ -76,20 +76,18 @@ window.addEventListener('load', () => {
         
         const pImg = document.createElement('img');
         pImg.src = src;
-
-        // 画像が読み込めない場合は該当ポラロイドだけ静かに消去（処理を止めない）
         pImg.onerror = () => { pDiv.remove(); };
 
         pDiv.appendChild(pImg);
         randomContainer.appendChild(pDiv);
 
         setTimeout(() => {
-          pDiv.style.opacity = '0.85';
+          pDiv.style.opacity = '0.9';
         }, 250 + idx * 200);
       });
     }
   } catch (e) {
-    console.log("ランダム画像読み込みスキップ:", e);
+    console.log("スキップ:", e);
   }
 });
 
@@ -186,9 +184,9 @@ function updateUI() {
   pageNum.textContent = currentPage + 1;
 }
 
-// === 金箔星くずアニメーション ===
+// === 上品な金箔・星くず演出 ===
 function launchSparkles() {
-  const colors = ['#d4af37', '#f5e6c8', '#ffffff', '#e2d9c8'];
+  const colors = ['#d4af37', '#e8d380', '#ffffff', '#c5bbb0'];
   
   for (let i = 0; i < 30; i++) {
     const p = document.createElement('div');
