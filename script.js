@@ -79,7 +79,6 @@ window.addEventListener('load', () => {
 
     selected.forEach((src, idx) => {
       const pDiv = document.createElement('div');
-      // クラス名のみ付与（スタイルの直接指定は一切行わずCSSに完全委任）
       pDiv.className = `random-polaroid polaroid-${idx + 1}`;
       
       const pImg = document.createElement('img');
@@ -98,7 +97,7 @@ window.addEventListener('load', () => {
   }
 });
 
-// === オープニングボタン動作 ===
+// === オープニングボタン動作（拡大＋フェードアウト演出を追加） ===
 const startBtn = document.getElementById('startBtn');
 const coverContent = document.querySelector('.cover-content');
 
@@ -109,10 +108,12 @@ coverContent.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
   
+  // ポラロイド写真を一斉に拡大しながらふわっと消すアニメーション
   const polaroids = document.querySelectorAll('.random-polaroid');
   polaroids.forEach(p => {
+    p.style.transition = 'transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease-out';
     p.style.opacity = '0';
-    p.style.transform = 'scale(0.5)';
+    p.style.transform = 'scale(1.8) translateY(-20px)'; // 大きく拡大して浮き上がる演出
   });
 
   countOverlay.classList.add('show');
