@@ -54,7 +54,7 @@ function animateParticles() {
 }
 animateParticles();
 
-// === オープニング＆ランダムポラロイド制御 ===
+// === オープニング＆ランダムポラロイド（8枚対応） ===
 const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
@@ -68,7 +68,8 @@ window.addEventListener('load', () => {
 
     if (allImgs.length > 0) {
       const shuffled = allImgs.sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, Math.min(5, shuffled.length));
+      // 8枚抽出に拡大
+      const selected = shuffled.slice(0, Math.min(8, shuffled.length));
 
       selected.forEach((src, idx) => {
         const pDiv = document.createElement('div');
@@ -82,8 +83,8 @@ window.addEventListener('load', () => {
         randomContainer.appendChild(pDiv);
 
         setTimeout(() => {
-          pDiv.style.opacity = '0.9';
-        }, 250 + idx * 200);
+          pDiv.style.opacity = '0.92';
+        }, 200 + idx * 150);
       });
     }
   } catch (e) {
