@@ -54,31 +54,21 @@ function animateParticles() {
 }
 animateParticles();
 
-// === 自動ランダム写真抽選システム（全自動） ===
+// === ランダム写真抽選システム（安全・エラー防止版） ===
 const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
 
-// 【設定】追加した「extra1.png 〜 extra●.png」の合計枚数を指定するだけ！
-const extraPhotoCount = 10; // ← 例: extraが10枚あるならここを 10 にするだけ！
-
 window.addEventListener('DOMContentLoaded', () => {
-  // 1. アルバム内の写真（page01.png等）を全自動で取得
-  const albumPhotos = Array.from(document.querySelectorAll('.photo-frame img')).map(img => img.getAttribute('src'));
-  
-  // 2. extra1.png 〜 extra●.png のパスを自動生成
-  const extraPhotos = [];
-  for (let i = 1; i <= extraPhotoCount; i++) {
-    extraPhotos.push(`images/extra${i}.png`);
-  }
+  // HTML内に登録されている全写真のパスを取得
+  const albumPhotos = Array.from(document.querySelectorAll('.photo-frame img'))
+    .map(img => img.getAttribute('src'))
+    .filter(src => src && src.trim() !== '');
 
-  // 3. アルバム写真 ＋ 追加写真を合体
-  const allPhotoPool = [...albumPhotos, ...extraPhotos];
-
-  if (allPhotoPool.length > 0) {
-    // ランダムにシャッフルして5枚抽出
-    const shuffled = allPhotoPool.sort(() => 0.5 - Math.random());
+  if (albumPhotos.length > 0) {
+    // ランダムにシャッフルして最大5枚抽出
+    const shuffled = albumPhotos.sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, Math.min(5, shuffled.length));
 
     selected.forEach((src, idx) => {
@@ -87,14 +77,13 @@ window.addEventListener('DOMContentLoaded', () => {
       
       const pImg = document.createElement('img');
       pImg.src = src;
-      
-      // 画像が存在しない（読み込めない）場合のエラー防止
-      pImg.onerror = () => { pDiv.style.display = 'none'; };
+
+      // 画像の読み込みに失敗した場合は非表示にしてエラーを防ぐ
+      pImg.onerror = () => { pDiv.remove(); };
       
       pDiv.appendChild(pImg);
       randomContainer.appendChild(pDiv);
 
-      // 時間差でふんわりフェードイン
       setTimeout(() => {
         pDiv.style.opacity = '0.85';
       }, 250 + idx * 200);
@@ -113,7 +102,6 @@ coverContent.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
   
-  // ポラロイド写真を消す
   const polaroids = document.querySelectorAll('.random-polaroid');
   polaroids.forEach(p => {
     p.style.opacity = '0';

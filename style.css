@@ -45,7 +45,7 @@ h1 {
   letter-spacing: 2px;
 }
 
-/* === オープニング === */
+/* === オープニング（iOS非互換プロパティを排除した安全設計） === */
 #opening-cover {
   position: fixed;
   top: 0; left: 0;
@@ -73,8 +73,7 @@ h1 {
   padding: 50px 35px;
   border: 1px solid rgba(212, 175, 55, 0.4);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(10px);
+  background: rgba(30, 25, 23, 0.92); /* Safari透過バグ防止用単色背景 */
   max-width: 85vw;
   box-sizing: border-box;
   box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 175, 55, 0.15);
@@ -118,7 +117,7 @@ h1 {
   box-shadow: 0 6px 25px rgba(212, 175, 55, 0.8);
 }
 
-/* === オープニング背景に浮かぶポラロイド（PC用） === */
+/* === オープニング背景のランダムポラロイド === */
 #random-photos-container {
   position: absolute;
   top: 0; left: 0;
@@ -178,13 +177,14 @@ h1 {
   100% { transform: scale(1.2); opacity: 1; }
 }
 
-/* === アルバム本体 === */
+/* === アルバム本体（iOS 3D不具合対策版） === */
 .album-container {
   width: 820px;
   max-width: 90vw;
   height: 520px;
   margin: 20px auto;
   perspective: 2000px;
+  -webkit-perspective: 2000px;
   position: relative;
   z-index: 1;
 }
@@ -193,8 +193,7 @@ h1 {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   background-color: #ffffff;
   color: #333333;
   border-radius: 10px;
@@ -203,19 +202,23 @@ h1 {
   padding: 25px;
   box-sizing: border-box;
   transform-origin: left center;
-  -webkit-backface-visibility: hidden;
+  -webkit-transform-origin: left center;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   overflow: hidden;
   gap: 20px;
   transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+  -webkit-transition: -webkit-transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
 }
 
 .page.flipped {
   transform: rotateY(-180deg);
+  -webkit-transform: rotateY(-180deg);
   pointer-events: none;
   opacity: 0;
 }
 
+/* 写真枠 */
 .photo-frame {
   flex: 1;
   background: #faf8f5;
@@ -236,14 +239,8 @@ h1 {
   height: 100%;
   object-fit: cover;
   border-radius: 3px;
-  opacity: 0;
-  transform: scale(0.95) translateY(12px);
-  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 0.8s ease 0.3s;
-}
-
-.page.active .photo-frame img {
-  opacity: 1;
-  transform: scale(1) translateY(0);
+  opacity: 1 !important; /* スマホで透過されたままフリーズする現象を強制解消 */
+  transform: none !important;
 }
 
 .diary-entry {
@@ -277,10 +274,10 @@ h1 {
   transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.page.active .page-tag { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
-.page.active .date-title { transition-delay: 0.45s; opacity: 1; transform: translateY(0); }
-.page.active .text { transition-delay: 0.55s; opacity: 1; transform: translateY(0); }
-.page.active .author { transition-delay: 0.65s; opacity: 1; transform: translateY(0); }
+.page.active .page-tag { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+.page.active .date-title { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+.page.active .text { transition-delay: 0.4s; opacity: 1; transform: translateY(0); }
+.page.active .author { transition-delay: 0.5s; opacity: 1; transform: translateY(0); }
 
 .page-tag {
   font-size: 0.75rem;
@@ -353,7 +350,7 @@ button:disabled {
   box-shadow: none;
 }
 
-/* === スマホ専用：上下の余白エリアへの写真配置レイアウト === */
+/* === スマホ専用完璧表示レイアウト === */
 @media (max-width: 768px) {
   .album-container {
     width: 88vw;
@@ -368,16 +365,11 @@ button:disabled {
   }
   .photo-frame {
     width: 100%;
-    height: 190px;
-    max-height: 32vh;
+    height: 200px;
+    max-height: 35vh;
     flex: none;
     margin: 0 auto;
     padding: 6px;
-  }
-  .photo-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
   .diary-entry {
     flex: 1;
@@ -389,10 +381,10 @@ button:disabled {
     padding-top: 10px;
   }
 
-  /* スマホの上下余白にピッタリ表示させる専用座標 */
+  /* スマホ上下余白への写真表示設定 */
   .polaroid-1 { top: 2%; left: 3%; width: 85px; height: 85px; transform: rotate(-8deg); display: block !important; }
   .polaroid-2 { top: 2%; right: 3%; width: 85px; height: 85px; transform: rotate(8deg); display: block !important; }
   .polaroid-3 { bottom: 3%; left: 4%; width: 90px; height: 90px; transform: rotate(6deg); display: block !important; }
   .polaroid-4 { bottom: 3%; right: 4%; width: 90px; height: 90px; transform: rotate(-7deg); display: block !important; }
-  .polaroid-5 { display: none !important; } /* スマホ中央被り防止 */
+  .polaroid-5 { display: none !important; }
 }
