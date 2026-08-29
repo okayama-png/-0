@@ -68,40 +68,41 @@ h1 {
   pointer-events: none;
 }
 
+/* 中央カード：スマホ表示用に余白を最適化 */
 .cover-content {
   text-align: center;
-  padding: 35px 20px;
+  padding: 30px 20px;
   border: 1px solid #d4af37;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.1);
-  max-width: 75vw;
+  max-width: 72vw;
   box-sizing: border-box;
   position: relative;
   z-index: 2;
 }
 
 .cover-title {
-  font-size: 1.7rem;
-  letter-spacing: 3px;
-  margin-bottom: 10px;
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
   color: #6b5744;
   font-weight: normal;
 }
 
 .cover-sub {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #8c7e70;
   letter-spacing: 2px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .open-btn {
   background: linear-gradient(45deg, #d4af37, #f3ece0);
   border: none;
   color: #3d3126;
-  padding: 12px 35px;
-  font-size: 0.95rem;
+  padding: 10px 28px;
+  font-size: 0.9rem;
   font-family: inherit;
   font-weight: bold;
   letter-spacing: 2px;
@@ -116,7 +117,7 @@ h1 {
   box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
 }
 
-/* === オープニング背景のポラロイド（PC用8枚配置） === */
+/* === オープニング背景のポラロイド（共通） === */
 #random-photos-container {
   position: absolute;
   top: 0; left: 0;
@@ -129,12 +130,12 @@ h1 {
 .random-polaroid {
   position: absolute;
   background: #ffffff;
-  padding: 5px 5px 16px 5px;
+  padding: 4px 4px 14px 4px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.12), 0 0 8px rgba(212, 175, 55, 0.2);
   border-radius: 4px;
   opacity: 0;
-  transform: scale(0.8) translateY(15px);
   transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
 }
 
 .random-polaroid img {
@@ -354,7 +355,7 @@ button:disabled {
   box-shadow: none;
 }
 
-/* === スマホ専用：8枚が絶対に被らない上下格子の分散配置 === */
+/* === スマホ専用：8枚が絶対にカードを避けて並ぶ配置 === */
 @media (max-width: 768px) {
   .album-container {
     width: 88vw;
@@ -385,15 +386,15 @@ button:disabled {
     padding-top: 10px;
   }
 
-  /* 上エリア 4枚 (横並びに均等配置) */
-  .polaroid-1 { top: 1.5%; left: 2%; width: 52px; height: 52px; transform: rotate(-4deg); display: block !important; }
-  .polaroid-2 { top: 1.5%; left: 27%; width: 52px; height: 52px; transform: rotate(3deg); display: block !important; }
-  .polaroid-3 { top: 1.5%; left: 52%; width: 52px; height: 52px; transform: rotate(-3deg); display: block !important; }
-  .polaroid-4 { top: 1.5%; left: 77%; width: 52px; height: 52px; transform: rotate(4deg); display: block !important; }
+  /* 上部4枚 (画面最上部に横一列で重ならず配置) */
+  .polaroid-1 { top: 6%; left: 2vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(-3deg); display: block !important; }
+  .polaroid-2 { top: 6%; left: 26vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(2deg); display: block !important; }
+  .polaroid-3 { top: 6%; left: 50vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(-2deg); display: block !important; }
+  .polaroid-4 { top: 6%; left: 74vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(3deg); display: block !important; }
 
-  /* 下エリア 4枚 (横並びに均等配置) */
-  .polaroid-5 { bottom: 1.5%; left: 2%; width: 54px; height: 54px; transform: rotate(3deg); display: block !important; }
-  .polaroid-6 { bottom: 1.5%; left: 27%; width: 54px; height: 54px; transform: rotate(-4deg); display: block !important; }
-  .polaroid-7 { bottom: 1.5%; left: 52%; width: 54px; height: 54px; transform: rotate(4deg); display: block !important; }
-  .polaroid-8 { bottom: 1.5%; left: 77%; width: 54px; height: 54px; transform: rotate(-2deg); display: block !important; }
+  /* 下部4枚 (画面最下部に横一列で重ならず配置) */
+  .polaroid-5 { top: auto; bottom: 6%; left: 2vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(2deg); display: block !important; }
+  .polaroid-6 { top: auto; bottom: 6%; left: 26vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(-3deg); display: block !important; }
+  .polaroid-7 { top: auto; bottom: 6%; left: 50vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(3deg); display: block !important; }
+  .polaroid-8 { top: auto; bottom: 6%; left: 74vw; width: 22vw; height: 22vw; max-width: 78px; max-height: 78px; transform: rotate(-2deg); display: block !important; }
 }
