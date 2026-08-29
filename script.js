@@ -1,15 +1,11 @@
-// === ダイナミック背景粒子 Canvas ===
+// === 背景粒子 ===
 const canvas = document.createElement('canvas');
 canvas.id = 'bg-canvas';
 document.body.prepend(canvas);
 const ctx = canvas.getContext('2d');
 
 let particles = [];
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
@@ -24,22 +20,17 @@ class Particle {
     this.opacity = Math.random() * 0.6 + 0.25;
   }
   update() {
-    this.y += this.speedY;
-    this.x += this.speedX;
+    this.y += this.speedY; this.x += this.speedX;
     if (this.y < 0) this.reset();
   }
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-    ctx.shadowBlur = 8;
-    ctx.shadowColor = '#f3e5ab';
     ctx.fill();
   }
 }
-
-for (let i = 0; i < 70; i++) particles.push(new Particle());
-
+for (let i = 0; i < 60; i++) particles.push(new Particle());
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
@@ -47,14 +38,13 @@ function animateParticles() {
 }
 animateParticles();
 
-// === オープニングポラロイド3Dアプローチ制御 ===
+// === オープニングポラロイド ===
 const masterPhotoList = [
-  'images/prologue.png',
-  'images/page01.png', 'images/page02.png', 'images/page03.png', 'images/page04.png',
-  'images/page05.png', 'images/page06.png', 'images/page07.png', 'images/page08.png',
-  'images/page09.png', 'images/page10.png', 'images/page11.png', 'images/page12.png',
-  'images/page13.png', 'images/page14.png', 'images/page15.png', 'images/page16.png',
-  'images/page17.png'
+  'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
+  'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
+  'images/page08.png', 'images/page09.png', 'images/page10.png', 'images/page11.png',
+  'images/page12.png', 'images/page13.png', 'images/page14.png', 'images/page15.png',
+  'images/page16.png', 'images/page17.png'
 ];
 
 const openingCover = document.getElementById('opening-cover');
@@ -69,35 +59,32 @@ window.addEventListener('load', () => {
   selected.forEach((src, idx) => {
     const pDiv = document.createElement('div');
     pDiv.className = `random-polaroid polaroid-${idx + 1}`;
-    
     const pImg = document.createElement('img');
     pImg.src = src;
     pImg.onerror = () => pDiv.remove();
-
     pDiv.appendChild(pImg);
     randomContainer.appendChild(pDiv);
-
     setTimeout(() => { pDiv.style.opacity = '0.96'; }, 100 + idx * 70);
   });
 
-  initPages(); // 全ページの初期化・重なり順の均一化
+  initPages();
   initQuiz();
   initOmikuji();
-  initSecretBox();
-  initTiltEffect();
+  initPhotoFlipAndZoom();
+  initPassUnlock();
+  initInteractiveTouch();
+  startAnniversaryTimer();
 });
 
-// 迫力のポラロイド3D飛散オープン
+// オープニングボタン動作
 const startBtn = document.getElementById('startBtn');
 const coverContent = document.querySelector('.cover-content');
-
 const countOverlay = document.createElement('div');
 countOverlay.id = 'countdown-overlay';
 coverContent.appendChild(countOverlay);
 
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
-  
   document.querySelectorAll('.random-polaroid').forEach((p, i) => {
     p.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease-out';
     p.style.opacity = '0';
@@ -126,10 +113,116 @@ startBtn.addEventListener('click', () => {
   }, 650);
 });
 
-// === ページめくり＆統一初期化制御 ===
+// === 2-2: リアルタイム記念日タイマー ===
+function startAnniversaryTimer() {
+  const startDate = new Date('2026-07-03T00:00:00');
+  const timerEl = document.getElementById('loveTimer');
+
+  function update() {
+    const now = new Date();
+    const diff = now - startDate;
+
+    if (diff < 0) {
+      timerEl.textContent = 'もうすぐスタート！';
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / 1000 / 60) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    timerEl.textContent = `${days}日 ${hours}時間 ${mins}分 ${secs}秒`;
+  }
+
+  setInterval(update, 1000);
+  update();
+}
+
+// === 2-4 & 3-4: 写真反転 & ライトボックス拡大 ===
+function initPhotoFlipAndZoom() {
+  const frames = document.querySelectorAll('.photo-frame');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.querySelector('.lightbox-close');
+
+  frames.forEach(frame => {
+    frame.addEventListener('click', (e) => {
+      if (e.target.classList.contains('zoom-icon')) {
+        e.stopPropagation();
+        const img = frame.querySelector('.photo-front img');
+        if (img) {
+          lightboxImg.src = img.src;
+          lightbox.classList.add('active');
+        }
+        return;
+      }
+      frame.classList.toggle('flipped-photo');
+    });
+  });
+
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+    lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+  }
+}
+
+// === 2-3: 秘密のパスワード鍵開け ===
+function initPassUnlock() {
+  const unlockBtn = document.getElementById('unlockBtn');
+  const passInput = document.getElementById('passInput');
+  const passMessage = document.getElementById('passMessage');
+  const secretLetter = document.getElementById('secretLetter');
+
+  if (unlockBtn) {
+    unlockBtn.addEventListener('click', () => {
+      if (passInput.value === '0703') {
+        passMessage.style.color = '#2d8a4e';
+        passMessage.textContent = '🎉 鍵が開きました！';
+        secretLetter.style.display = 'block';
+        launchExplosion();
+      } else {
+        passMessage.style.color = '#c0392b';
+        passMessage.textContent = '❌ パスワードが違います（ヒント: 0703）';
+      }
+    });
+  }
+}
+
+// === 3-3: 画面どこでもタッチ爆発 ===
+function initInteractiveTouch() {
+  window.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.closest('.photo-frame')) return;
+    
+    for (let i = 0; i < 8; i++) {
+      const p = document.createElement('div');
+      p.textContent = ['✨', '💖', '⭐', '🌸'][Math.floor(Math.random() * 4)];
+      p.style.position = 'fixed';
+      p.style.left = e.clientX + 'px';
+      p.style.top = e.clientY + 'px';
+      p.style.fontSize = Math.random() * 1.2 + 1 + 'rem';
+      p.style.pointerEvents = 'none';
+      p.style.zIndex = '9999';
+      p.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+
+      document.body.appendChild(p);
+
+      const moveX = (Math.random() - 0.5) * 120;
+      const moveY = (Math.random() - 0.5) * 120;
+
+      setTimeout(() => {
+        p.style.opacity = '0';
+        p.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.3)`;
+      }, 20);
+
+      setTimeout(() => p.remove(), 1050);
+    }
+  });
+}
+
+// === ページめくり制御 ===
 let pages = [];
 let currentPage = 0;
-
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const pageNum = document.getElementById('pageNum');
@@ -140,11 +233,8 @@ function initPages() {
   if (totalPages) totalPages.textContent = pages.length;
 
   pages.forEach((page, index) => {
-    // 全ページの重ね順（Z-index）を厳密に計算して本として統一
     page.style.zIndex = pages.length - index;
     page.classList.remove('flipped', 'active');
-    
-    // リアクションボタンが未設置の場合のみ追加（重複防止）
     if (!page.querySelector('.page-reaction-wrapper')) {
       setupPageReaction(page, index);
     }
@@ -157,15 +247,11 @@ function initPages() {
 
 function updateActivePage() {
   pages.forEach((page, index) => {
-    if (index === currentPage) {
-      page.classList.add('active');
-    } else {
-      page.classList.remove('active');
-    }
+    if (index === currentPage) page.classList.add('active');
+    else page.classList.remove('active');
   });
 }
 
-// === 全ページ共通スタンプ機能 ===
 function setupPageReaction(pageEl, pageIdx) {
   const diaryEntry = pageEl.querySelector('.diary-entry');
   if (!diaryEntry) return;
@@ -188,16 +274,13 @@ function setupPageReaction(pageEl, pageIdx) {
     const btn = document.createElement('button');
     btn.className = 'stamp-btn';
     btn.innerHTML = `${item.icon} <span class="stamp-count">${countVal}</span>`;
-    btn.title = item.label;
 
     btn.addEventListener('click', (e) => {
       countVal++;
       localStorage.setItem(storageKey, countVal);
       btn.querySelector('.stamp-count').textContent = countVal;
-
       btn.classList.add('pop-anim');
       setTimeout(() => btn.classList.remove('pop-anim'), 300);
-
       launchStampEffect(item.icon, e.clientX, e.clientY);
     });
 
@@ -235,7 +318,6 @@ function updateUI() {
   if (pageNum) pageNum.textContent = currentPage + 1;
 }
 
-// === 💡 クイズシステム ===
 function initQuiz() {
   const quizBoxes = document.querySelectorAll('.quiz-box');
   quizBoxes.forEach(box => {
@@ -258,21 +340,20 @@ function initQuiz() {
   });
 }
 
-// === 🎲 運勢おみくじ ===
 function initOmikuji() {
   const omikujiBtn = document.getElementById('omikujiBtn');
   if (!omikujiBtn) return;
 
   const fortunes = [
     '【超大吉 💖】今日はお泊まり決定！朝まで甘々タイム確定です！',
-    '【大吉 ✨】みなみのおねだりが何でも通る特別デー！',
+    '【大吉 ✨】みなみさんのおねだりが何でも通る特別デー！',
     '【会える吉 💌】今ゆなに「会いたい」って連絡したら、すぐ会えるよ！',
     '【電話吉 📞】今日はふたりでゆっくり電話する日！声を聞くだけで幸せ',
     '【散歩吉 🐾】一緒に手をつないでお散歩する日！風が気持ちいいよ',
     '【遠出吉 🚗】遠出注意報が出ています！ふたりのワクワクが止まらない',
     '【グルメ吉 🍣】どこか美味しいものを食べに行っちゃう日！何食べる？',
     '【映画吉 🍿】ふたりで何か映画を観に行っちゃう？ポップコーン買ってイチャイチャする日！',
-    '【メロ大吉 🤤】結南がみなみにメロメロすぎて離れてくれません！',
+    '【メロ大吉 🤤】結南がみなみさんにメロメロすぎて離れてくれません！',
     '【キスマ吉 💋】キスマ攻防戦が開幕！今日勝つのはどっち！？',
     '【サウナ吉 ♨️】一緒にサウナ＆温泉旅行の計画を立てると吉！',
     '【手作吉 🍱】手作りお弁当を二人で食べると幸せ爆発！',
@@ -290,21 +371,6 @@ function initOmikuji() {
   });
 }
 
-// === 💌 シークレット袋とじ ===
-function initSecretBox() {
-  const openSecretBtn = document.getElementById('openSecretBtn');
-  const secretContent = document.getElementById('secretContent');
-
-  if (openSecretBtn && secretContent) {
-    openSecretBtn.addEventListener('click', () => {
-      secretContent.style.display = 'block';
-      openSecretBtn.style.display = 'none';
-      launchExplosion();
-    });
-  }
-}
-
-// === 💥 ダイナミックゴールド粒子＆紙吹雪爆発 ===
 function launchExplosion() {
   const colors = ['#f1c40f', '#e74c3c', '#e91e63', '#9b59b6', '#2ecc71', '#3498db', '#d4af37', '#ffffff'];
   for (let i = 0; i < 60; i++) {
@@ -314,7 +380,6 @@ function launchExplosion() {
     p.style.height = p.style.width;
     const color = colors[Math.floor(Math.random() * colors.length)];
     p.style.backgroundColor = color;
-    p.style.boxShadow = `0 0 12px ${color}`;
     p.style.left = '50vw';
     p.style.top = '50vh';
     p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
@@ -338,7 +403,6 @@ function launchExplosion() {
   }
 }
 
-// === マイクロアニメーション ===
 function launchStampEffect(icon, originX, originY) {
   for (let i = 0; i < 20; i++) {
     const h = document.createElement('div');
@@ -379,16 +443,4 @@ function triggerCameraFlash() {
   document.body.appendChild(flash);
   setTimeout(() => flash.style.opacity = '0', 40);
   setTimeout(() => flash.remove(), 550);
-}
-
-// 3D Tiltパララックス効果
-function initTiltEffect() {
-  const album = document.querySelector('.album-container');
-  if (!album) return;
-
-  window.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 12;
-    const y = (e.clientY / window.innerHeight - 0.5) * -12;
-    album.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-  });
 }

@@ -7,8 +7,8 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Shippori+Mincho:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7000">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=10000">
 </head>
 <body>
 
@@ -28,6 +28,13 @@
     <div class="header-brand">MEMORIAL COLLECTION</div>
     <h1>みなみと結南の思い出アルバム</h1>
     <div class="subtitle">Minami & Yuna's Story</div>
+
+    <!-- 2-2: リアルタイム記念日タイマー -->
+    <div class="anniversary-timer">
+      <span class="timer-label">付き合ってから：</span>
+      <span id="loveTimer">計算中...</span>
+    </div>
+
     <!-- 🎲 おみくじボタン -->
     <button id="omikujiBtn" class="omikuji-btn">🎲 今日のふたりの運勢を占う</button>
   </header>
@@ -38,7 +45,12 @@
 
     <!-- PROLOGUE -->
     <article class="page active" id="page1">
-      <div class="photo-frame"><img src="images/prologue.png" alt="ふたりの始まり" loading="eager"></div>
+      <div class="photo-frame" title="タップで裏面を見る">
+        <div class="photo-inner">
+          <div class="photo-front"><img src="images/prologue.png" alt="ふたりの始まり"><span class="zoom-icon">🔍</span></div>
+          <div class="photo-back"><p class="back-text">💌 この日から全てが始まったね！運命に感謝✨</p></div>
+        </div>
+      </div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">PROLOGUE</span>
@@ -55,9 +67,14 @@
       </div>
     </article>
 
-    <!-- 001 (＋クイズ①) -->
+    <!-- 001 -->
     <article class="page" id="page2">
-      <div class="photo-frame"><img src="images/page01.png" alt="付き合った日" loading="lazy"></div>
+      <div class="photo-frame" title="タップで裏面を見る">
+        <div class="photo-inner">
+          <div class="photo-front"><img src="images/page01.png" alt="付き合った日"><span class="zoom-icon">🔍</span></div>
+          <div class="photo-back"><p class="back-text">☕ コーヒー味の初キス、一生忘れない宝物！</p></div>
+        </div>
+      </div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 01</span>
@@ -76,9 +93,8 @@
 公園でずっとキスしてたのも今じゃ最高の思い出。すごくコーヒーの味がしたのを覚えてる。
 ふたりの距離がぐんと縮まった、人生でいっちばん最高の夜！</p>
 
-          <!-- 💡 クイズ① -->
           <div class="quiz-box">
-            <div class="quiz-title">❓ みなみクイズ #1</div>
+            <div class="quiz-title">❓ みなみさんクイズ #1</div>
             <p class="quiz-q">この夜、公園でずっとキスした時の思い出の味は？</p>
             <div class="quiz-options">
               <button class="quiz-btn" data-correct="false">① いちご味 🍓</button>
@@ -87,7 +103,6 @@
             </div>
             <div class="quiz-result"></div>
           </div>
-
         </div>
         <div class="author">結南</div>
       </div>
@@ -95,7 +110,7 @@
 
     <!-- 002 -->
     <article class="page" id="page3">
-      <div class="photo-frame"><img src="images/page02.png" alt="初めてダンスを見た日" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page02.png" alt="初めてダンスを見た日"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">💃 ステージの上のみなみさん、格好良すぎて鳥肌立った！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 02</span>
@@ -115,7 +130,7 @@
 
     <!-- 003 -->
     <article class="page" id="page4">
-      <div class="photo-frame"><img src="images/page03.png" alt="七夕" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page03.png" alt="七夕"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🎋 美しい字で「大好き」って書いてくれてキュン死！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 03</span>
@@ -134,7 +149,7 @@
 
     <!-- 004 -->
     <article class="page" id="page5">
-      <div class="photo-frame"><img src="images/page04.png" alt="初めてのお弁当" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page04.png" alt="初めてのお弁当"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🍱 失敗したご飯も笑顔で食べてくれた優しさに感動。</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 04</span>
@@ -153,7 +168,7 @@
 
     <!-- 005 -->
     <article class="page" id="page6">
-      <div class="photo-frame"><img src="images/page05.png" alt="水族館と初お泊り" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page05.png" alt="水族館と初お泊り"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🐠 青い光の中のみなみさん、女神みたいに綺麗だった！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 05</span>
@@ -174,7 +189,7 @@
 
     <!-- 006 -->
     <article class="page" id="page7">
-      <div class="photo-frame"><img src="images/page06.png" alt="お泊り" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page06.png" alt="お泊り"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🍨 アイス食べて照れる顔、可愛すぎてメロメロ！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 06</span>
@@ -194,9 +209,9 @@
       </div>
     </article>
 
-    <!-- 007 (＋クイズ②) -->
+    <!-- 007 -->
     <article class="page" id="page8">
-      <div class="photo-frame"><img src="images/page07.png" alt="映画とお泊り" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page07.png" alt="映画とお泊り"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🎬 1枚ポカ事件（笑）映画館でのキス写真、宝物！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 07</span>
@@ -212,9 +227,8 @@
 
 毎日が幸せすぎて、もう滅！</p>
 
-          <!-- 💡 クイズ② -->
           <div class="quiz-box">
-            <div class="quiz-title">❓ みなみクイズ #2</div>
+            <div class="quiz-title">❓ みなみさんクイズ #2</div>
             <p class="quiz-q">一番後ろの席を取ろうとして、結南がやらかした大ポカは？</p>
             <div class="quiz-options">
               <button class="quiz-btn" data-correct="false">① 映画館を間違えた 🎬</button>
@@ -223,7 +237,6 @@
             </div>
             <div class="quiz-result"></div>
           </div>
-
         </div>
         <div class="author">結南</div>
       </div>
@@ -231,7 +244,7 @@
 
     <!-- 008 -->
     <article class="page" id="page9">
-      <div class="photo-frame"><img src="images/page08.png" alt="お泊り" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page08.png" alt="お泊り"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">😏 ちょっぴりSっ気みなみさん、本当にメロすぎ！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 08</span>
@@ -253,7 +266,7 @@
 
     <!-- 009 -->
     <article class="page" id="page10">
-      <div class="photo-frame"><img src="images/page09.png" alt="飲みとお泊り" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page09.png" alt="飲みとお泊り"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🍻 チンチロメガジョッキ笑った！ありのままの君が好き</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 09</span>
@@ -272,9 +285,9 @@
       </div>
     </article>
 
-    <!-- 010 (＋クイズ③) -->
+    <!-- 010 -->
     <article class="page" id="page11">
-      <div class="photo-frame"><img src="images/page10.png" alt="ダンスの送迎" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page10.png" alt="ダンスの送迎"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">📱 ササプライズ大失敗したけど喜んでくれて嬉しかった！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 10</span>
@@ -291,9 +304,8 @@
 明日、みなみさんが全力でダンスを楽しめるように、私のパワーは届いたかな。
 みなみさんと出会えた奇跡に、感謝する毎日です。</p>
 
-          <!-- 💡 クイズ③ -->
           <div class="quiz-box">
-            <div class="quiz-title">❓ みなみクイズ #3</div>
+            <div class="quiz-title">❓ みなみさんクイズ #3</div>
             <p class="quiz-q">電車で内緒で買おうとしたサプライズプレゼントは？</p>
             <div class="quiz-options">
               <button class="quiz-btn" data-correct="false">① お揃いのコップ ☕</button>
@@ -302,7 +314,6 @@
             </div>
             <div class="quiz-result"></div>
           </div>
-
         </div>
         <div class="author">結南</div>
       </div>
@@ -310,7 +321,7 @@
 
     <!-- 011 -->
     <article class="page" id="page12">
-      <div class="photo-frame"><img src="images/page11.png" alt="お泊り" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page11.png" alt="お泊り"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">♨️ サウナハットサプライズ、最高に嬉しかった！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 11</span>
@@ -331,7 +342,7 @@
 
     <!-- 012 -->
     <article class="page" id="page13">
-      <div class="photo-frame"><img src="images/page12.png" alt="お泊まり" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page12.png" alt="お泊まり"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🎮 ゲーセンではしゃぐ二人最高！私にはみなみさんだけ。</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 12</span>
@@ -353,7 +364,7 @@
 
     <!-- 013 -->
     <article class="page" id="page14">
-      <div class="photo-frame"><img src="images/page13.png" alt="花火大会" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page13.png" alt="花火大会"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🎆 傘の中の二人だけの死角。『愛は勝つ』永遠の曲！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 13</span>
@@ -376,7 +387,7 @@
 
     <!-- 014 -->
     <article class="page" id="page15">
-      <div class="photo-frame"><img src="images/page14.png" alt="葛西臨海公園" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page14.png" alt="葛西臨海公園"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🌊 海辺でずっとキスした夜。ひまわりも綺麗だった！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 14</span>
@@ -388,7 +399,7 @@
 ドーナツを食べて、焼きそばを食べて、かき氷まで頬張って。美味しいものを一緒に食べる時間はやっぱり最高！
 
 そのあとは海辺へ移動して、ふたりでずーーっとキス。
-ほんのり明るかった空が深い闇に包まれていくまで、どれくらいの時間重ね合っていたのか分からないくらい夢中だったなぁ。心から幸せだと感じた時間でした。
+ほんのり明るかった空が深い闇に包まれるまで、どれくらいの時間重ね合っていたのか分からないくらい夢中だったなぁ。心から幸せだと感じた時間でした。
 
 夜のひまわりのライトアップに照らされたみなみさん。今日も本当に綺麗で、可愛かったな。
 
@@ -400,7 +411,7 @@
 
     <!-- 015 -->
     <article class="page" id="page16">
-      <div class="photo-frame"><img src="images/page15.png" alt="ダンス公演" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page15.png" alt="ダンス公演"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">✨ 踊るみなみさんは世界一かっこいい！一番のファンだよ</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 15</span>
@@ -422,7 +433,7 @@
 
     <!-- 016 -->
     <article class="page" id="page17">
-      <div class="photo-frame"><img src="images/page16.png" alt="九十九里浜ドライブ" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page16.png" alt="九十九里浜ドライブ"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🏖️ ずぶ濡れ青春最高！手持ち花火も絶対やろう！</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 16</span>
@@ -444,16 +455,16 @@
       </div>
     </article>
 
-    <!-- 017 (＋袋とじシークレットカード) -->
+    <!-- 017 -->
     <article class="page" id="page18">
-      <div class="photo-frame"><img src="images/page17.png" alt="5日間のお泊り" loading="lazy"></div>
+      <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page17.png" alt="5日間のお泊り"><span class="zoom-icon">🔍</span></div><div class="photo-back"><p class="back-text">🎹 夢の同棲に一歩前進！チェリー弾いてあげるね</p></div></div></div>
       <div class="diary-entry">
         <div class="entry-content">
           <span class="page-tag">MEMORY 17</span>
           <h2 class="date-title">017 - 5日間のお泊り</h2>
           <p class="text">2026.08.21 - 08.25
 気づいたらなんと5日間も一緒に過ごしていてびっくり。
-前半の2日は私の家で、後半の3日はみなみさんの家で。あんなにずっと一緒にいられたなんて、自分でもびっくりしちゃうくらい嬉しかったな。早く一緒に住みたいなって、ますます思いが強くなりました。
+前半の2日は私の家で, 後半の3日はみなみさんの家で。あんなにずっと一緒にいられたなんて、自分でもびっくりしちゃうくらい嬉しかったな。早く一緒に住みたいなって、ますます思いが強くなりました。
 
 みなみさんの家でお洗濯をしたりお料理を作ったり、家事をしているだけで心から幸せだったのに、大好きな人の帰りをワクワクしながら待つ時間は、さらに愛おしい時間です。
 
@@ -462,11 +473,29 @@
 
 本当に幸せな5日間をありがとう。</p>
 
-          <!-- 💌 シークレット袋とじメッセージ -->
-          <div class="secret-box" id="secretBox">
-            <button class="secret-btn" id="openSecretBtn">🔒 みなみ専用・ひみつのメッセージを開く</button>
-            <div class="secret-content" id="secretContent" style="display: none;">
-              <p class="secret-text">✨ いつも私の隣で笑ってくれて本当にありがとう。私のことを笑わせてくれてありがとう。世界でいちばん大好きなみなみさんとこれからもたくさんの思い出を作っていきたい。 たくさん愛し合おう。</p>
+          <!-- 2-3: パスワード鍵開け -->
+          <div class="secret-pass-box">
+            <div class="pass-title">🔒 秘密の鍵（ふたりが付き合った月日4桁を入力）</div>
+            <div class="pass-input-group">
+              <input type="password" id="passInput" maxlength="4" placeholder="例: 0101">
+              <button id="unlockBtn">UNLOCK</button>
+            </div>
+            <div id="passMessage" class="pass-msg"></div>
+            <div id="secretLetter" class="secret-letter" style="display: none;">
+              <h3>I　Love You</h3>
+              <p>みなみさんへ
+
+アルバムを最後まで見てくれて本当にありがとう
+付き合ってから今日まで、みなみさんと過ごしたすべての瞬間が私の宝物です。
+
+照れくさくて普段は直接言えないけれど、みなみさんの笑顔も、真っ直ぐなところも、甘えてくるところも、全部全部愛おしくてたまらないよ。
+
+これからもずっと一番近くでみなみさんを応援させてね。
+何があっても私たちが手をつないでいれば大丈夫。
+どんな時も支えあって生きていこうね。
+世界でいっちばん大好きだよ
+
+結南より </p>
             </div>
           </div>
 
@@ -476,6 +505,12 @@
     </article>
 
   </main>
+
+  <!-- 3-4: 写真拡大用ライトボックス -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightboxImg" src="" alt="拡大画像">
+  </div>
 
   <!-- 制御コントローラー -->
   <div class="page-indicator">
@@ -488,6 +523,6 @@
     <button id="nextBtn" aria-label="次のページへ">NEXT ▶</button>
   </div>
 
-  <script src="script.js?v=9000"></script>
+  <script src="script.js?v=10000"></script>
 </body>
 </html>
