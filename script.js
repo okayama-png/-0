@@ -54,44 +54,46 @@ function animateParticles() {
 }
 animateParticles();
 
-// === ランダム写真抽選システム（安全・エラー防止版） ===
+// === オープニング＆ランダムポラロイド（絶対停止しないエラー制御付き） ===
 const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
 
-window.addEventListener('DOMContentLoaded', () => {
-  // HTML内に登録されている全写真のパスを取得
-  const albumPhotos = Array.from(document.querySelectorAll('.photo-frame img'))
-    .map(img => img.getAttribute('src'))
-    .filter(src => src && src.trim() !== '');
+window.addEventListener('load', () => {
+  try {
+    const allImgs = Array.from(document.querySelectorAll('.photo-frame img'))
+      .map(img => img.getAttribute('src'))
+      .filter(src => src && src.trim() !== '');
 
-  if (albumPhotos.length > 0) {
-    // ランダムにシャッフルして最大5枚抽出
-    const shuffled = albumPhotos.sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, Math.min(5, shuffled.length));
+    if (allImgs.length > 0) {
+      const shuffled = allImgs.sort(() => 0.5 - Math.random());
+      const selected = shuffled.slice(0, Math.min(5, shuffled.length));
 
-    selected.forEach((src, idx) => {
-      const pDiv = document.createElement('div');
-      pDiv.className = `random-polaroid polaroid-${idx + 1}`;
-      
-      const pImg = document.createElement('img');
-      pImg.src = src;
+      selected.forEach((src, idx) => {
+        const pDiv = document.createElement('div');
+        pDiv.className = `random-polaroid polaroid-${idx + 1}`;
+        
+        const pImg = document.createElement('img');
+        pImg.src = src;
 
-      // 画像の読み込みに失敗した場合は非表示にしてエラーを防ぐ
-      pImg.onerror = () => { pDiv.remove(); };
-      
-      pDiv.appendChild(pImg);
-      randomContainer.appendChild(pDiv);
+        // 画像が読み込めない場合は該当ポラロイドだけ静かに消去（処理を止めない）
+        pImg.onerror = () => { pDiv.remove(); };
 
-      setTimeout(() => {
-        pDiv.style.opacity = '0.85';
-      }, 250 + idx * 200);
-    });
+        pDiv.appendChild(pImg);
+        randomContainer.appendChild(pDiv);
+
+        setTimeout(() => {
+          pDiv.style.opacity = '0.85';
+        }, 250 + idx * 200);
+      });
+    }
+  } catch (e) {
+    console.log("ランダム画像読み込みスキップ:", e);
   }
 });
 
-// === シネマティック カウントダウン オープニング ===
+// === オープニングボタン動作 ===
 const startBtn = document.getElementById('startBtn');
 const coverContent = document.querySelector('.cover-content');
 
@@ -128,7 +130,7 @@ startBtn.addEventListener('click', () => {
   }, 700);
 });
 
-// === ページめくり処理 ===
+// === ページめくり制御 ===
 const pages = Array.from(document.querySelectorAll('.page'));
 let currentPage = 0;
 
@@ -184,7 +186,7 @@ function updateUI() {
   pageNum.textContent = currentPage + 1;
 }
 
-// === 上品な金箔・星くず演出 ===
+// === 金箔星くずアニメーション ===
 function launchSparkles() {
   const colors = ['#d4af37', '#f5e6c8', '#ffffff', '#e2d9c8'];
   
