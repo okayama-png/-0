@@ -54,7 +54,7 @@ function animateParticles() {
 }
 animateParticles();
 
-// === 全画像リスト ===
+// === 全画像マスターリスト ===
 const masterPhotoList = [
   'images/prologue.png',
   'images/page01.png', 'images/page02.png', 'images/page03.png', 'images/page04.png',
@@ -67,64 +67,36 @@ const masterPhotoList = [
   'images/extra9.png', 'images/extra10.png'
 ];
 
-// === スマホ専用の「絶対に重ならない8枚の画面座標」座標データ ===
-const mobilePositions = [
-  { top: '2%', left: '2%', transform: 'rotate(-4deg)' },
-  { top: '2%', left: '26%', transform: 'rotate(3deg)' },
-  { top: '2%', left: '50%', transform: 'rotate(-3deg)' },
-  { top: '2%', left: '74%', transform: 'rotate(4deg)' },
-  { bottom: '2%', left: '2%', transform: 'rotate(3deg)' },
-  { bottom: '2%', left: '26%', transform: 'rotate(-4deg)' },
-  { bottom: '2%', left: '50%', transform: 'rotate(4deg)' },
-  { bottom: '2%', left: '74%', transform: 'rotate(-2deg)' }
-];
-
 const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
 
-function generatePolaroids() {
-  randomContainer.innerHTML = ''; // 再生成用に初期化
-  const isMobile = window.innerWidth <= 768;
+window.addEventListener('load', () => {
+  try {
+    const shuffled = masterPhotoList.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 8);
 
-  const shuffled = masterPhotoList.sort(() => 0.5 - Math.random());
-  const selected = shuffled.slice(0, 8);
+    selected.forEach((src, idx) => {
+      const pDiv = document.createElement('div');
+      // クラス名のみ付与（スタイルの直接指定は一切行わずCSSに完全委任）
+      pDiv.className = `random-polaroid polaroid-${idx + 1}`;
+      
+      const pImg = document.createElement('img');
+      pImg.src = src;
+      pImg.onerror = () => { pDiv.remove(); };
 
-  selected.forEach((src, idx) => {
-    const pDiv = document.createElement('div');
-    pDiv.className = `random-polaroid polaroid-${idx + 1}`;
-    
-    // スマホ表示時は強制的に直打ち座標を適用して重なりをゼロにする
-    if (isMobile && mobilePositions[idx]) {
-      const pos = mobilePositions[idx];
-      pDiv.style.position = 'absolute';
-      if (pos.top) pDiv.style.top = pos.top;
-      if (pos.bottom) pDiv.style.bottom = pos.bottom;
-      pDiv.style.left = pos.left;
-      pDiv.style.width = '20vw';
-      pDiv.style.height = '20vw';
-      pDiv.style.maxWidth = '70px';
-      pDiv.style.maxHeight = '70px';
-      pDiv.style.transform = pos.transform;
-      pDiv.style.margin = '0';
-    }
+      pDiv.appendChild(pImg);
+      randomContainer.appendChild(pDiv);
 
-    const pImg = document.createElement('img');
-    pImg.src = src;
-    pImg.onerror = () => { pDiv.remove(); };
-
-    pDiv.appendChild(pImg);
-    randomContainer.appendChild(pDiv);
-
-    setTimeout(() => {
-      pDiv.style.opacity = '0.95';
-    }, 150 + idx * 100);
-  });
-}
-
-// 読み込み完了時と画面回転時に実行
-window.addEventListener('load', generatePolaroids);
+      setTimeout(() => {
+        pDiv.style.opacity = '0.95';
+      }, 150 + idx * 100);
+    });
+  } catch (e) {
+    console.log("エラー防止:", e);
+  }
+});
 
 // === オープニングボタン動作 ===
 const startBtn = document.getElementById('startBtn');
@@ -219,7 +191,7 @@ function updateUI() {
   pageNum.textContent = currentPage + 1;
 }
 
-// === 上品な金箔・星くず演出 ===
+// === 金箔星くず演出 ===
 function launchSparkles() {
   const colors = ['#d4af37', '#e8d380', '#ffffff', '#c5bbb0'];
   
