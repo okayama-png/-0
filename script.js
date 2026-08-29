@@ -97,7 +97,7 @@ window.addEventListener('load', () => {
   }
 });
 
-// === オープニングボタン動作（拡大＋フェードアウト演出を追加） ===
+// === オープニングボタン動作（拡大フェードアウト） ===
 const startBtn = document.getElementById('startBtn');
 const coverContent = document.querySelector('.cover-content');
 
@@ -108,12 +108,11 @@ coverContent.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
   
-  // ポラロイド写真を一斉に拡大しながらふわっと消すアニメーション
   const polaroids = document.querySelectorAll('.random-polaroid');
   polaroids.forEach(p => {
     p.style.transition = 'transform 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 1s ease-out';
     p.style.opacity = '0';
-    p.style.transform = 'scale(1.8) translateY(-20px)'; // 大きく拡大して浮き上がる演出
+    p.style.transform = 'scale(1.8) translateY(-20px)';
   });
 
   countOverlay.classList.add('show');
@@ -131,6 +130,7 @@ startBtn.addEventListener('click', () => {
       setTimeout(() => {
         openingCover.classList.add('open-book');
         launchSparkles();
+        triggerCameraFlash(); // 開いた瞬間のカメラフラッシュ
       }, 400);
     }
   }, 700);
@@ -173,6 +173,7 @@ nextBtn.addEventListener('click', () => {
     updateActivePage();
     updateUI();
     launchSparkles();
+    triggerCameraFlash(); // めくった瞬間のスポットフラッシュ
   }
 });
 
@@ -183,6 +184,7 @@ prevBtn.addEventListener('click', () => {
     updateActivePage();
     updateUI();
     launchSparkles();
+    triggerCameraFlash(); // めくった瞬間のスポットフラッシュ
   }
 });
 
@@ -190,6 +192,31 @@ function updateUI() {
   prevBtn.disabled = currentPage === 0;
   nextBtn.disabled = currentPage === pages.length - 1;
   pageNum.textContent = currentPage + 1;
+}
+
+// === カメラフラッシュ（画面が一瞬ふわっと光るスポット効果） ===
+function triggerCameraFlash() {
+  const flash = document.createElement('div');
+  flash.style.position = 'fixed';
+  flash.style.top = '0';
+  flash.style.left = '0';
+  flash.style.width = '100vw';
+  flash.style.height = '100vh';
+  flash.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+  flash.style.zIndex = '9998';
+  flash.style.pointerEvents = 'none';
+  flash.style.transition = 'opacity 0.5s ease-out';
+  flash.style.opacity = '1';
+
+  document.body.appendChild(flash);
+
+  setTimeout(() => {
+    flash.style.opacity = '0';
+  }, 50);
+
+  setTimeout(() => {
+    flash.remove();
+  }, 550);
 }
 
 // === 金箔星くず演出 ===

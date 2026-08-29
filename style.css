@@ -59,7 +59,8 @@ h1 {
   z-index: 9999;
   transform-origin: left center;
   transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
-  box-shadow: 10px 0 30px rgba(0,0,0,0.15);
+  /* 自然で柔らかい影に変更 */
+  box-shadow: 8px 0 25px rgba(107, 87, 68, 0.08);
 }
 
 #opening-cover.open-book {
@@ -68,14 +69,14 @@ h1 {
   pointer-events: none;
 }
 
-/* 中央カード：上下余白確保のためコンパクト化 */
 .cover-content {
   text-align: center;
   padding: 25px 15px;
   border: 1px solid #d4af37;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15), inset 0 0 15px rgba(212, 175, 55, 0.1);
+  /* 自然な金色・温かみのある影 */
+  box-shadow: 0 8px 24px rgba(180, 150, 90, 0.12), inset 0 0 15px rgba(212, 175, 55, 0.08);
   width: 70vw;
   max-width: 320px;
   box-sizing: border-box;
@@ -110,12 +111,12 @@ h1 {
   cursor: pointer;
   border-radius: 30px;
   transition: all 0.4s ease;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
 }
 
 .open-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
 /* === ポラロイド（基本構造） === */
@@ -132,7 +133,8 @@ h1 {
   position: absolute;
   background: #ffffff;
   padding: 4px 4px 14px 4px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12), 0 0 8px rgba(212, 175, 55, 0.2);
+  /* 写真の影も自然な柔らかさに変更 */
+  box-shadow: 0 4px 14px rgba(107, 87, 68, 0.1), 0 0 6px rgba(212, 175, 55, 0.15);
   border-radius: 4px;
   opacity: 0;
   transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -193,6 +195,7 @@ h1 {
   z-index: 1;
 }
 
+/* ★ アルバムページ本体の影を「強すぎる黒」から「温かみのある優しい影」へ全面変更 ★ */
 .page {
   width: 100%;
   height: 100%;
@@ -201,7 +204,7 @@ h1 {
   background-color: #ffffff;
   color: #333333;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 20px rgba(115, 95, 75, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
   display: flex;
   padding: 25px;
   box-sizing: border-box;
@@ -219,11 +222,12 @@ h1 {
   opacity: 0;
 }
 
+/* 写真枠（自然な薄影） */
 .photo-frame {
   flex: 1;
   background: #faf8f5;
   padding: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 3px 10px rgba(115, 95, 75, 0.06);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -232,6 +236,7 @@ h1 {
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
 }
 
 .photo-frame img {
@@ -247,6 +252,45 @@ h1 {
 .page.active .photo-frame img {
   opacity: 1;
   transform: scale(1) translateY(0);
+}
+
+/* スポットライト光線ライン */
+.photo-frame::after {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 60%;
+  height: 300%;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.page.active .photo-frame::after {
+  animation: photoFlash 1.1s ease-out 0.4s 1 forwards;
+}
+
+@keyframes photoFlash {
+  0% {
+    top: -100%;
+    left: -100%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    left: 200%;
+    opacity: 0;
+  }
 }
 
 .diary-entry {
@@ -340,13 +384,13 @@ button {
   cursor: pointer;
   border-radius: 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 8px rgba(107, 87, 68, 0.12);
 }
 
 button:hover {
   background: #d4af37;
   color: #3d3126;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
 }
 
 button:disabled {
@@ -356,7 +400,7 @@ button:disabled {
   box-shadow: none;
 }
 
-/* === スマホ専用：CSS最優先適用（!important付与で強制整列） === */
+/* === スマホ専用配置 === */
 @media (max-width: 768px) {
   .album-container {
     width: 88vw;
@@ -387,13 +431,13 @@ button:disabled {
     padding-top: 10px;
   }
 
-  /* 上部4枚 (画面最上部に23%刻みで横並び) */
+  /* 上部4枚 */
   .polaroid-1 { top: 4% !important; bottom: auto !important; left: 2% !important; right: auto !important; width: 22vw !important; height: 22vw !important; max-width: 75px !important; max-height: 75px !important; transform: rotate(-3deg) !important; display: block !important; }
   .polaroid-2 { top: 4% !important; bottom: auto !important; left: 26% !important; right: auto !important; width: 22vw !important; height: 22vw !important; max-width: 75px !important; max-height: 75px !important; transform: rotate(2deg) !important; display: block !important; }
   .polaroid-3 { top: 4% !important; bottom: auto !important; left: 50% !important; right: auto !important; width: 22vw !important; height: 22vw !important; max-width: 75px !important; max-height: 75px !important; transform: rotate(-2deg) !important; display: block !important; }
   .polaroid-4 { top: 4% !important; bottom: auto !important; left: 74% !important; right: auto !important; width: 22vw !important; height: 22vw !important; max-width: 75px !important; max-height: 75px !important; transform: rotate(3deg) !important; display: block !important; }
 
-  /* 下部4枚 (画面最下部に23%刻みで横並び) */
+  /* 下部4枚 */
   .polaroid-5 { top: auto !important; bottom: 4% !important; left: 2% !important; right: auto !important; width: 22vw !important; height: 22vw !important; max-width: 75px !important; max-height: 75px !important; transform: rotate(2deg) !important; display: block !important; }
   .polaroid-6 { top: auto !important; bottom: 4% !important; left: 26% !important; right: auto !important; width: 22vw !important; height: 22vw !important; max-width: 75px !important; max-height: 75px !important; transform: rotate(-3deg) !important; display: block !important; }
   .polaroid-7 { top: auto !important; bottom: 4% !important; left: 50% !important; right: auto !important; width: 22vw !important; height: 22vw !important; max-width: 75px !important; max-height: 75px !important; transform: rotate(3deg) !important; display: block !important; }
