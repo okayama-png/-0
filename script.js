@@ -1,4 +1,4 @@
-// === 背景粒子レンダラー ===
+// === ダイナミック背景粒子 Canvas ===
 const canvas = document.createElement('canvas');
 canvas.id = 'bg-canvas';
 document.body.prepend(canvas);
@@ -18,10 +18,10 @@ class Particle {
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2.0 + 0.5;
-    this.speedY = -(Math.random() * 0.3 + 0.1);
-    this.speedX = (Math.random() - 0.5) * 0.2;
-    this.opacity = Math.random() * 0.5 + 0.2;
+    this.size = Math.random() * 2.5 + 0.8;
+    this.speedY = -(Math.random() * 0.4 + 0.15);
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.6 + 0.25;
   }
   update() {
     this.y += this.speedY;
@@ -31,14 +31,14 @@ class Particle {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(184, 142, 61, ${this.opacity})`;
-    ctx.shadowBlur = 6;
-    ctx.shadowColor = '#e5cd8d';
+    ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = '#f3e5ab';
     ctx.fill();
   }
 }
 
-for (let i = 0; i < 60; i++) particles.push(new Particle());
+for (let i = 0; i < 70; i++) particles.push(new Particle());
 
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -47,7 +47,7 @@ function animateParticles() {
 }
 animateParticles();
 
-// === オープニングポラロイド制御 ===
+// === オープニングポラロイド3Dアプローチ制御 ===
 const masterPhotoList = [
   'images/prologue.png',
   'images/page01.png', 'images/page02.png', 'images/page03.png', 'images/page04.png',
@@ -77,16 +77,17 @@ window.addEventListener('load', () => {
     pDiv.appendChild(pImg);
     randomContainer.appendChild(pDiv);
 
-    setTimeout(() => { pDiv.style.opacity = '0.96'; }, 120 + idx * 80);
+    setTimeout(() => { pDiv.style.opacity = '0.96'; }, 100 + idx * 70);
   });
 
-  // 初期化
+  initPages(); // 全ページの初期化・重なり順の均一化
   initQuiz();
   initOmikuji();
   initSecretBox();
+  initTiltEffect();
 });
 
-// === カバーオープン＆カウントダウン ===
+// 迫力のポラロイド3D飛散オープン
 const startBtn = document.getElementById('startBtn');
 const coverContent = document.querySelector('.cover-content');
 
@@ -97,10 +98,12 @@ coverContent.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
   
-  document.querySelectorAll('.random-polaroid').forEach(p => {
-    p.style.transition = 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out';
+  document.querySelectorAll('.random-polaroid').forEach((p, i) => {
+    p.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease-out';
     p.style.opacity = '0';
-    p.style.transform = 'scale(1.8) translateY(-20px)';
+    const moveX = (i % 2 === 0 ? -1 : 1) * 300;
+    const moveY = (i < 4 ? -1 : 1) * 300;
+    p.style.transform = `translate3d(${moveX}px, ${moveY}px, 500px) rotate(${Math.random() * 90 - 45}deg)`;
   });
 
   countOverlay.classList.add('show');
@@ -116,15 +119,15 @@ startBtn.addEventListener('click', () => {
       countOverlay.textContent = "START";
       setTimeout(() => {
         openingCover.classList.add('open-book');
-        launchSparkles();
+        launchExplosion();
         triggerCameraFlash();
       }, 350);
     }
   }, 650);
 });
 
-// === ページめくり制御 ===
-const pages = Array.from(document.querySelectorAll('.page'));
+// === ページめくり＆統一初期化制御 ===
+let pages = [];
 let currentPage = 0;
 
 const prevBtn = document.getElementById('prevBtn');
@@ -132,24 +135,37 @@ const nextBtn = document.getElementById('nextBtn');
 const pageNum = document.getElementById('pageNum');
 const totalPages = document.getElementById('totalPages');
 
-totalPages.textContent = pages.length;
-
 function initPages() {
+  pages = Array.from(document.querySelectorAll('.page'));
+  if (totalPages) totalPages.textContent = pages.length;
+
   pages.forEach((page, index) => {
+    // 全ページの重ね順（Z-index）を厳密に計算して本として統一
     page.style.zIndex = pages.length - index;
-    setupPageReaction(page, index);
+    page.classList.remove('flipped', 'active');
+    
+    // リアクションボタンが未設置の場合のみ追加（重複防止）
+    if (!page.querySelector('.page-reaction-wrapper')) {
+      setupPageReaction(page, index);
+    }
   });
+
+  currentPage = 0;
   updateActivePage();
+  updateUI();
 }
 
 function updateActivePage() {
   pages.forEach((page, index) => {
-    if (index === currentPage) page.classList.add('active');
-    else page.classList.remove('active');
+    if (index === currentPage) {
+      page.classList.add('active');
+    } else {
+      page.classList.remove('active');
+    }
   });
 }
 
-// === スタンプ機能 ===
+// === 全ページ共通スタンプ機能 ===
 function setupPageReaction(pageEl, pageIdx) {
   const diaryEntry = pageEl.querySelector('.diary-entry');
   if (!diaryEntry) return;
@@ -191,15 +207,13 @@ function setupPageReaction(pageEl, pageIdx) {
   diaryEntry.appendChild(reactionWrapper);
 }
 
-initPages();
-
 nextBtn.addEventListener('click', () => {
   if (currentPage < pages.length - 1) {
     pages[currentPage].classList.add('flipped');
     currentPage++;
     updateActivePage();
     updateUI();
-    launchSparkles();
+    launchExplosion();
     triggerCameraFlash();
   }
 });
@@ -210,15 +224,15 @@ prevBtn.addEventListener('click', () => {
     pages[currentPage].classList.remove('flipped');
     updateActivePage();
     updateUI();
-    launchSparkles();
+    launchExplosion();
     triggerCameraFlash();
   }
 });
 
 function updateUI() {
-  prevBtn.disabled = currentPage === 0;
-  nextBtn.disabled = currentPage === pages.length - 1;
-  pageNum.textContent = currentPage + 1;
+  if (prevBtn) prevBtn.disabled = currentPage === 0;
+  if (nextBtn) nextBtn.disabled = currentPage === pages.length - 1;
+  if (pageNum) pageNum.textContent = currentPage + 1;
 }
 
 // === 💡 クイズシステム ===
@@ -234,7 +248,7 @@ function initQuiz() {
         if (isCorrect) {
           resultDiv.style.color = '#2d8a4e';
           resultDiv.textContent = '🎉 大正解！さすがみなみさん！';
-          launchConfetti();
+          launchExplosion();
         } else {
           resultDiv.style.color = '#c0392b';
           resultDiv.textContent = '❌ 残念〜！もう一回本文を読んでみてね（笑）';
@@ -244,36 +258,7 @@ function initQuiz() {
   });
 }
 
-// 大正解の紙吹雪（Confetti）
-function launchConfetti() {
-  const colors = ['#f1c40f', '#e74c3c', '#e91e63', '#9b59b6', '#2ecc71', '#3498db'];
-  for (let i = 0; i < 45; i++) {
-    const confetti = document.createElement('div');
-    confetti.style.position = 'fixed';
-    confetti.style.width = Math.random() * 8 + 6 + 'px';
-    confetti.style.height = confetti.style.width;
-    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    confetti.style.left = Math.random() * 100 + 'vw';
-    confetti.style.top = '-10px';
-    confetti.style.zIndex = '9999';
-    confetti.style.pointerEvents = 'none';
-    confetti.style.transition = 'transform 2.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 2.5s ease';
-
-    document.body.appendChild(confetti);
-
-    const moveX = (Math.random() - 0.5) * 200;
-    const moveY = window.innerHeight + 50;
-
-    setTimeout(() => {
-      confetti.style.opacity = '0';
-      confetti.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${Math.random() * 720}deg)`;
-    }, 20);
-
-    setTimeout(() => confetti.remove(), 2600);
-  }
-}
-
-// === 🎲 運勢おみくじ（最新修正版） ===
+// === 🎲 運勢おみくじ ===
 function initOmikuji() {
   const omikujiBtn = document.getElementById('omikujiBtn');
   if (!omikujiBtn) return;
@@ -281,7 +266,7 @@ function initOmikuji() {
   const fortunes = [
     '【超大吉 💖】今日はお泊まり決定！朝まで甘々タイム確定です！',
     '【大吉 ✨】みなみのおねだりが何でも通る特別デー！',
-    '【会える吉 💌】今ゆなに「会いたい」って連絡したら、多分すぐ会えるよ！',
+    '【会える吉 💌】今ゆなに「会いたい」って連絡したら、すぐ会えるよ！',
     '【電話吉 📞】今日はふたりでゆっくり電話する日！声を聞くだけで幸せ',
     '【散歩吉 🐾】一緒に手をつないでお散歩する日！風が気持ちいいよ',
     '【遠出吉 🚗】遠出注意報が出ています！ふたりのワクワクが止まらない',
@@ -301,8 +286,7 @@ function initOmikuji() {
   omikujiBtn.addEventListener('click', () => {
     const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
     alert(`🎲 今日のふたりの運勢 🎲\n\n${randomFortune}`);
-    launchSparkles();
-    launchConfetti();
+    launchExplosion();
   });
 }
 
@@ -315,36 +299,69 @@ function initSecretBox() {
     openSecretBtn.addEventListener('click', () => {
       secretContent.style.display = 'block';
       openSecretBtn.style.display = 'none';
-      launchSparkles();
-      launchConfetti();
+      launchExplosion();
     });
+  }
+}
+
+// === 💥 ダイナミックゴールド粒子＆紙吹雪爆発 ===
+function launchExplosion() {
+  const colors = ['#f1c40f', '#e74c3c', '#e91e63', '#9b59b6', '#2ecc71', '#3498db', '#d4af37', '#ffffff'];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.style.position = 'fixed';
+    p.style.width = Math.random() * 10 + 6 + 'px';
+    p.style.height = p.style.width;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    p.style.backgroundColor = color;
+    p.style.boxShadow = `0 0 12px ${color}`;
+    p.style.left = '50vw';
+    p.style.top = '50vh';
+    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    p.style.zIndex = '9999';
+    p.style.pointerEvents = 'none';
+    p.style.transition = 'transform 2s cubic-bezier(0.16, 1, 0.3, 1), opacity 2s ease-out';
+
+    document.body.appendChild(p);
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 450 + 100;
+    const moveX = Math.cos(angle) * distance;
+    const moveY = Math.sin(angle) * distance;
+
+    setTimeout(() => {
+      p.style.opacity = '0';
+      p.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${Math.random() * 720}deg) scale(${Math.random() * 1.5 + 0.5})`;
+    }, 20);
+
+    setTimeout(() => p.remove(), 2100);
   }
 }
 
 // === マイクロアニメーション ===
 function launchStampEffect(icon, originX, originY) {
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 20; i++) {
     const h = document.createElement('div');
     h.textContent = icon;
     h.style.position = 'fixed';
-    h.style.fontSize = Math.random() * 1.4 + 1.1 + 'rem';
-    h.style.left = (originX || window.innerWidth / 2) + (Math.random() * 50 - 25) + 'px';
+    h.style.fontSize = Math.random() * 1.6 + 1.2 + 'rem';
+    h.style.left = (originX || window.innerWidth / 2) + (Math.random() * 60 - 30) + 'px';
     h.style.top = (originY || window.innerHeight / 2) + 'px';
     h.style.zIndex = '9999';
     h.style.pointerEvents = 'none';
-    h.style.transition = 'transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.3s ease-out';
+    h.style.transition = 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.4s ease-out';
 
     document.body.appendChild(h);
 
-    const moveX = (Math.random() - 0.5) * 200;
-    const moveY = -(Math.random() * 220 + 80);
+    const moveX = (Math.random() - 0.5) * 220;
+    const moveY = -(Math.random() * 250 + 90);
 
     setTimeout(() => {
       h.style.opacity = '0';
-      h.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.3) rotate(${(Math.random() - 0.5) * 60}deg)`;
+      h.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.4) rotate(${(Math.random() - 0.5) * 60}deg)`;
     }, 20);
 
-    setTimeout(() => h.remove(), 1350);
+    setTimeout(() => h.remove(), 1450);
   }
 }
 
@@ -353,41 +370,25 @@ function triggerCameraFlash() {
   flash.style.position = 'fixed';
   flash.style.top = '0'; flash.style.left = '0';
   flash.style.width = '100vw'; flash.style.height = '100vh';
-  flash.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+  flash.style.backgroundColor = 'rgba(255, 255, 255, 0.45)';
   flash.style.zIndex = '9998';
   flash.style.pointerEvents = 'none';
-  flash.style.transition = 'opacity 0.45s ease-out';
+  flash.style.transition = 'opacity 0.5s ease-out';
   flash.style.opacity = '1';
 
   document.body.appendChild(flash);
   setTimeout(() => flash.style.opacity = '0', 40);
-  setTimeout(() => flash.remove(), 500);
+  setTimeout(() => flash.remove(), 550);
 }
 
-function launchSparkles() {
-  const colors = ['#b88e3d', '#e5cd8d', '#ffffff', '#c9bcab'];
-  for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div');
-    p.style.position = 'fixed';
-    p.style.width = Math.random() * 5 + 2.5 + 'px';
-    p.style.height = p.style.width;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    p.style.backgroundColor = color;
-    p.style.boxShadow = `0 0 8px ${color}`;
-    p.style.left = Math.random() * 80 + 10 + 'vw';
-    p.style.top = Math.random() * 80 + 10 + 'vh';
-    p.style.borderRadius = '50%';
-    p.style.zIndex = '9999';
-    p.style.pointerEvents = 'none';
-    p.style.transition = 'transform 1.5s ease-out, opacity 1.5s ease-out';
+// 3D Tiltパララックス効果
+function initTiltEffect() {
+  const album = document.querySelector('.album-container');
+  if (!album) return;
 
-    document.body.appendChild(p);
-
-    setTimeout(() => {
-      p.style.opacity = '1';
-      p.style.transform = `translateY(-30px) scale(${Math.random() * 1.2 + 0.5})`;
-    }, 30);
-    setTimeout(() => p.style.opacity = '0', 1000);
-    setTimeout(() => p.remove(), 1550);
-  }
+  window.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 12;
+    const y = (e.clientY / window.innerHeight - 0.5) * -12;
+    album.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+  });
 }
