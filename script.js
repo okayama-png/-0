@@ -82,7 +82,6 @@ const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
 
-// 黄金の輝きを持つSVG立体羽ばたき蝶のHTML構造
 const butterflySVG = `
   <svg class="butterfly-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g class="wing-left">
@@ -140,7 +139,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// オープニングボタン動作＆うねうねパタパタ飛行シーケンス
+// オープニングボタン動作
 const startBtn = document.getElementById('startBtn');
 const countOverlay = document.createElement('div');
 countOverlay.id = 'countdown-overlay';
@@ -149,11 +148,9 @@ document.body.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
 
-  // 1. 暗転 ＆ 黄金の蝶が羽をパタパタさせて蛇行しながら糸を引いて中央へ進む
   countOverlay.classList.add('show');
   setTimeout(() => document.body.classList.add('draw-ribbon'), 100);
 
-  // 2. 2.2秒後に中央で出逢い、カウントダウン開始
   setTimeout(() => {
     const countSequence = [3, 2, 1];
     let step = 0;
@@ -165,24 +162,20 @@ startBtn.addEventListener('click', () => {
         step++;
         setTimeout(runCountStep, 1200);
       } else {
-        // 3. カウント終了後、蝶々が優雅にハートを描いて羽ばたき去る
         document.body.classList.remove('draw-ribbon');
         document.body.classList.add('untie-ribbon');
         document.body.classList.add('fly-heart');
         document.body.classList.add('burst-photos');
 
-        // 深みの写真たちが飛び出して散る
         document.querySelectorAll('.random-polaroid').forEach((p, i) => {
           const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 350 + 450);
           const moveY = (i < 4 ? -1 : 1) * (Math.random() * 350 + 450);
           p.style.transform = `translate3d(${moveX}px, ${moveY}px, 800px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
         });
 
-        // 4. 大迫力「START！！！」
         countOverlay.innerHTML = `<div class="start-text">START！！！</div>`;
         playHeartbeatSound();
 
-        // 5. アルバム本が開く
         setTimeout(() => {
           countOverlay.classList.remove('show');
           document.body.classList.remove('cover-active');
@@ -223,26 +216,35 @@ function startAnniversaryTimer() {
   update();
 }
 
-// 写真反転 & 拡大表示
+// 独立写真反転 & 独立ボタン拡大表示
 function initPhotoFlipAndZoom() {
-  const frames = document.querySelectorAll('.photo-frame');
+  const columns = document.querySelectorAll('.photo-column');
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
   const lightboxClose = document.querySelector('.lightbox-close');
 
-  frames.forEach(frame => {
-    frame.addEventListener('click', (e) => {
-      if (e.target.classList.contains('zoom-icon')) {
-        e.stopPropagation();
+  columns.forEach(col => {
+    const frame = col.querySelector('.photo-frame');
+    const zoomBtn = col.querySelector('.photo-zoom-btn');
+
+    // 写真フレーム（カード）を押した時だけ180度反転
+    if (frame) {
+      frame.addEventListener('click', (e) => {
+        frame.classList.toggle('flipped-photo');
+      });
+    }
+
+    // 🔍 「写真を拡大する」ボタンを押した時だけライトボックス大画面拡大
+    if (zoomBtn && frame) {
+      zoomBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // 写真カードへのイベント伝破（反転）を完全に阻止
         const img = frame.querySelector('.photo-front img');
         if (img) {
           lightboxImg.src = img.src;
           lightbox.classList.add('active');
         }
-        return;
-      }
-      frame.classList.toggle('flipped-photo');
-    });
+      });
+    }
   });
 
   if (lightboxClose) {
@@ -277,7 +279,7 @@ function initPassUnlock() {
 function initInteractiveTouch() {
   window.addEventListener('click', (e) => {
     if (document.body.classList.contains('cover-active')) return;
-    if (e.target.tagName === 'BUTTON' || e.target.closest('.photo-frame')) return;
+    if (e.target.tagName === 'BUTTON' || e.target.closest('.photo-column')) return;
     
     for (let i = 0; i < 5; i++) {
       const p = document.createElement('div');

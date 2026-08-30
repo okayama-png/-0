@@ -16,6 +16,7 @@
   
   --font-en: 'Cormorant Garamond', Georgia, serif;
   --font-ja: 'Shippori Mincho', "游明朝", "Yu Mincho", serif;
+  --font-handwriting: 'Yuji Syuku', serif;
   --ease-3d: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -39,7 +40,7 @@ body {
   perspective: 2000px;
 }
 
-/* 💓 心臓音「どぅん」時の画面全体視覚的振動 */
+/* 💓 心臓音「どぅん」時の画面全体パルス */
 body.heartbeat-pulse {
   animation: bodyPulse 0.45s ease-out;
 }
@@ -185,7 +186,7 @@ h1 {
   opacity: 1;
 }
 
-/* 🦋 毛糸のような繊細な細いゴールドラインと金色のリアル羽ばたき蝶（位置を少し低め: top 62%） */
+/* 🦋 リボン＆蝶々 */
 .ribbon-container {
   position: fixed;
   top: 0; left: 0;
@@ -197,7 +198,6 @@ h1 {
   align-items: center;
 }
 
-/* 毛糸のような細いゴールドの糸（3px）- 位置を低め(top: 62%)に調整 */
 .ribbon-line-left, .ribbon-line-right {
   position: absolute;
   top: 62%;
@@ -208,50 +208,23 @@ h1 {
   transition: transform 2.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
 }
 
-.ribbon-line-left {
-  left: 0;
-  transform-origin: left center;
-  transform: scaleX(0);
-}
-
-.ribbon-line-right {
-  right: 0;
-  transform-origin: right center;
-  transform: scaleX(0);
-}
+.ribbon-line-left { left: 0; transform-origin: left center; transform: scaleX(0); }
+.ribbon-line-right { right: 0; transform-origin: right center; transform: scaleX(0); }
 
 .draw-ribbon .ribbon-line-left,
-.draw-ribbon .ribbon-line-right {
-  transform: scaleX(1);
-}
+.draw-ribbon .ribbon-line-right { transform: scaleX(1); }
 
-/* 🦋 金色の光を纏った黄金のSVG蝶々 */
 .butterfly-svg {
-  width: 32px;
-  height: 32px;
+  width: 32px; height: 32px;
   filter: drop-shadow(0 0 10px #f3e5ab) drop-shadow(0 0 18px #d4af37);
 }
 
-/* 蝶々の羽ばたき（パタパタ）アニメーション */
-.wing-left {
-  transform-origin: right center;
-  animation: flapLeft 0.18s infinite alternate ease-in-out;
-}
-.wing-right {
-  transform-origin: left center;
-  animation: flapRight 0.18s infinite alternate ease-in-out;
-}
+.wing-left { transform-origin: right center; animation: flapLeft 0.18s infinite alternate ease-in-out; }
+.wing-right { transform-origin: left center; animation: flapRight 0.18s infinite alternate ease-in-out; }
 
-@keyframes flapLeft {
-  0% { transform: scaleX(1); }
-  100% { transform: scaleX(0.2); }
-}
-@keyframes flapRight {
-  0% { transform: scaleX(1); }
-  100% { transform: scaleX(0.2); }
-}
+@keyframes flapLeft { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.2); } }
+@keyframes flapRight { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.2); } }
 
-/* 蝶々のラッパー（蛇行＋移動） */
 .butterfly-left, .butterfly-right {
   position: absolute;
   top: calc(62% - 16px);
@@ -263,16 +236,8 @@ h1 {
 .butterfly-left { left: 0; }
 .butterfly-right { right: 0; }
 
-/* うねうね蛇行（波打ち）しながら中央へ移動するフレーム制御 */
-.draw-ribbon .butterfly-left {
-  opacity: 1;
-  animation: waveFlyLeft 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-.draw-ribbon .butterfly-right {
-  opacity: 1;
-  animation: waveFlyRight 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
+.draw-ribbon .butterfly-left { opacity: 1; animation: waveFlyLeft 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+.draw-ribbon .butterfly-right { opacity: 1; animation: waveFlyRight 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 
 @keyframes waveFlyLeft {
   0% { transform: translate(0vw, 0) rotate(5deg); }
@@ -290,20 +255,11 @@ h1 {
   100% { transform: translate(calc(-50vw + 16px), 0) rotate(0deg); }
 }
 
-/* 🦋 中央でぶつかった後、ハートを描いて飛んでいくアニメーション */
 .untie-ribbon .ribbon-line-left,
-.untie-ribbon .ribbon-line-right {
-  transform: scaleX(0);
-  opacity: 0;
-}
+.untie-ribbon .ribbon-line-right { transform: scaleX(0); opacity: 0; }
 
-.fly-heart .butterfly-left {
-  animation: flyHeartLeft 2.2s ease-in-out forwards !important;
-}
-
-.fly-heart .butterfly-right {
-  animation: flyHeartRight 2.2s ease-in-out forwards !important;
-}
+.fly-heart .butterfly-left { animation: flyHeartLeft 2.2s ease-in-out forwards !important; }
+.fly-heart .butterfly-right { animation: flyHeartRight 2.2s ease-in-out forwards !important; }
 
 @keyframes flyHeartLeft {
   0% { transform: translate(calc(50vw - 16px), 0); opacity: 1; }
@@ -319,7 +275,7 @@ h1 {
   100% { transform: translate(calc(-50vw + 380px), -380px) rotate(50deg); opacity: 0; }
 }
 
-/* ★★★ 3.2.1. カウントダウン数字（絶対最前面 z-index: 999999） ★★★ */
+/* 3.2.1. カウントダウン */
 .count-num {
   font-family: var(--font-en);
   font-size: 11rem;
@@ -328,8 +284,7 @@ h1 {
   text-shadow: 0 0 30px var(--gold-glow), 0 0 60px var(--gold-primary), 0 0 100px rgba(212, 175, 55, 0.9);
   animation: gatherInSlow 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
+  top: 50% !important; left: 50% !important;
   transform: translate(-50%, -50%) !important;
   z-index: 999999 !important;
   pointer-events: none;
@@ -337,23 +292,12 @@ h1 {
 }
 
 @keyframes gatherInSlow {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(3.8) translateZ(300px);
-    filter: blur(18px);
-  }
-  65% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(0.92);
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(3.8) translateZ(300px); filter: blur(18px); }
+  65% { opacity: 1; transform: translate(-50%, -50%) scale(0.92); filter: blur(0px); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
-/* ★★★ START！！！（絶対最前面 z-index: 999999） ★★★ */
+/* START！！！ */
 .start-text {
   font-family: var(--font-en);
   font-size: 8.5rem;
@@ -363,8 +307,7 @@ h1 {
   text-shadow: 0 0 40px #ffffff, 0 0 80px var(--gold-glow), 0 0 120px var(--gold-primary);
   animation: burstOutSlow 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
+  top: 50% !important; left: 50% !important;
   transform: translate(-50%, -50%) !important;
   z-index: 999999 !important;
   pointer-events: none;
@@ -373,24 +316,11 @@ h1 {
 }
 
 @keyframes burstOutSlow {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.2);
-    filter: blur(10px);
-  }
-  40% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.15);
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2.6);
-    filter: blur(20px);
-  }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); filter: blur(10px); }
+  40% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); filter: blur(0px); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.6); filter: blur(20px); }
 }
 
-/* カバーコンテンツ */
 .cover-content {
   text-align: center;
   padding: 45px 32px;
@@ -457,7 +387,6 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* ポラロイド写真 */
 #random-photos-container {
   position: absolute;
   top: 0; left: 0;
@@ -548,68 +477,48 @@ h1 {
   opacity: 0;
 }
 
-.page.layout-scrapbook .photo-frame {
-  transform: rotate(-2.5deg) scale(0.98);
-  transition: transform 0.4s var(--ease-bounce);
-  position: relative;
-}
-.page.layout-scrapbook .photo-frame:hover {
-  transform: rotate(0deg) scale(1.01);
-}
-.tape-decor {
-  position: absolute;
-  top: -12px; left: 50%;
-  transform: translateX(-50%);
-  width: 85px; height: 20px;
-  background: rgba(212, 175, 55, 0.3);
-  backdrop-filter: blur(2px);
-  z-index: 15;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.page.layout-cinematic {
-  background: #1c1916;
-  color: #f7f4ed;
-  border-color: rgba(140, 106, 45, 0.4);
-}
-.page.layout-cinematic .photo-frame {
-  flex: 1.35;
-}
-.page.layout-cinematic .date-title,
-.page.layout-cinematic .text {
-  color: #f4efe6;
-}
-.page.layout-cinematic .date-title {
-  border-bottom-color: rgba(212, 175, 55, 0.25);
-}
-.page.layout-cinematic .page-tag {
-  color: var(--gold-glow);
-}
-.page.layout-cinematic .author {
-  color: var(--gold-primary);
-}
-
-.page.layout-magazine .date-title {
-  font-family: var(--font-en);
-  font-size: 1.35rem;
-  letter-spacing: 1.5px;
-  border-bottom: 2px solid var(--gold-primary);
-  color: var(--gold-dark);
+/* ★ 写真カラムと独立拡大ボタン構造 ★ */
+.photo-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
 }
 
 .photo-frame {
+  width: 100%;
   flex: 1;
   background: transparent;
   perspective: 1000px;
-  height: 100%;
   cursor: pointer;
+}
+
+/* 🔍 独立した「写真を拡大する」ボタン */
+.photo-zoom-btn {
+  background: rgba(255, 253, 248, 0.95);
+  border: 1px solid var(--gold-primary);
+  color: var(--text-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s var(--ease-bounce);
+  margin-top: 2px;
+}
+
+.photo-zoom-btn:hover {
+  background: var(--gold-primary);
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 
 .photo-inner {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   text-align: center;
   transition: transform 0.8s var(--ease-3d);
   transform-style: preserve-3d;
@@ -621,8 +530,7 @@ h1 {
 
 .photo-front, .photo-back {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border-radius: 8px;
@@ -637,24 +545,20 @@ h1 {
   width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 4px;
+  opacity: 0;
+  transform: scale(0.92) translateY(12px);
+  transition: opacity 1s ease 0.35s, transform 1.2s var(--ease-3d) 0.35s;
 }
 
-.zoom-icon {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: rgba(0, 0, 0, 0.45);
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 3px 7px;
-  border-radius: 12px;
+.page.active .photo-front img {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 .photo-back {
   transform: rotateY(180deg);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; justify-content: center;
   background: linear-gradient(135deg, #fefcf9, #f4ede2);
   padding: 20px;
 }
@@ -705,11 +609,17 @@ h1 {
 }
 
 .text {
-  font-size: 0.9rem;
-  line-height: 2.05;
+  font-family: var(--font-handwriting);
+  font-size: 1.02rem;
+  line-height: 2.15;
   margin-top: 14px;
   white-space: pre-wrap;
   color: var(--text-body);
+  letter-spacing: 0.03em;
+}
+
+.page.layout-cinematic .text {
+  color: #f7f3ea;
 }
 
 .author {
@@ -800,9 +710,10 @@ h1 {
 }
 
 .secret-letter p {
-  font-size: 0.88rem;
+  font-family: var(--font-handwriting);
+  font-size: 0.98rem;
   color: #4a3e33;
-  line-height: 1.8;
+  line-height: 2.0;
   white-space: pre-wrap;
 }
 
@@ -899,7 +810,8 @@ button:hover {
   }
   .book-spine { display: none; }
   .page { flex-direction: column; padding: 18px; gap: 12px; }
-  .photo-frame { width: 100%; height: 180px; flex: none; }
+  .photo-column { width: 100%; height: auto; flex: none; }
+  .photo-frame { width: 100%; height: 180px; }
   .diary-entry { border-left: none; border-top: 1px dashed #e5dcd0; padding-top: 10px; }
   
   .secret-pass-box {
