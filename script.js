@@ -38,7 +38,37 @@ function animateParticles() {
 }
 animateParticles();
 
-// === オープニングポラロイド ===
+// === 🔊 リアル手心音「どぅん」サウンド合成機能（Web Audio API） ===
+function playHeartbeatSound() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const audioCtx = new AudioContext();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(55, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(22, audioCtx.currentTime + 0.45);
+
+    gain.gain.setValueAtTime(0.95, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.45);
+
+    document.body.classList.add('heartbeat-pulse');
+    setTimeout(() => document.body.classList.remove('heartbeat-pulse'), 450);
+  } catch (e) {
+    console.log('Audio Context error:', e);
+  }
+}
+
+// === オープニング＆リボン要素生成 ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -51,6 +81,30 @@ const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
+
+const ribbonContainer = document.createElement('div');
+ribbonContainer.className = 'ribbon-container';
+ribbonContainer.innerHTML = `
+  <div class="ribbon-line-left"></div>
+  <div class="ribbon-line-right"></div>
+  <div class="ribbon-knot">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 45 C35 15, 10 25, 25 50 C40 70, 48 55, 50 50 Z" fill="url(#goldGradient)"/>
+      <path d="M50 45 C65 15, 90 25, 75 50 C60 70, 52 55, 50 50 Z" fill="url(#goldGradient)"/>
+      <path d="M48 50 C40 68, 30 85, 20 90 C32 82, 42 68, 49 52 Z" fill="url(#goldGradient)"/>
+      <path d="M52 50 C60 68, 70 85, 80 90 C68 82, 58 68, 51 52 Z" fill="url(#goldGradient)"/>
+      <circle cx="50" cy="48" r="6" fill="#f3e5ab" stroke="#8c6a2d" stroke-width="1.5"/>
+      <defs>
+        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#f3e5ab"/>
+          <stop offset="50%" stop-color="#d4af37"/>
+          <stop offset="100%" stop-color="#8c6a2d"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+`;
+document.body.prepend(ribbonContainer);
 
 document.body.classList.add('cover-active');
 
@@ -78,42 +132,61 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// オープニングボタン動作
+// オープニングボタン動作＆ゆったり重厚カウントダウン（3... 2... 1... START！！！）
 const startBtn = document.getElementById('startBtn');
-const coverContent = document.querySelector('.cover-content');
 const countOverlay = document.createElement('div');
 countOverlay.id = 'countdown-overlay';
-coverContent.appendChild(countOverlay);
+document.body.appendChild(countOverlay);
 
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
-  document.querySelectorAll('.random-polaroid').forEach((p, i) => {
-    p.style.transition = 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out';
-    p.style.opacity = '0';
-    const moveX = (i % 2 === 0 ? -1 : 1) * 250;
-    const moveY = (i < 4 ? -1 : 1) * 250;
-    p.style.transform = `translate3d(${moveX}px, ${moveY}px, 300px) rotate(${Math.random() * 60 - 30}deg)`;
-  });
 
+  // 1. 暗転 ＆ リボン描画
   countOverlay.classList.add('show');
-  let count = 3;
-  countOverlay.textContent = count;
+  setTimeout(() => document.body.classList.add('draw-ribbon'), 100);
 
-  const timer = setInterval(() => {
-    count--;
-    if (count > 0) {
-      countOverlay.textContent = count;
-    } else {
-      clearInterval(timer);
-      countOverlay.textContent = "START";
-      setTimeout(() => {
-        document.body.classList.remove('cover-active');
-        openingCover.classList.add('open-book');
-        launchExplosion();
-        triggerCameraFlash();
-      }, 350);
+  // 2. リボン結び目完成後、ゆっくり重厚なカウントダウン開始
+  setTimeout(() => {
+    const countSequence = [3, 2, 1];
+    let step = 0;
+
+    function runCountStep() {
+      if (step < countSequence.length) {
+        // 数字更新＆どぅんサウンド
+        countOverlay.innerHTML = `<div class="count-num">${countSequence[step]}</div>`;
+        playHeartbeatSound();
+        step++;
+        // ゆったり 1.2秒（1200ms）ごとにカウントダウン
+        setTimeout(runCountStep, 1200);
+      } else {
+        // 3. カウント完了後、リボン解除 ＆ 写真のダイナミック発散爆発
+        document.body.classList.remove('draw-ribbon');
+        document.body.classList.add('untie-ribbon');
+        document.body.classList.add('burst-photos');
+
+        document.querySelectorAll('.random-polaroid').forEach((p, i) => {
+          const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 350 + 400);
+          const moveY = (i < 4 ? -1 : 1) * (Math.random() * 350 + 400);
+          p.style.transform = `translate3d(${moveX}px, ${moveY}px, 700px) rotate(${Math.random() * 120 - 60}deg) scale(1.6)`;
+        });
+
+        // 大迫力「START！！！」
+        countOverlay.innerHTML = `<div class="start-text">START！！！</div>`;
+        playHeartbeatSound();
+
+        // 4. STARTの余韻を味わったあとアルバム本が開く
+        setTimeout(() => {
+          countOverlay.classList.remove('show');
+          document.body.classList.remove('cover-active');
+          openingCover.classList.add('open-book');
+          launchExplosion();
+          triggerCameraFlash();
+        }, 1000);
+      }
     }
-  }, 650);
+
+    runCountStep();
+  }, 900);
 });
 
 // リアルタイムタイマー
