@@ -214,7 +214,6 @@ h1 {
 .draw-ribbon .ribbon-line-left,
 .draw-ribbon .ribbon-line-right { transform: scaleX(1); }
 
-/* SVGグラフィック仕様の蝶（四角い四隅の枠線を完全排除） */
 .butterfly-svg {
   width: 36px;
   height: 36px;
@@ -342,7 +341,7 @@ h1 {
   width: 90vw;
   max-width: 360px;
   position: relative;
-  z-index: 2;
+  z-index: 5; /* ポラロイド写真が端っこに上品に少し乗る高さ */
 }
 
 .luxury-badge {
@@ -663,7 +662,7 @@ h1 {
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 12px 32px; font-size: 0.9rem; color: #ffffff; cursor: pointer; border-radius: 30px; transition: background 0.3s ease; }
 button:hover { background: var(--gold-primary); color: #1a1510; }
 
-/* ★★★ スマホ画面（iPhone/Android）最適化レイアウト調整 ★★★ */
+/* ★★★ スマホ画面（iPhone/Android）自然でエモい少しだけ重なる配置調整 ★★★ */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -683,22 +682,22 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .count-num { font-size: 5.5rem; }
   .start-text { font-size: 3.8rem; }
 
-  /* 🖼️ スマホ専用 ポラロイド8枚の上下4枚分割・カードに埋もれない完全配置（サイズ維持） */
+  /* 🖼️ スマホ用 ポラロイド写真（自然な重なり感を持たせた立体配置） */
   .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
   .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
-    width: 125px !important;
-    height: 125px !important;
+    width: 130px !important;
+    height: 130px !important;
   }
 
-  /* 上部に4枚をバランスよく振分け */
-  .polaroid-1 { top: 2%; left: 2%; transform: rotate(-8deg); z-index: 3; }
-  .polaroid-2 { top: 2%; right: 2%; transform: rotate(7deg); z-index: 3; }
-  .polaroid-7 { top: 18%; left: 1%; transform: rotate(6deg); z-index: 2; }
-  .polaroid-5 { top: 18%; right: 1%; transform: rotate(-9deg); z-index: 2; }
+  /* 上エリア：カードの角にほんのり重なるポジション */
+  .polaroid-1 { top: 3%; left: 3%; transform: rotate(-8deg); z-index: 1; }
+  .polaroid-2 { top: 3%; right: 3%; transform: rotate(7deg); z-index: 1; }
+  .polaroid-7 { top: 16%; left: -2%; transform: rotate(8deg); z-index: 2; }
+  .polaroid-5 { top: 16%; right: -2%; transform: rotate(-9deg); z-index: 2; }
 
-  /* 下部に4枚をバランスよく振分け（中央カードに絶対被らないエリア） */
-  .polaroid-6 { top: 68%; left: 2%; transform: rotate(-6deg); z-index: 3; }
-  .polaroid-8 { top: 68%; right: 2%; transform: rotate(8deg); z-index: 3; }
-  .polaroid-3 { top: 82%; left: 3%; transform: rotate(5deg); z-index: 2; }
-  .polaroid-4 { top: 82%; right: 3%; transform: rotate(-4deg); z-index: 2; }
+  /* 下エリア：カードの下角に自然に乗るポジション */
+  .polaroid-6 { top: 64%; left: -2%; transform: rotate(-7deg); z-index: 2; }
+  .polaroid-8 { top: 64%; right: -2%; transform: rotate(8deg); z-index: 2; }
+  .polaroid-3 { top: 78%; left: 4%; transform: rotate(6deg); z-index: 1; }
+  .polaroid-4 { top: 78%; right: 4%; transform: rotate(-5deg); z-index: 1; }
 }
