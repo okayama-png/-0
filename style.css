@@ -36,10 +36,10 @@ body {
   overflow-x: hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
-  perspective: 1500px;
+  perspective: 2000px;
 }
 
-/* 💓 心臓音「どぅん」時の画面全体パルス */
+/* 💓 心臓音「どぅん」時の画面全体視覚的振動 */
 body.heartbeat-pulse {
   animation: bodyPulse 0.45s ease-out;
 }
@@ -164,7 +164,7 @@ h1 {
   pointer-events: none;
 }
 
-/* 🌙 暗転背景スクリーン (z-index: 10000) */
+/* 🌙 暗転背景スクリーン */
 #countdown-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -185,7 +185,7 @@ h1 {
   opacity: 1;
 }
 
-/* 🎀 細く綺麗なゴールドリボン (z-index: 10002) */
+/* 🦋 毛糸のような繊細な細いゴールドラインと金色のリアル羽ばたき蝶（位置を少し低め: top 62%） */
 .ribbon-container {
   position: fixed;
   top: 0; left: 0;
@@ -197,14 +197,15 @@ h1 {
   align-items: center;
 }
 
+/* 毛糸のような細いゴールドの糸（3px）- 位置を低め(top: 62%)に調整 */
 .ribbon-line-left, .ribbon-line-right {
   position: absolute;
-  top: 50%;
+  top: 62%;
   width: 50vw;
-  height: 10px;
-  background: linear-gradient(180deg, #f3e5ab 0%, #d4af37 50%, #8c6a2d 100%);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+  height: 3px;
+  background: #f3e5ab;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+  transition: transform 2.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
 }
 
 .ribbon-line-left {
@@ -224,40 +225,101 @@ h1 {
   transform: scaleX(1);
 }
 
-.ribbon-knot {
+/* 🦋 金色の光を纏った黄金のSVG蝶々 */
+.butterfly-svg {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 0 10px #f3e5ab) drop-shadow(0 0 18px #d4af37);
+}
+
+/* 蝶々の羽ばたき（パタパタ）アニメーション */
+.wing-left {
+  transform-origin: right center;
+  animation: flapLeft 0.18s infinite alternate ease-in-out;
+}
+.wing-right {
+  transform-origin: left center;
+  animation: flapRight 0.18s infinite alternate ease-in-out;
+}
+
+@keyframes flapLeft {
+  0% { transform: scaleX(1); }
+  100% { transform: scaleX(0.2); }
+}
+@keyframes flapRight {
+  0% { transform: scaleX(1); }
+  100% { transform: scaleX(0.2); }
+}
+
+/* 蝶々のラッパー（蛇行＋移動） */
+.butterfly-left, .butterfly-right {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  width: 110px; height: 110px;
-  z-index: 10003;
-  transition: transform 0.6s var(--ease-bounce), opacity 0.6s ease;
-}
-
-.ribbon-knot svg {
-  width: 100%; height: 100%;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
-}
-
-.draw-ribbon .ribbon-knot {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.untie-ribbon .ribbon-line-left {
-  transform: translateX(-100vw) rotate(-10deg);
+  top: calc(62% - 16px);
   opacity: 0;
+  z-index: 10004;
+  transition: opacity 0.4s ease;
 }
 
+.butterfly-left { left: 0; }
+.butterfly-right { right: 0; }
+
+/* うねうね蛇行（波打ち）しながら中央へ移動するフレーム制御 */
+.draw-ribbon .butterfly-left {
+  opacity: 1;
+  animation: waveFlyLeft 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.draw-ribbon .butterfly-right {
+  opacity: 1;
+  animation: waveFlyRight 2.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes waveFlyLeft {
+  0% { transform: translate(0vw, 0) rotate(5deg); }
+  25% { transform: translate(12vw, -25px) rotate(-10deg); }
+  50% { transform: translate(25vw, 25px) rotate(12deg); }
+  75% { transform: translate(37vw, -15px) rotate(-8deg); }
+  100% { transform: translate(calc(50vw - 16px), 0) rotate(0deg); }
+}
+
+@keyframes waveFlyRight {
+  0% { transform: translate(0vw, 0) rotate(-5deg); }
+  25% { transform: translate(-12vw, -25px) rotate(10deg); }
+  50% { transform: translate(-25vw, 25px) rotate(-12deg); }
+  75% { transform: translate(-37vw, -15px) rotate(8deg); }
+  100% { transform: translate(calc(-50vw + 16px), 0) rotate(0deg); }
+}
+
+/* 🦋 中央でぶつかった後、ハートを描いて飛んでいくアニメーション */
+.untie-ribbon .ribbon-line-left,
 .untie-ribbon .ribbon-line-right {
-  transform: translateX(100vw) rotate(10deg);
+  transform: scaleX(0);
   opacity: 0;
 }
 
-.untie-ribbon .ribbon-knot {
-  transform: translate(-50%, -50%) scale(1.4) rotate(15deg);
-  opacity: 0;
+.fly-heart .butterfly-left {
+  animation: flyHeartLeft 2.2s ease-in-out forwards !important;
 }
 
-/* ★★★ 巨大・重厚カウントダウン数字（リボンより前面 z-index: 10020） ★★★ */
+.fly-heart .butterfly-right {
+  animation: flyHeartRight 2.2s ease-in-out forwards !important;
+}
+
+@keyframes flyHeartLeft {
+  0% { transform: translate(calc(50vw - 16px), 0); opacity: 1; }
+  30% { transform: translate(calc(50vw - 90px), -80px) rotate(-25deg); }
+  60% { transform: translate(calc(50vw - 140px), 50px) rotate(20deg); }
+  100% { transform: translate(calc(50vw - 380px), -380px) rotate(-50deg); opacity: 0; }
+}
+
+@keyframes flyHeartRight {
+  0% { transform: translate(calc(-50vw + 16px), 0); opacity: 1; }
+  30% { transform: translate(calc(-50vw + 90px), -80px) rotate(25deg); }
+  60% { transform: translate(calc(-50vw + 140px), 50px) rotate(-20deg); }
+  100% { transform: translate(calc(-50vw + 380px), -380px) rotate(50deg); opacity: 0; }
+}
+
+/* ★★★ 3.2.1. カウントダウン数字（絶対最前面 z-index: 999999） ★★★ */
 .count-num {
   font-family: var(--font-en);
   font-size: 11rem;
@@ -265,10 +327,11 @@ h1 {
   color: #ffffff;
   text-shadow: 0 0 30px var(--gold-glow), 0 0 60px var(--gold-primary), 0 0 100px rgba(212, 175, 55, 0.9);
   animation: gatherInSlow 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10020; /* リボン（10002）や暗転（10000）より圧倒的最前面 */
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 999999 !important;
   pointer-events: none;
   line-height: 1;
 }
@@ -290,7 +353,7 @@ h1 {
   }
 }
 
-/* ★★★ 超巨大「START！！！」（リボンより前面 z-index: 10025） ★★★ */
+/* ★★★ START！！！（絶対最前面 z-index: 999999） ★★★ */
 .start-text {
   font-family: var(--font-en);
   font-size: 8.5rem;
@@ -299,10 +362,11 @@ h1 {
   letter-spacing: 0.08em;
   text-shadow: 0 0 40px #ffffff, 0 0 80px var(--gold-glow), 0 0 120px var(--gold-primary);
   animation: burstOutSlow 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10025; /* 最前面 */
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 999999 !important;
   pointer-events: none;
   white-space: nowrap;
   line-height: 1;
@@ -401,6 +465,7 @@ h1 {
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
+  transform-style: preserve-3d;
 }
 
 .random-polaroid {
@@ -421,17 +486,17 @@ h1 {
   display: block;
 }
 
-.polaroid-1 { top: 2%; left: 2%; width: 180px; height: 180px; transform: rotate(-6deg); }
-.polaroid-2 { top: 2%; right: 2%; width: 180px; height: 180px; transform: rotate(6deg); }
-.polaroid-3 { bottom: 2%; left: 2%; width: 185px; height: 185px; transform: rotate(5deg); }
-.polaroid-4 { bottom: 2%; right: 2%; width: 185px; height: 185px; transform: rotate(-5deg); }
-.polaroid-5 { top: 38%; left: 1%; width: 170px; height: 170px; transform: rotate(-8deg); }
-.polaroid-6 { top: 38%; right: 1%; width: 170px; height: 170px; transform: rotate(8deg); }
-.polaroid-7 { top: 1%; left: 34%; width: 175px; height: 175px; transform: rotate(-3deg); }
-.polaroid-8 { bottom: 1%; left: 34%; width: 175px; height: 175px; transform: rotate(4deg); }
+.polaroid-1 { top: 2%; left: 2%; width: 180px; height: 180px; transform: translateZ(-150px) rotate(-6deg); z-index: 1; }
+.polaroid-2 { top: 2%; right: 2%; width: 180px; height: 180px; transform: translateZ(-50px) rotate(6deg); z-index: 3; }
+.polaroid-3 { bottom: 2%; left: 2%; width: 185px; height: 185px; transform: translateZ(-200px) rotate(5deg); z-index: 1; }
+.polaroid-4 { bottom: 2%; right: 2%; width: 185px; height: 185px; transform: translateZ(-100px) rotate(-5deg); z-index: 2; }
+.polaroid-5 { top: 38%; left: 1%; width: 170px; height: 170px; transform: translateZ(-180px) rotate(-8deg); z-index: 1; }
+.polaroid-6 { top: 38%; right: 1%; width: 170px; height: 170px; transform: translateZ(0px) rotate(8deg); z-index: 4; }
+.polaroid-7 { top: 1%; left: 34%; width: 175px; height: 175px; transform: translateZ(-120px) rotate(-3deg); z-index: 2; }
+.polaroid-8 { bottom: 1%; left: 34%; width: 175px; height: 175px; transform: translateZ(-80px) rotate(4deg); z-index: 3; }
 
 .burst-photos .random-polaroid {
-  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.1s ease-out !important;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease-out !important;
   opacity: 0 !important;
 }
 
@@ -826,7 +891,6 @@ button:hover {
   color: #1a1510;
 }
 
-/* ★★★ スマホ画面（iPhone/Android）完璧レスポンシブ適用 ★★★ */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -851,20 +915,10 @@ button:hover {
     font-size: 0.75rem;
   }
   
-  /* スマホ用カウントダウン＆STARTフォントサイズ自動スケーリング */
-  .count-num {
-    font-size: 5.5rem;
-  }
-  .start-text {
-    font-size: 3.8rem;
-  }
-  .ribbon-knot {
-    width: 80px;
-    height: 80px;
-  }
+  .count-num { font-size: 5.5rem; }
+  .start-text { font-size: 3.8rem; }
   .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
   .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
-    width: 120px;
-    height: 120px;
+    width: 120px; height: 120px;
   }
 }

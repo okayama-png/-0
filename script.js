@@ -68,7 +68,7 @@ function playHeartbeatSound() {
   }
 }
 
-// === オープニング＆リボン要素生成 ===
+// === オープニング＆リアル黄金蝶（SVG羽ばたき）要素生成 ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -82,27 +82,35 @@ const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
 
+// 黄金の輝きを持つSVG立体羽ばたき蝶のHTML構造
+const butterflySVG = `
+  <svg class="butterfly-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g class="wing-left">
+      <path d="M50 50 C20 10, 0 30, 10 55 C20 70, 45 60, 50 50 Z" fill="url(#goldWing)"/>
+      <path d="M50 52 C25 65, 15 85, 30 90 C45 92, 48 70, 50 52 Z" fill="url(#goldWing)"/>
+    </g>
+    <g class="wing-right">
+      <path d="M50 50 C80 10, 100 30, 90 55 C80 70, 55 60, 50 50 Z" fill="url(#goldWing)"/>
+      <path d="M50 52 C75 65, 85 85, 70 90 C55 92, 52 70, 50 52 Z" fill="url(#goldWing)"/>
+    </g>
+
+    <defs>
+      <linearGradient id="goldWing" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fff5cc"/>
+        <stop offset="50%" stop-color="#ffd54f"/>
+        <stop offset="100%" stop-color="#b88e3d"/>
+      </linearGradient>
+    </defs>
+  </svg>
+`;
+
 const ribbonContainer = document.createElement('div');
 ribbonContainer.className = 'ribbon-container';
 ribbonContainer.innerHTML = `
   <div class="ribbon-line-left"></div>
   <div class="ribbon-line-right"></div>
-  <div class="ribbon-knot">
-    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M50 45 C35 15, 10 25, 25 50 C40 70, 48 55, 50 50 Z" fill="url(#goldGradient)"/>
-      <path d="M50 45 C65 15, 90 25, 75 50 C60 70, 52 55, 50 50 Z" fill="url(#goldGradient)"/>
-      <path d="M48 50 C40 68, 30 85, 20 90 C32 82, 42 68, 49 52 Z" fill="url(#goldGradient)"/>
-      <path d="M52 50 C60 68, 70 85, 80 90 C68 82, 58 68, 51 52 Z" fill="url(#goldGradient)"/>
-      <circle cx="50" cy="48" r="6" fill="#f3e5ab" stroke="#8c6a2d" stroke-width="1.5"/>
-      <defs>
-        <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#f3e5ab"/>
-          <stop offset="50%" stop-color="#d4af37"/>
-          <stop offset="100%" stop-color="#8c6a2d"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
+  <div class="butterfly-left">${butterflySVG}</div>
+  <div class="butterfly-right">${butterflySVG}</div>
 `;
 document.body.prepend(ribbonContainer);
 
@@ -132,7 +140,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// オープニングボタン動作＆ゆったり重厚カウントダウン（3... 2... 1... START！！！）
+// オープニングボタン動作＆うねうねパタパタ飛行シーケンス
 const startBtn = document.getElementById('startBtn');
 const countOverlay = document.createElement('div');
 countOverlay.id = 'countdown-overlay';
@@ -141,40 +149,40 @@ document.body.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
 
-  // 1. 暗転 ＆ リボン描画
+  // 1. 暗転 ＆ 黄金の蝶が羽をパタパタさせて蛇行しながら糸を引いて中央へ進む
   countOverlay.classList.add('show');
   setTimeout(() => document.body.classList.add('draw-ribbon'), 100);
 
-  // 2. リボン結び目完成後、ゆっくり重厚なカウントダウン開始
+  // 2. 2.2秒後に中央で出逢い、カウントダウン開始
   setTimeout(() => {
     const countSequence = [3, 2, 1];
     let step = 0;
 
     function runCountStep() {
       if (step < countSequence.length) {
-        // 数字更新＆どぅんサウンド
         countOverlay.innerHTML = `<div class="count-num">${countSequence[step]}</div>`;
         playHeartbeatSound();
         step++;
-        // ゆったり 1.2秒（1200ms）ごとにカウントダウン
         setTimeout(runCountStep, 1200);
       } else {
-        // 3. カウント完了後、リボン解除 ＆ 写真のダイナミック発散爆発
+        // 3. カウント終了後、蝶々が優雅にハートを描いて羽ばたき去る
         document.body.classList.remove('draw-ribbon');
         document.body.classList.add('untie-ribbon');
+        document.body.classList.add('fly-heart');
         document.body.classList.add('burst-photos');
 
+        // 深みの写真たちが飛び出して散る
         document.querySelectorAll('.random-polaroid').forEach((p, i) => {
-          const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 350 + 400);
-          const moveY = (i < 4 ? -1 : 1) * (Math.random() * 350 + 400);
-          p.style.transform = `translate3d(${moveX}px, ${moveY}px, 700px) rotate(${Math.random() * 120 - 60}deg) scale(1.6)`;
+          const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 350 + 450);
+          const moveY = (i < 4 ? -1 : 1) * (Math.random() * 350 + 450);
+          p.style.transform = `translate3d(${moveX}px, ${moveY}px, 800px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
         });
 
-        // 大迫力「START！！！」
+        // 4. 大迫力「START！！！」
         countOverlay.innerHTML = `<div class="start-text">START！！！</div>`;
         playHeartbeatSound();
 
-        // 4. STARTの余韻を味わったあとアルバム本が開く
+        // 5. アルバム本が開く
         setTimeout(() => {
           countOverlay.classList.remove('show');
           document.body.classList.remove('cover-active');
@@ -186,7 +194,7 @@ startBtn.addEventListener('click', () => {
     }
 
     runCountStep();
-  }, 900);
+  }, 2200);
 });
 
 // リアルタイムタイマー
