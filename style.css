@@ -40,7 +40,7 @@ body {
   perspective: 2000px;
 }
 
-/* 💓 心臓音「どぅん」時の画面全体パルス */
+/* 💓 心臓音「どぅん」パルス */
 body.heartbeat-pulse {
   animation: bodyPulse 0.45s ease-out;
 }
@@ -182,11 +182,9 @@ h1 {
   transition: opacity 0.6s ease;
 }
 
-#countdown-overlay.show {
-  opacity: 1;
-}
+#countdown-overlay.show { opacity: 1; }
 
-/* 🦋 細いゴールドラインと純金色のSVG蝶々 */
+/* 🦋 リボン */
 .ribbon-container {
   position: fixed;
   top: 0; left: 0;
@@ -215,12 +213,9 @@ h1 {
 .draw-ribbon .ribbon-line-right { transform: scaleX(1); }
 
 .butterfly-svg {
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   background: transparent !important;
   border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
   filter: drop-shadow(0 0 8px #f3e5ab) drop-shadow(0 0 16px #d4af37);
   display: block;
 }
@@ -341,7 +336,7 @@ h1 {
   width: 90vw;
   max-width: 360px;
   position: relative;
-  z-index: 5;
+  z-index: 10;
 }
 
 .luxury-badge {
@@ -662,7 +657,7 @@ h1 {
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 12px 32px; font-size: 0.9rem; color: #ffffff; cursor: pointer; border-radius: 30px; transition: background 0.3s ease; }
 button:hover { background: var(--gold-primary); color: #1a1510; }
 
-/* ★★★ スマホ（iPhone/Android）ポラロイド潜り込み完全ゼロ＆コンパクト配置 ★★★ */
+/* ★★★ スマホ（iPhone/Android）茶色麻ひも＆木製クリップ風ガーランド完全配置 ★★★ */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -682,31 +677,63 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .count-num { font-size: 5.5rem; }
   .start-text { font-size: 3.8rem; }
 
-  /* 🃏 中央カードのパディングをキュッと引き締めて上下のゆとりスペースを創出 */
+  /* 🃏 中央タイトルカードをスマホ用に縦・横スリム化（上下スペース拡張） */
   .cover-content {
-    padding: 26px 20px !important;
+    width: 82vw !important;
+    padding: 22px 18px !important;
   }
-  .cover-sub {
-    margin-bottom: 20px !important;
+  .cover-title { font-size: 1.7rem !important; }
+  .cover-sub { font-size: 0.8rem !important; margin-bottom: 18px !important; }
+  .open-btn { padding: 10px 28px !important; font-size: 0.88rem !important; }
+
+  /* 🪢 茶色の麻ひも（ガーランド線） */
+  #random-photos-container::before,
+  #random-photos-container::after {
+    content: '';
+    position: absolute;
+    left: -5%;
+    width: 110vw;
+    height: 2px;
+    background: linear-gradient(90deg, #8c6a2d 0%, #b88e3d 50%, #8c6a2d 100%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  #random-photos-container::before { top: 9%; }  /* 上の麻ひも */
+  #random-photos-container::after { bottom: 12%; } /* 下の麻ひも */
+
+  /* 🪵 木製クリップ（ピン）のピンポイント装飾 */
+  .random-polaroid::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 18px;
+    background: #d4a359;
+    border: 1px solid #8c6a2d;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    z-index: 10;
   }
 
-  /* 🖼️ スマホ用ポラロイド（118px正方形でスペースにスッポリ収める） */
+  /* 🖼️ スマホ用ポラロイド（ガーランド一直線上に整然とクリップ留め） */
   .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
   .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
-    width: 118px !important;
-    height: 118px !important;
-    padding: 6px 6px 20px 6px !important;
+    width: 108px !important;
+    height: 108px !important;
+    padding: 5px 5px 18px 5px !important;
   }
 
-  /* 画面【真上エリア】の4枚（カードの上に完全に露出・潜り込みゼロ） */
-  .polaroid-1 { top: 0%; left: 1%; transform: rotate(-7deg); z-index: 1; }
-  .polaroid-2 { top: 0%; right: 1%; transform: rotate(6deg); z-index: 1; }
-  .polaroid-7 { top: 9%; left: 15%; transform: rotate(4deg); z-index: 2; }
-  .polaroid-5 { top: 9%; right: 15%; transform: rotate(-6deg); z-index: 2; }
+  /* 画面【上側の麻ひも】に並ぶ4枚 */
+  .polaroid-1 { top: 9.5%; left: 1vw; transform: rotate(-5deg); z-index: 2; }
+  .polaroid-7 { top: 9.5%; left: 25vw; transform: rotate(4deg); z-index: 3; }
+  .polaroid-5 { top: 9.5%; left: 49vw; transform: rotate(-6deg); z-index: 2; }
+  .polaroid-2 { top: 9.5%; left: 73vw; transform: rotate(5deg); z-index: 3; }
 
-  /* 画面【真下エリア】の4枚（カードの真下に完全に露出・潜り込みゼロ） */
-  .polaroid-6 { top: 78%; left: 15%; transform: rotate(-5deg); z-index: 2; }
-  .polaroid-8 { top: 78%; right: 15%; transform: rotate(6deg); z-index: 2; }
-  .polaroid-3 { top: 87%; left: 1%; transform: rotate(5deg); z-index: 1; }
-  .polaroid-4 { top: 87%; right: 1%; transform: rotate(-4deg); z-index: 1; }
+  /* 画面【下側の麻ひも】に並ぶ4枚 */
+  .polaroid-6 { bottom: 1.5%; left: 1vw; transform: rotate(-4deg); z-index: 2; }
+  .polaroid-8 { bottom: 1.5%; left: 25vw; transform: rotate(6deg); z-index: 3; }
+  .polaroid-3 { bottom: 1.5%; left: 49vw; transform: rotate(-5deg); z-index: 2; }
+  .polaroid-4 { bottom: 1.5%; left: 73vw; transform: rotate(4deg); z-index: 3; }
 }
