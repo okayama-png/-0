@@ -341,7 +341,7 @@ h1 {
   width: 90vw;
   max-width: 360px;
   position: relative;
-  z-index: 5; /* ポラロイド写真が端っこに上品に少し乗る高さ */
+  z-index: 5;
 }
 
 .luxury-badge {
@@ -662,7 +662,7 @@ h1 {
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 12px 32px; font-size: 0.9rem; color: #ffffff; cursor: pointer; border-radius: 30px; transition: background 0.3s ease; }
 button:hover { background: var(--gold-primary); color: #1a1510; }
 
-/* ★★★ スマホ画面（iPhone/Android）自然でエモい少しだけ重なる配置調整 ★★★ */
+/* ★★★ スマホ（iPhone/Android）完全潜り込み防止配置 ★★★ */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -682,22 +682,22 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .count-num { font-size: 5.5rem; }
   .start-text { font-size: 3.8rem; }
 
-  /* 🖼️ スマホ用 ポラロイド写真（自然な重なり感を持たせた立体配置） */
+  /* 🖼️ スマホ用 ポラロイド（カードの完全な上下外側エリアに均等配置） */
   .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
   .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
-    width: 130px !important;
-    height: 130px !important;
+    width: 128px !important;
+    height: 128px !important;
   }
 
-  /* 上エリア：カードの角にほんのり重なるポジション */
-  .polaroid-1 { top: 3%; left: 3%; transform: rotate(-8deg); z-index: 1; }
-  .polaroid-2 { top: 3%; right: 3%; transform: rotate(7deg); z-index: 1; }
-  .polaroid-7 { top: 16%; left: -2%; transform: rotate(8deg); z-index: 2; }
-  .polaroid-5 { top: 16%; right: -2%; transform: rotate(-9deg); z-index: 2; }
+  /* 画面【上側エリア】に4枚（少しだけ重なり合いながら配置） */
+  .polaroid-1 { top: 1%; left: 2%; transform: rotate(-7deg); z-index: 1; }
+  .polaroid-2 { top: 1%; right: 2%; transform: rotate(6deg); z-index: 1; }
+  .polaroid-7 { top: 12%; left: 16%; transform: rotate(5deg); z-index: 2; }
+  .polaroid-5 { top: 12%; right: 16%; transform: rotate(-8deg); z-index: 2; }
 
-  /* 下エリア：カードの下角に自然に乗るポジション */
-  .polaroid-6 { top: 64%; left: -2%; transform: rotate(-7deg); z-index: 2; }
-  .polaroid-8 { top: 64%; right: -2%; transform: rotate(8deg); z-index: 2; }
-  .polaroid-3 { top: 78%; left: 4%; transform: rotate(6deg); z-index: 1; }
-  .polaroid-4 { top: 78%; right: 4%; transform: rotate(-5deg); z-index: 1; }
+  /* 画面【下側エリア】に4枚（カードの真下・完全に露出） */
+  .polaroid-6 { top: 73%; left: 14%; transform: rotate(-6deg); z-index: 2; }
+  .polaroid-8 { top: 73%; right: 14%; transform: rotate(7deg); z-index: 2; }
+  .polaroid-3 { top: 84%; left: 2%; transform: rotate(5deg); z-index: 1; }
+  .polaroid-4 { top: 84%; right: 2%; transform: rotate(-4deg); z-index: 1; }
 }
