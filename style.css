@@ -7,7 +7,7 @@
   --gold-glow: #f3e5ab;
   --gold-dark: #8c6a2d;
   --text-dark: #1f1a17;
-  --text-body: #3d352e;
+  --text-body: #1a1a1a; /* くっきり見やすい黒に変更 */
   --text-muted: #73675c;
   
   --glass-surface: rgba(255, 253, 248, 0.88);
@@ -16,7 +16,6 @@
   
   --font-en: 'Cormorant Garamond', Georgia, serif;
   --font-ja: 'Shippori Mincho', "游明朝", "Yu Mincho", serif;
-  --font-handwriting: 'Yuji Syuku', serif;
   --ease-3d: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -610,14 +609,15 @@ h1 {
   font-weight: 600;
 }
 
+/* ★ 明朝体フォント＆くっきりブラック文字色 ★ */
 .text {
-  font-family: var(--font-handwriting);
-  font-size: 1.02rem;
-  line-height: 2.15;
+  font-family: var(--font-ja);
+  font-size: 0.92rem;
+  line-height: 2.05;
   margin-top: 14px;
   white-space: pre-wrap;
-  color: var(--text-body);
-  letter-spacing: 0.03em;
+  color: var(--text-body); /* くっきり黒 (#1a1a1a) */
+  letter-spacing: 0.02em;
 }
 
 .page.layout-cinematic .text { color: #f7f3ea; }
@@ -640,7 +640,7 @@ h1 {
 
 .secret-letter { margin-top: 12px; padding: 14px; background: #fff8f9; border: 1px dashed #f0b5c0; border-radius: 10px; animation: fadeIn 0.5s ease; }
 .secret-letter h3 { font-size: 0.9rem; color: #8c4250; margin-bottom: 8px; }
-.secret-letter p { font-family: var(--font-handwriting); font-size: 0.98rem; color: #4a3e33; line-height: 2.0; white-space: pre-wrap; }
+.secret-letter p { font-family: var(--font-ja); font-size: 0.92rem; color: #1a1a1a; line-height: 2.0; white-space: pre-wrap; }
 
 .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.88); z-index: 10000; justify-content: center; align-items: center; }
 .lightbox.active { display: flex; }
@@ -657,7 +657,7 @@ h1 {
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 12px 32px; font-size: 0.9rem; color: #ffffff; cursor: pointer; border-radius: 30px; transition: background 0.3s ease; }
 button:hover { background: var(--gold-primary); color: #1a1510; }
 
-/* ★★★ スマホ用ひも＆クリップ高さ精密アライメント調整 ★★★ */
+/* ★★★ スマホ（iPhone/Android）ひも＆クリップ完全位置合わせ ★★★ */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -686,7 +686,7 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .cover-sub { font-size: 0.8rem !important; margin-bottom: 18px !important; }
   .open-btn { padding: 10px 28px !important; font-size: 0.88rem !important; }
 
-  /* 🪢 茶色の麻ひも（上のひも: top 10.2%、下のひも: bottom 16.2% でクリップにジャストフィット！） */
+  /* 🪢 茶色の麻ひも（上ひも: top 10.2%、下ひも: bottom 16.2%） */
   #random-photos-container::before,
   #random-photos-container::after {
     content: '';
@@ -698,8 +698,8 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     z-index: 1;
   }
-  #random-photos-container::before { top: 10.2%; }    /* 上のひも */
-  #random-photos-container::after { bottom: 16.2%; } /* 下のひも（高さ完全一致修正） */
+  #random-photos-container::before { top: 10.2%; }
+  #random-photos-container::after { bottom: 16.2%; }
 
   /* 🪵 木製クリップ */
   .random-polaroid::before {
@@ -727,13 +727,13 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
     padding: 4px 4px 16px 4px !important;
   }
 
-  /* 画面【上側の麻ひも】に並ぶ4枚（1, 7, 5, 2） */
+  /* 上側の麻ひもに並ぶ4枚 */
   .polaroid-1 { top: 10.5%; left: 1vw !important; transform: rotate(-5deg); z-index: 2; }
   .polaroid-7 { top: 10.5%; left: 25.5vw !important; transform: rotate(4deg); z-index: 3; }
   .polaroid-5 { top: 10.5%; left: 50vw !important; transform: rotate(-6deg); z-index: 2; }
   .polaroid-2 { top: 10.5%; left: 74.5vw !important; transform: rotate(5deg); z-index: 3; }
 
-  /* 画面【下側の麻ひも】に並ぶ4枚（6, 8, 3, 4） */
+  /* 下側の麻ひもに並ぶ4枚（高さ補正完了） */
   .polaroid-6 { bottom: 2.2%; left: 1vw !important; top: auto !important; transform: rotate(-4deg); z-index: 2; }
   .polaroid-8 { bottom: 2.2%; left: 25.5vw !important; top: auto !important; transform: rotate(6deg); z-index: 3; }
   .polaroid-3 { bottom: 2.2%; left: 50vw !important; top: auto !important; transform: rotate(-5deg); z-index: 2; }
