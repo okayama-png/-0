@@ -662,7 +662,7 @@ h1 {
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 12px 32px; font-size: 0.9rem; color: #ffffff; cursor: pointer; border-radius: 30px; transition: background 0.3s ease; }
 button:hover { background: var(--gold-primary); color: #1a1510; }
 
-/* ★★★ スマホ（iPhone/Android）完全潜り込み防止配置 ★★★ */
+/* ★★★ スマホ（iPhone/Android）ポラロイド潜り込み完全ゼロ＆コンパクト配置 ★★★ */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -682,22 +682,31 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .count-num { font-size: 5.5rem; }
   .start-text { font-size: 3.8rem; }
 
-  /* 🖼️ スマホ用 ポラロイド（カードの完全な上下外側エリアに均等配置） */
-  .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
-  .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
-    width: 128px !important;
-    height: 128px !important;
+  /* 🃏 中央カードのパディングをキュッと引き締めて上下のゆとりスペースを創出 */
+  .cover-content {
+    padding: 26px 20px !important;
+  }
+  .cover-sub {
+    margin-bottom: 20px !important;
   }
 
-  /* 画面【上側エリア】に4枚（少しだけ重なり合いながら配置） */
-  .polaroid-1 { top: 1%; left: 2%; transform: rotate(-7deg); z-index: 1; }
-  .polaroid-2 { top: 1%; right: 2%; transform: rotate(6deg); z-index: 1; }
-  .polaroid-7 { top: 12%; left: 16%; transform: rotate(5deg); z-index: 2; }
-  .polaroid-5 { top: 12%; right: 16%; transform: rotate(-8deg); z-index: 2; }
+  /* 🖼️ スマホ用ポラロイド（118px正方形でスペースにスッポリ収める） */
+  .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
+  .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
+    width: 118px !important;
+    height: 118px !important;
+    padding: 6px 6px 20px 6px !important;
+  }
 
-  /* 画面【下側エリア】に4枚（カードの真下・完全に露出） */
-  .polaroid-6 { top: 73%; left: 14%; transform: rotate(-6deg); z-index: 2; }
-  .polaroid-8 { top: 73%; right: 14%; transform: rotate(7deg); z-index: 2; }
-  .polaroid-3 { top: 84%; left: 2%; transform: rotate(5deg); z-index: 1; }
-  .polaroid-4 { top: 84%; right: 2%; transform: rotate(-4deg); z-index: 1; }
+  /* 画面【真上エリア】の4枚（カードの上に完全に露出・潜り込みゼロ） */
+  .polaroid-1 { top: 0%; left: 1%; transform: rotate(-7deg); z-index: 1; }
+  .polaroid-2 { top: 0%; right: 1%; transform: rotate(6deg); z-index: 1; }
+  .polaroid-7 { top: 9%; left: 15%; transform: rotate(4deg); z-index: 2; }
+  .polaroid-5 { top: 9%; right: 15%; transform: rotate(-6deg); z-index: 2; }
+
+  /* 画面【真下エリア】の4枚（カードの真下に完全に露出・潜り込みゼロ） */
+  .polaroid-6 { top: 78%; left: 15%; transform: rotate(-5deg); z-index: 2; }
+  .polaroid-8 { top: 78%; right: 15%; transform: rotate(6deg); z-index: 2; }
+  .polaroid-3 { top: 87%; left: 1%; transform: rotate(5deg); z-index: 1; }
+  .polaroid-4 { top: 87%; right: 1%; transform: rotate(-4deg); z-index: 1; }
 }
