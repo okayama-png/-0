@@ -657,7 +657,7 @@ h1 {
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 12px 32px; font-size: 0.9rem; color: #ffffff; cursor: pointer; border-radius: 30px; transition: background 0.3s ease; }
 button:hover { background: var(--gold-primary); color: #1a1510; }
 
-/* ★★★ スマホ（iPhone/Android）上下4枚ずつ完璧配置・隠れ完全防止 ★★★ */
+/* ★★★ スマホ用ひも＆クリップ高さ精密アライメント調整 ★★★ */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -677,7 +677,7 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .count-num { font-size: 5.5rem; }
   .start-text { font-size: 3.8rem; }
 
-  /* 🃏 スマホでの中央タイトルカードサイズ */
+  /* 🃏 中央タイトルカード */
   .cover-content {
     width: 82vw !important;
     padding: 22px 18px !important;
@@ -686,7 +686,7 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .cover-sub { font-size: 0.8rem !important; margin-bottom: 18px !important; }
   .open-btn { padding: 10px 28px !important; font-size: 0.88rem !important; }
 
-  /* 🪢 茶色の麻ひも（上と下に各1本） */
+  /* 🪢 茶色の麻ひも（上のひも: top 10.2%、下のひも: bottom 16.2% でクリップにジャストフィット！） */
   #random-photos-container::before,
   #random-photos-container::after {
     content: '';
@@ -698,8 +698,8 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     z-index: 1;
   }
-  #random-photos-container::before { top: 10%; }   /* 上の麻ひも */
-  #random-photos-container::after { bottom: 12%; } /* 下の麻ひも */
+  #random-photos-container::before { top: 10.2%; }    /* 上のひも */
+  #random-photos-container::after { bottom: 16.2%; } /* 下のひも（高さ完全一致修正） */
 
   /* 🪵 木製クリップ */
   .random-polaroid::before {
@@ -717,7 +717,7 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
     z-index: 10;
   }
 
-  /* 🖼️ スマホ用ポラロイド（横幅に収まる23vwサイズ・4枚均等横並び） */
+  /* 🖼️ スマホ用ポラロイド（23vwサイズ・横並び） */
   .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
   .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
     width: 23vw !important;
@@ -727,15 +727,15 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
     padding: 4px 4px 16px 4px !important;
   }
 
-  /* 画面【上側の麻ひも】に横一列で並ぶ4枚（1, 7, 5, 2） */
+  /* 画面【上側の麻ひも】に並ぶ4枚（1, 7, 5, 2） */
   .polaroid-1 { top: 10.5%; left: 1vw !important; transform: rotate(-5deg); z-index: 2; }
   .polaroid-7 { top: 10.5%; left: 25.5vw !important; transform: rotate(4deg); z-index: 3; }
   .polaroid-5 { top: 10.5%; left: 50vw !important; transform: rotate(-6deg); z-index: 2; }
   .polaroid-2 { top: 10.5%; left: 74.5vw !important; transform: rotate(5deg); z-index: 3; }
 
-  /* 画面【下側の麻ひも】に横一列で並ぶ4枚（6, 8, 3, 4） */
-  .polaroid-6 { bottom: 1.5%; left: 1vw !important; top: auto !important; transform: rotate(-4deg); z-index: 2; }
-  .polaroid-8 { bottom: 1.5%; left: 25.5vw !important; top: auto !important; transform: rotate(6deg); z-index: 3; }
-  .polaroid-3 { bottom: 1.5%; left: 50vw !important; top: auto !important; transform: rotate(-5deg); z-index: 2; }
-  .polaroid-4 { bottom: 1.5%; left: 74.5vw !important; top: auto !important; transform: rotate(4deg); z-index: 3; }
+  /* 画面【下側の麻ひも】に並ぶ4枚（6, 8, 3, 4） */
+  .polaroid-6 { bottom: 2.2%; left: 1vw !important; top: auto !important; transform: rotate(-4deg); z-index: 2; }
+  .polaroid-8 { bottom: 2.2%; left: 25.5vw !important; top: auto !important; transform: rotate(6deg); z-index: 3; }
+  .polaroid-3 { bottom: 2.2%; left: 50vw !important; top: auto !important; transform: rotate(-5deg); z-index: 2; }
+  .polaroid-4 { bottom: 2.2%; left: 74.5vw !important; top: auto !important; transform: rotate(4deg); z-index: 3; }
 }
