@@ -192,37 +192,46 @@ startBtn.addEventListener('click', () => {
   runCountStep();
 });
 
+// ✨ 金箔（ゴールドダスト）全画面大爆発散エフェクト（スマホ画面対応）
 function launchGoldenDust() {
-  for (let i = 0; i < 65; i++) {
+  const particleCount = window.innerWidth <= 768 ? 85 : 70;
+  
+  for (let i = 0; i < particleCount; i++) {
     const p = document.createElement('div');
     p.style.position = 'fixed';
-    const size = Math.random() * 10 + 4;
+    
+    // スマホでもしっかり目立つサイズ
+    const size = Math.random() * 12 + 6;
     p.style.width = size + 'px';
     p.style.height = size + 'px';
-    p.style.background = 'radial-gradient(circle, #fff5cc 0%, #ffd54f 60%, transparent 100%)';
-    p.style.boxShadow = '0 0 15px #f3e5ab, 0 0 25px #d4af37';
+    p.style.background = 'radial-gradient(circle, #ffffff 0%, #ffd54f 50%, #d4af37 100%)';
+    p.style.boxShadow = '0 0 15px #f3e5ab, 0 0 30px #d4af37';
     p.style.borderRadius = '50%';
+    
+    // 画面完全中央から発散
     p.style.left = '50vw';
     p.style.top = '50vh';
-    p.style.zIndex = '99999';
+    p.style.zIndex = '999999';
     p.style.pointerEvents = 'none';
-    p.style.transition = 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s ease-out, filter 1.6s ease-out';
-    p.style.filter = 'blur(1px)';
+    p.style.transition = 'transform 1.4s cubic-bezier(0.12, 1, 0.2, 1), opacity 1.4s ease-out, filter 1.4s ease-out';
+    p.style.filter = 'blur(0.5px)';
 
     document.body.appendChild(p);
 
+    // 画面外枠まで飛び出す爆発距離設定
     const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * 550 + 100;
+    const maxSpread = Math.max(window.innerWidth, window.innerHeight) * 0.85;
+    const distance = Math.random() * maxSpread + 120;
     const moveX = Math.cos(angle) * distance;
     const moveY = Math.sin(angle) * distance;
 
     setTimeout(() => {
       p.style.opacity = '0';
-      p.style.filter = 'blur(10px)';
-      p.style.transform = `translate(${moveX}px, ${moveY}px) scale(${Math.random() * 2.5 + 1})`;
+      p.style.filter = 'blur(8px)';
+      p.style.transform = `translate(${moveX}px, ${moveY}px) scale(${Math.random() * 3 + 1.2})`;
     }, 20);
 
-    setTimeout(() => p.remove(), 1700);
+    setTimeout(() => p.remove(), 1500);
   }
 }
 
@@ -337,7 +346,7 @@ function initInteractiveTouch() {
   });
 }
 
-// ★ 上品なパタンめくり ＆ 無駄な待ち時間ゼロの即時表示 ★
+// ページめくり制御
 let pages = [];
 let currentPage = 0;
 
