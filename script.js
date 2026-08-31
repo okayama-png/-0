@@ -14,7 +14,7 @@ class Particle {
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2.2 + 0.6;
+    this.size = Math.random() * 2.0 + 0.5;
     this.speedY = -(Math.random() * 0.3 + 0.1);
     this.speedX = (Math.random() - 0.5) * 0.25;
     this.opacity = Math.random() * 0.5 + 0.2;
@@ -30,7 +30,7 @@ class Particle {
     ctx.fill();
   }
 }
-for (let i = 0; i < 50; i++) particles.push(new Particle());
+for (let i = 0; i < 45; i++) particles.push(new Particle());
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
@@ -50,19 +50,19 @@ function playHeartbeatSound() {
 
     osc.type = 'sine';
     osc.frequency.setValueAtTime(55, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(22, audioCtx.currentTime + 0.45);
+    osc.frequency.exponentialRampToValueAtTime(22, audioCtx.currentTime + 0.4);
 
     gain.gain.setValueAtTime(0.95, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
 
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.45);
+    osc.stop(audioCtx.currentTime + 0.4);
 
     document.body.classList.add('heartbeat-pulse');
-    setTimeout(() => document.body.classList.remove('heartbeat-pulse'), 450);
+    setTimeout(() => document.body.classList.remove('heartbeat-pulse'), 400);
   } catch (e) {
     console.log('Audio Context error:', e);
   }
@@ -170,9 +170,9 @@ startBtn.addEventListener('click', () => {
       document.body.classList.add('burst-photos');
 
       document.querySelectorAll('.random-polaroid').forEach((p, i) => {
-        const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 380 + 480);
-        const moveY = (i < 4 ? -1 : 1) * (Math.random() * 380 + 480);
-        p.style.transform = `translate3d(${moveX}px, ${moveY}px, 900px) rotate(${Math.random() * 140 - 70}deg) scale(2)`;
+        const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 250 + 350);
+        const moveY = (i < 4 ? -1 : 1) * (Math.random() * 250 + 350);
+        p.style.transform = `translate3d(${moveX}px, ${moveY}px, 600px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
       });
 
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
@@ -192,46 +192,42 @@ startBtn.addEventListener('click', () => {
   runCountStep();
 });
 
-// ✨ 金箔（ゴールドダスト）全画面大爆発散エフェクト（スマホ画面対応）
+// 📱 スマホ広範囲金箔全画面発散
 function launchGoldenDust() {
-  const particleCount = window.innerWidth <= 768 ? 85 : 70;
+  const particleCount = 75;
+  const screenW = window.innerWidth;
+  const screenH = window.innerHeight;
   
   for (let i = 0; i < particleCount; i++) {
     const p = document.createElement('div');
     p.style.position = 'fixed';
     
-    // スマホでもしっかり目立つサイズ
-    const size = Math.random() * 12 + 6;
+    const size = Math.random() * 10 + 5;
     p.style.width = size + 'px';
     p.style.height = size + 'px';
     p.style.background = 'radial-gradient(circle, #ffffff 0%, #ffd54f 50%, #d4af37 100%)';
-    p.style.boxShadow = '0 0 15px #f3e5ab, 0 0 30px #d4af37';
+    p.style.boxShadow = '0 0 12px #f3e5ab, 0 0 25px #d4af37';
     p.style.borderRadius = '50%';
-    
-    // 画面完全中央から発散
     p.style.left = '50vw';
     p.style.top = '50vh';
     p.style.zIndex = '999999';
     p.style.pointerEvents = 'none';
-    p.style.transition = 'transform 1.4s cubic-bezier(0.12, 1, 0.2, 1), opacity 1.4s ease-out, filter 1.4s ease-out';
-    p.style.filter = 'blur(0.5px)';
+    p.style.transition = 'transform 1.3s cubic-bezier(0.12, 1, 0.2, 1), opacity 1.3s ease-out, filter 1.3s ease-out';
 
     document.body.appendChild(p);
 
-    // 画面外枠まで飛び出す爆発距離設定
     const angle = Math.random() * Math.PI * 2;
-    const maxSpread = Math.max(window.innerWidth, window.innerHeight) * 0.85;
-    const distance = Math.random() * maxSpread + 120;
+    const distance = Math.random() * (Math.max(screenW, screenH) * 0.8) + 100;
     const moveX = Math.cos(angle) * distance;
     const moveY = Math.sin(angle) * distance;
 
     setTimeout(() => {
       p.style.opacity = '0';
-      p.style.filter = 'blur(8px)';
-      p.style.transform = `translate(${moveX}px, ${moveY}px) scale(${Math.random() * 3 + 1.2})`;
+      p.style.filter = 'blur(6px)';
+      p.style.transform = `translate(${moveX}px, ${moveY}px) scale(${Math.random() * 2.5 + 1})`;
     }, 20);
 
-    setTimeout(() => p.remove(), 1500);
+    setTimeout(() => p.remove(), 1400);
   }
 }
 
@@ -326,7 +322,7 @@ function initInteractiveTouch() {
       p.style.position = 'fixed';
       p.style.left = e.clientX + 'px';
       p.style.top = e.clientY + 'px';
-      p.style.fontSize = Math.random() * 1.1 + 0.9 + 'rem';
+      p.style.fontSize = Math.random() * 1.0 + 0.8 + 'rem';
       p.style.pointerEvents = 'none';
       p.style.zIndex = '9999';
       p.style.transition = 'transform 0.9s ease-out, opacity 0.9s ease-out';
@@ -501,7 +497,7 @@ function initOmikuji() {
 function launchExplosion() {
   if (document.body.classList.contains('cover-active')) return;
   const colors = ['#f1c40f', '#e74c3c', '#e91e63', '#9b59b6', '#2ecc71', '#3498db', '#d4af37', '#ffffff'];
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 35; i++) {
     const p = document.createElement('div');
     p.style.position = 'fixed';
     p.style.width = Math.random() * 8 + 5 + 'px';
@@ -518,7 +514,7 @@ function launchExplosion() {
     document.body.appendChild(p);
 
     const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * 350 + 80;
+    const distance = Math.random() * 300 + 70;
     const moveX = Math.cos(angle) * distance;
     const moveY = Math.sin(angle) * distance;
 
@@ -532,12 +528,12 @@ function launchExplosion() {
 }
 
 function launchStampEffect(icon, originX, originY) {
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 12; i++) {
     const h = document.createElement('div');
     h.textContent = icon;
     h.style.position = 'fixed';
-    h.style.fontSize = Math.random() * 1.4 + 1.1 + 'rem';
-    h.style.left = (originX || window.innerWidth / 2) + (Math.random() * 50 - 25) + 'px';
+    h.style.fontSize = Math.random() * 1.3 + 1.0 + 'rem';
+    h.style.left = (originX || window.innerWidth / 2) + (Math.random() * 40 - 20) + 'px';
     h.style.top = (originY || window.innerHeight / 2) + 'px';
     h.style.zIndex = '9999';
     h.style.pointerEvents = 'none';
@@ -545,8 +541,8 @@ function launchStampEffect(icon, originX, originY) {
 
     document.body.appendChild(h);
 
-    const moveX = (Math.random() - 0.5) * 180;
-    const moveY = -(Math.random() * 200 + 80);
+    const moveX = (Math.random() - 0.5) * 160;
+    const moveY = -(Math.random() * 180 + 70);
 
     setTimeout(() => {
       h.style.opacity = '0';
