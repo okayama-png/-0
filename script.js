@@ -38,7 +38,7 @@ function animateParticles() {
 }
 animateParticles();
 
-// === 🔊 リアル手心音「どぅん」サウンド合成機能（Web Audio API） ===
+// === 🔊 リアル手心音「どぅん」サウンド ===
 function playHeartbeatSound() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -50,25 +50,25 @@ function playHeartbeatSound() {
 
     osc.type = 'sine';
     osc.frequency.setValueAtTime(55, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(22, audioCtx.currentTime + 0.35);
+    osc.frequency.exponentialRampToValueAtTime(22, audioCtx.currentTime + 0.45);
 
     gain.gain.setValueAtTime(0.95, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
 
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.35);
+    osc.stop(audioCtx.currentTime + 0.45);
 
     document.body.classList.add('heartbeat-pulse');
-    setTimeout(() => document.body.classList.remove('heartbeat-pulse'), 350);
+    setTimeout(() => document.body.classList.remove('heartbeat-pulse'), 450);
   } catch (e) {
     console.log('Audio Context error:', e);
   }
 }
 
-// === オープニング＆枠線ゼロの金色のSVG蝶々生成 ===
+// === オープニング ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -85,18 +85,17 @@ openingCover.prepend(randomContainer);
 const butterflySVG = `
   <svg class="butterfly-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g class="wing-left">
-      <path d="M50 50 C20 10, 0 30, 10 55 C20 70, 45 60, 50 50 Z" fill="url(#goldWing)"/>
-      <path d="M50 52 C25 65, 15 85, 30 90 C45 92, 48 70, 50 52 Z" fill="url(#goldWing)"/>
+      <path d="M50 50 C15 5, 0 25, 8 52 C18 68, 45 58, 50 50 Z" fill="url(#goldWing)"/>
+      <path d="M50 52 C22 62, 12 82, 28 88 C42 90, 47 68, 50 52 Z" fill="url(#goldWing)"/>
     </g>
     <g class="wing-right">
-      <path d="M50 50 C80 10, 100 30, 90 55 C80 70, 55 60, 50 50 Z" fill="url(#goldWing)"/>
-      <path d="M50 52 C75 65, 85 85, 70 90 C55 92, 52 70, 50 52 Z" fill="url(#goldWing)"/>
+      <path d="M50 50 C85 5, 100 25, 92 52 C82 68, 55 58, 50 50 Z" fill="url(#goldWing)"/>
+      <path d="M50 52 C78 62, 88 82, 72 88 C58 90, 53 68, 50 52 Z" fill="url(#goldWing)"/>
     </g>
-
     <defs>
       <linearGradient id="goldWing" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#fff5cc"/>
-        <stop offset="50%" stop-color="#ffd54f"/>
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="40%" stop-color="#f3e5ab"/>
         <stop offset="100%" stop-color="#b88e3d"/>
       </linearGradient>
     </defs>
@@ -139,7 +138,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// オープニングボタン動作＆快適な高速カウントダウン演出
+// オープニングボタン動作
 const startBtn = document.getElementById('startBtn');
 const countOverlay = document.createElement('div');
 countOverlay.id = 'countdown-overlay';
@@ -148,54 +147,85 @@ document.body.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
 
-  // 1. 暗転 ＆ 蝶が優雅に素早く中央へ引き寄せる (1.1秒)
   countOverlay.classList.add('show');
   setTimeout(() => document.body.classList.add('draw-ribbon'), 80);
 
-  // 2. 1.1秒後にカウントダウン開始 (各ステップ 0.65秒ずつテンポよく)
-  setTimeout(() => {
-    const countSequence = [3, 2, 1];
-    let step = 0;
+  const countSequence = [3, 2, 1];
+  let step = 0;
 
-    function runCountStep() {
-      if (step < countSequence.length) {
-        countOverlay.innerHTML = `<div class="count-num">${countSequence[step]}</div>`;
-        playHeartbeatSound();
-        step++;
-        setTimeout(runCountStep, 650); // サクサク快適なテンポに変更
-      } else {
-        // 3. カウント終了後、蝶が飛翔 ＆ ポラロイド爆発発散
-        document.body.classList.remove('draw-ribbon');
-        document.body.classList.add('untie-ribbon');
-        document.body.classList.add('fly-heart');
-        document.body.classList.add('burst-photos');
+  function runCountStep() {
+    if (step < countSequence.length) {
+      countOverlay.innerHTML = `
+        <div class="count-wrapper">
+          <div class="count-num">${countSequence[step]}</div>
+        </div>
+      `;
+      playHeartbeatSound();
+      step++;
+      setTimeout(runCountStep, 1200);
+    } else {
+      document.body.classList.remove('draw-ribbon');
+      document.body.classList.add('untie-ribbon');
+      document.body.classList.add('fly-heart');
+      document.body.classList.add('burst-photos');
 
-        document.querySelectorAll('.random-polaroid').forEach((p, i) => {
-          const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 350 + 450);
-          const moveY = (i < 4 ? -1 : 1) * (Math.random() * 350 + 450);
-          p.style.transform = `translate3d(${moveX}px, ${moveY}px, 800px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
-        });
+      document.querySelectorAll('.random-polaroid').forEach((p, i) => {
+        const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 380 + 480);
+        const moveY = (i < 4 ? -1 : 1) * (Math.random() * 380 + 480);
+        p.style.transform = `translate3d(${moveX}px, ${moveY}px, 900px) rotate(${Math.random() * 140 - 70}deg) scale(2)`;
+      });
 
-        // 4. スマホ・PC全画面へ「START！！！」爆発発散
-        countOverlay.innerHTML = `<div class="start-text">START！！！</div>`;
-        playHeartbeatSound();
+      countOverlay.innerHTML = `<div class="start-text">START</div>`;
+      playHeartbeatSound();
+      launchGoldenDust();
 
-        // 5. アルバム本が開く
-        setTimeout(() => {
-          countOverlay.classList.remove('show');
-          document.body.classList.remove('cover-active');
-          openingCover.classList.add('open-book');
-          launchExplosion();
-          triggerCameraFlash();
-        }, 850);
-      }
+      setTimeout(() => {
+        countOverlay.classList.remove('show');
+        document.body.classList.remove('cover-active');
+        openingCover.classList.add('open-book');
+        launchExplosion();
+        triggerCameraFlash();
+      }, 1200);
     }
+  }
 
-    runCountStep();
-  }, 1100);
+  runCountStep();
 });
 
-// リアルタイムタイマー
+function launchGoldenDust() {
+  for (let i = 0; i < 65; i++) {
+    const p = document.createElement('div');
+    p.style.position = 'fixed';
+    const size = Math.random() * 10 + 4;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.background = 'radial-gradient(circle, #fff5cc 0%, #ffd54f 60%, transparent 100%)';
+    p.style.boxShadow = '0 0 15px #f3e5ab, 0 0 25px #d4af37';
+    p.style.borderRadius = '50%';
+    p.style.left = '50vw';
+    p.style.top = '50vh';
+    p.style.zIndex = '99999';
+    p.style.pointerEvents = 'none';
+    p.style.transition = 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s ease-out, filter 1.6s ease-out';
+    p.style.filter = 'blur(1px)';
+
+    document.body.appendChild(p);
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 550 + 100;
+    const moveX = Math.cos(angle) * distance;
+    const moveY = Math.sin(angle) * distance;
+
+    setTimeout(() => {
+      p.style.opacity = '0';
+      p.style.filter = 'blur(10px)';
+      p.style.transform = `translate(${moveX}px, ${moveY}px) scale(${Math.random() * 2.5 + 1})`;
+    }, 20);
+
+    setTimeout(() => p.remove(), 1700);
+  }
+}
+
 function startAnniversaryTimer() {
   const startDate = new Date('2026-07-03T00:00:00');
   const timerEl = document.getElementById('loveTimer');
@@ -221,7 +251,6 @@ function startAnniversaryTimer() {
   update();
 }
 
-// 独立写真反転 & 拡大表示
 function initPhotoFlipAndZoom() {
   const columns = document.querySelectorAll('.photo-column');
   const lightbox = document.getElementById('lightbox');
@@ -256,7 +285,6 @@ function initPhotoFlipAndZoom() {
   }
 }
 
-// パスワード解錠
 function initPassUnlock() {
   const unlockBtn = document.getElementById('unlockBtn');
   const passInput = document.getElementById('passInput');
@@ -278,7 +306,6 @@ function initPassUnlock() {
   }
 }
 
-// タッチ演出
 function initInteractiveTouch() {
   window.addEventListener('click', (e) => {
     if (document.body.classList.contains('cover-active')) return;
@@ -310,9 +337,10 @@ function initInteractiveTouch() {
   });
 }
 
-// ページめくり制御
+// ★ 上品なパタンめくり ＆ 無駄な待ち時間ゼロの即時表示 ★
 let pages = [];
 let currentPage = 0;
+
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const pageNum = document.getElementById('pageNum');

@@ -10,9 +10,9 @@
   --text-body: #1a1a1a;
   --text-muted: #73675c;
   
-  --glass-surface: rgba(255, 253, 248, 0.88);
-  --glass-border: rgba(212, 175, 55, 0.35);
-  --glass-shadow: 0 25px 50px rgba(58, 42, 22, 0.15);
+  --glass-surface: rgba(255, 253, 248, 0.92);
+  --glass-border: rgba(212, 175, 55, 0.4);
+  --glass-shadow: 0 30px 60px rgba(35, 25, 12, 0.22);
   
   --font-en: 'Cormorant Garamond', Georgia, serif;
   --font-ja: 'Shippori Mincho', "游明朝", "Yu Mincho", serif;
@@ -46,7 +46,7 @@ body.heartbeat-pulse {
 
 @keyframes bodyPulse {
   0% { transform: scale(1); filter: brightness(1); }
-  35% { transform: scale(1.025); filter: brightness(1.25) contrast(1.15); }
+  35% { transform: scale(1.02); filter: brightness(1.2) contrast(1.1); }
   100% { transform: scale(1); filter: brightness(1); }
 }
 
@@ -144,46 +144,46 @@ h1 {
   color: #1a1510;
 }
 
-/* === オープニングカバー === */
+/* === シネマティック・オープニングカバー === */
 #opening-cover {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: radial-gradient(circle at center, #fdfbf7 0%, #d8c8b0 100%);
+  background: radial-gradient(circle at center, #1c1815 0%, #0d0b0a 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
   transform-origin: left center;
-  transition: transform 1.4s var(--ease-3d), opacity 1s ease;
+  transition: transform 1.2s ease, opacity 1s ease;
 }
 
 #opening-cover.open-book {
-  transform: rotateY(-120deg) scale(0.9);
+  transform: rotateY(-115deg) skewY(-2deg) scale(0.92);
   opacity: 0;
   pointer-events: none;
 }
 
-/* 🌙 暗転背景スクリーン */
+/* 🌙 暗転スクリーン */
 #countdown-overlay {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(8, 6, 4, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(5, 4, 3, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease;
 }
 
 #countdown-overlay.show { opacity: 1; }
 
-/* 🦋 リボン & 枠線ゼロの金色の蝶 */
+/* 🦋 リボン */
 .ribbon-container {
   position: fixed;
   top: 0; left: 0;
@@ -197,68 +197,64 @@ h1 {
 
 .ribbon-line-left, .ribbon-line-right {
   position: absolute;
-  top: 62%;
+  top: 60%;
   width: 50vw;
-  height: 3px;
-  background: #f3e5ab;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
-  transition: transform 1.1s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #f3e5ab 50%, #d4af37 100%);
+  box-shadow: 0 0 12px rgba(243, 229, 171, 0.9), 0 0 20px rgba(212, 175, 55, 0.6);
+  transition: transform 3.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;
 }
 
 .ribbon-line-left { left: 0; transform-origin: left center; transform: scaleX(0); }
-.ribbon-line-right { right: 0; transform-origin: right center; transform: scaleX(0); }
+.ribbon-line-right { right: 0; transform-origin: right center; transform: scaleX(0); background: linear-gradient(-90deg, transparent 0%, #f3e5ab 50%, #d4af37 100%); }
 
 .draw-ribbon .ribbon-line-left,
 .draw-ribbon .ribbon-line-right { transform: scaleX(1); }
 
-/* 🦋 SVG蝶々の完全ノー枠スタイル */
 .butterfly-svg {
-  width: 36px; height: 36px;
+  width: 42px; height: 42px;
   background: transparent !important;
   border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-  filter: drop-shadow(0 0 6px #f3e5ab);
+  filter: drop-shadow(0 0 12px #f3e5ab) drop-shadow(0 0 25px #d4af37);
   display: block;
 }
 
-.wing-left { transform-origin: right center; animation: flapLeft 0.15s infinite alternate ease-in-out; }
-.wing-right { transform-origin: left center; animation: flapRight 0.15s infinite alternate ease-in-out; }
+.wing-left { transform-origin: right center; animation: flapLeft 0.14s infinite alternate ease-in-out; }
+.wing-right { transform-origin: left center; animation: flapRight 0.14s infinite alternate ease-in-out; }
 
-@keyframes flapLeft { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.2); } }
-@keyframes flapRight { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.2); } }
+@keyframes flapLeft { 0% { transform: scaleX(1) rotate(0deg); } 100% { transform: scaleX(0.15) rotate(-10deg); } }
+@keyframes flapRight { 0% { transform: scaleX(1) rotate(0deg); } 100% { transform: scaleX(0.15) rotate(10deg); } }
 
 .butterfly-left, .butterfly-right {
   position: absolute;
-  top: calc(62% - 18px);
+  top: calc(60% - 21px);
   opacity: 0;
   z-index: 10004;
   background: transparent !important;
   border: 0 !important;
-  box-shadow: none !important;
   transition: opacity 0.3s ease;
 }
 
 .butterfly-left { left: 0; }
 .butterfly-right { right: 0; }
 
-.draw-ribbon .butterfly-left { opacity: 1; animation: waveFlyLeft 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-.draw-ribbon .butterfly-right { opacity: 1; animation: waveFlyRight 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+.draw-ribbon .butterfly-left { opacity: 1; animation: waveFlyLeft 3.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+.draw-ribbon .butterfly-right { opacity: 1; animation: waveFlyRight 3.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
 
 @keyframes waveFlyLeft {
   0% { transform: translate(0vw, 0) rotate(5deg); }
-  25% { transform: translate(12vw, -20px) rotate(-10deg); }
-  50% { transform: translate(25vw, 20px) rotate(12deg); }
-  75% { transform: translate(37vw, -10px) rotate(-8deg); }
-  100% { transform: translate(calc(50vw - 18px), 0) rotate(0deg); }
+  25% { transform: translate(12vw, -18px) rotate(-8deg); }
+  50% { transform: translate(25vw, 18px) rotate(10deg); }
+  75% { transform: translate(37vw, -10px) rotate(-6deg); }
+  100% { transform: translate(calc(50vw - 21px), 0) rotate(0deg); }
 }
 
 @keyframes waveFlyRight {
   0% { transform: translate(0vw, 0) rotate(-5deg); }
-  25% { transform: translate(-12vw, -20px) rotate(10deg); }
-  50% { transform: translate(-25vw, 20px) rotate(-12deg); }
-  75% { transform: translate(-37vw, -10px) rotate(8deg); }
-  100% { transform: translate(calc(-50vw + 18px), 0) rotate(0deg); }
+  25% { transform: translate(-12vw, -18px) rotate(8deg); }
+  50% { transform: translate(-25vw, 18px) rotate(-10deg); }
+  75% { transform: translate(-37vw, -10px) rotate(6deg); }
+  100% { transform: translate(calc(-50vw + 21px), 0) rotate(0deg); }
 }
 
 .untie-ribbon .ribbon-line-left,
@@ -268,50 +264,70 @@ h1 {
 .fly-heart .butterfly-right { animation: flyHeartRight 1.6s ease-in-out forwards !important; }
 
 @keyframes flyHeartLeft {
-  0% { transform: translate(calc(50vw - 18px), 0); opacity: 1; }
+  0% { transform: translate(calc(50vw - 21px), 0); opacity: 1; }
   30% { transform: translate(calc(50vw - 90px), -80px) rotate(-25deg); }
   60% { transform: translate(calc(50vw - 140px), 50px) rotate(20deg); }
   100% { transform: translate(calc(50vw - 380px), -380px) rotate(-50deg); opacity: 0; }
 }
 
 @keyframes flyHeartRight {
-  0% { transform: translate(calc(-50vw + 18px), 0); opacity: 1; }
+  0% { transform: translate(calc(-50vw + 21px), 0); opacity: 1; }
   30% { transform: translate(calc(-50vw + 90px), -80px) rotate(25deg); }
   60% { transform: translate(calc(-50vw + 140px), 50px) rotate(-20deg); }
   100% { transform: translate(calc(-50vw + 380px), -380px) rotate(50deg); opacity: 0; }
 }
 
-/* ★ 3.2.1. カウントダウン（テンポ良く高速化） */
+/* 光の環リング ＆ カウントダウン */
+.count-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 260px; height: 260px;
+}
+
+.count-wrapper::before {
+  content: '';
+  position: absolute;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 30px rgba(212, 175, 55, 0.3);
+  animation: ringPulse 0.65s infinite alternate ease-in-out;
+}
+
+@keyframes ringPulse {
+  0% { transform: scale(0.88); opacity: 0.4; }
+  100% { transform: scale(1.08); opacity: 0.95; }
+}
+
 .count-num {
   font-family: var(--font-en);
-  font-size: 11rem;
-  font-weight: 700;
+  font-size: 8.5rem;
+  font-weight: 300;
   color: #ffffff;
-  text-shadow: 0 0 30px var(--gold-glow), 0 0 60px var(--gold-primary), 0 0 100px rgba(212, 175, 55, 0.9);
-  animation: gatherInFast 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  position: fixed !important;
-  top: 50% !important; left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 25px var(--gold-glow), 0 0 50px var(--gold-primary);
+  animation: gatherInSharp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   z-index: 999999 !important;
   pointer-events: none;
   line-height: 1;
 }
 
-@keyframes gatherInFast {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(3.5) translateZ(250px); filter: blur(14px); }
-  70% { opacity: 1; transform: translate(-50%, -50%) scale(0.95); filter: blur(0px); }
-  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+@keyframes gatherInSharp {
+  0% { opacity: 0; transform: scale(2.2); filter: blur(12px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0px); }
 }
 
-/* ★ START！！！（PC＆スマホ全画面爆発発散） */
 .start-text {
   font-family: var(--font-en);
-  font-size: 8.5rem;
-  font-weight: 800;
+  font-size: 6.5rem;
+  font-weight: 600;
   color: #ffffff;
-  letter-spacing: 0.08em;
-  text-shadow: 0 0 40px #ffffff, 0 0 80px var(--gold-glow), 0 0 120px var(--gold-primary);
-  animation: burstOutFull 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px #ffffff, 0 0 60px var(--gold-glow), 0 0 100px var(--gold-primary);
+  animation: burstOutCinema 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   position: fixed !important;
   top: 50% !important; left: 50% !important;
   transform: translate(-50%, -50%) !important;
@@ -321,19 +337,19 @@ h1 {
   line-height: 1;
 }
 
-@keyframes burstOutFull {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); filter: blur(10px); }
-  35% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); filter: blur(0px); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); filter: blur(25px); }
+@keyframes burstOutCinema {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); filter: blur(8px); }
+  40% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); filter: blur(0px); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); filter: blur(20px); }
 }
 
 .cover-content {
   text-align: center;
-  padding: 45px 32px;
+  padding: 45px 36px;
   border-radius: 20px;
   background: var(--glass-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   width: 90vw;
@@ -346,7 +362,7 @@ h1 {
   font-family: var(--font-en);
   font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.35em;
+  letter-spacing: 0.4em;
   color: var(--gold-dark);
   margin-bottom: 16px;
   border-bottom: 1px solid rgba(212, 175, 55, 0.4);
@@ -356,7 +372,7 @@ h1 {
 
 .cover-title {
   font-family: var(--font-en);
-  font-size: 2.1rem;
+  font-size: 2.2rem;
   letter-spacing: 0.12em;
   color: var(--text-dark);
   font-weight: 600;
@@ -364,9 +380,9 @@ h1 {
 }
 
 .cover-sub {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.15em;
   margin-bottom: 32px;
 }
 
@@ -374,15 +390,15 @@ h1 {
   background: linear-gradient(135deg, #1f1a17, #3d332d);
   border: 1px solid var(--gold-primary);
   color: #ffffff;
-  padding: 14px 38px;
+  padding: 14px 42px;
   font-family: var(--font-en);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.3em;
   cursor: pointer;
   border-radius: 35px;
   transition: all 0.4s var(--ease-bounce);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   position: relative;
   z-index: 10000;
 }
@@ -393,7 +409,7 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* PC用 ポラロイド位置 */
+/* ポラロイド位置 */
 #random-photos-container {
   position: absolute;
   top: 0; left: 0;
@@ -407,9 +423,9 @@ h1 {
 .random-polaroid {
   position: absolute;
   background: #ffffff;
-  padding: 8px 8px 28px 8px;
-  box-shadow: 0 15px 35px rgba(45, 30, 15, 0.18);
-  border-radius: 4px;
+  padding: 8px 8px 26px 8px;
+  box-shadow: 0 20px 45px rgba(15, 10, 5, 0.28), 0 0 20px rgba(212, 175, 55, 0.12);
+  border-radius: 3px;
   opacity: 0;
   transition: opacity 1.2s ease, transform 1.2s var(--ease-3d);
   pointer-events: auto;
@@ -418,20 +434,39 @@ h1 {
 .random-polaroid img {
   width: 100%; height: 100%;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 1px;
   display: block;
 }
 
-.polaroid-1 { top: 2%; left: 2%; width: 180px; height: 180px; transform: translateZ(-150px) rotate(-6deg); z-index: 1; }
-.polaroid-2 { top: 2%; right: 2%; width: 180px; height: 180px; transform: translateZ(-50px) rotate(6deg); z-index: 3; }
-.polaroid-3 { bottom: 2%; left: 2%; width: 185px; height: 185px; transform: translateZ(-200px) rotate(5deg); z-index: 1; }
-.polaroid-4 { bottom: 2%; right: 2%; width: 185px; height: 185px; transform: translateZ(-100px) rotate(-5deg); z-index: 2; }
-.polaroid-5 { top: 38%; left: 1%; width: 170px; height: 170px; transform: translateZ(-180px) rotate(-8deg); z-index: 1; }
-.polaroid-6 { top: 38%; right: 1%; width: 170px; height: 170px; transform: translateZ(0px) rotate(8deg); z-index: 4; }
-.polaroid-7 { top: 1%; left: 34%; width: 175px; height: 175px; transform: translateZ(-120px) rotate(-3deg); z-index: 2; }
-.polaroid-8 { bottom: 1%; left: 34%; width: 175px; height: 175px; transform: translateZ(-80px) rotate(4deg); z-index: 3; }
+.polaroid-1 { top: 2%; left: 2%; width: 180px; height: 180px; transform: translateZ(-150px) rotate(-6deg); z-index: 1; animation: floatAnim1 6.5s infinite alternate ease-in-out 0.2s; }
+.polaroid-2 { top: 2%; right: 2%; width: 180px; height: 180px; transform: translateZ(-50px) rotate(6deg); z-index: 3; animation: floatAnim2 7.2s infinite alternate ease-in-out 0.8s; }
+.polaroid-3 { bottom: 2%; left: 2%; width: 185px; height: 185px; transform: translateZ(-200px) rotate(5deg); z-index: 1; animation: floatAnim3 6.8s infinite alternate ease-in-out 0.5s; }
+.polaroid-4 { bottom: 2%; right: 2%; width: 185px; height: 185px; transform: translateZ(-100px) rotate(-5deg); z-index: 2; animation: floatAnim1 7.5s infinite alternate ease-in-out 1.1s; }
+.polaroid-5 { top: 38%; left: 1%; width: 170px; height: 170px; transform: translateZ(-180px) rotate(-8deg); z-index: 1; animation: floatAnim2 6.2s infinite alternate ease-in-out 0.3s; }
+.polaroid-6 { top: 38%; right: 1%; width: 170px; height: 170px; transform: translateZ(0px) rotate(8deg); z-index: 4; animation: floatAnim3 7.0s infinite alternate ease-in-out 0.9s; }
+.polaroid-7 { top: 1%; left: 34%; width: 175px; height: 175px; transform: translateZ(-120px) rotate(-3deg); z-index: 2; animation: floatAnim1 6.6s infinite alternate ease-in-out 0.7s; }
+.polaroid-8 { bottom: 1%; left: 34%; width: 175px; height: 175px; transform: translateZ(-80px) rotate(4deg); z-index: 3; animation: floatAnim2 7.1s infinite alternate ease-in-out 0.4s; }
+
+@keyframes floatAnim1 {
+  0% { transform: translateY(0px) rotate(-5deg) scale(1); }
+  50% { transform: translateY(-14px) rotate(-2deg) scale(1.02); }
+  100% { transform: translateY(10px) rotate(-7deg) scale(0.99); }
+}
+
+@keyframes floatAnim2 {
+  0% { transform: translateY(0px) rotate(6deg) scale(1); }
+  50% { transform: translateY(12px) rotate(8deg) scale(0.98); }
+  100% { transform: translateY(-16px) rotate(3deg) scale(1.02); }
+}
+
+@keyframes floatAnim3 {
+  0% { transform: translateY(0px) rotate(-3deg) scale(1); }
+  50% { transform: translateY(-15px) rotate(1deg) scale(1.03); }
+  100% { transform: translateY(8px) rotate(-5deg) scale(0.98); }
+}
 
 .burst-photos .random-polaroid {
+  animation: none !important;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease-out !important;
   opacity: 0 !important;
 }
@@ -443,6 +478,7 @@ h1 {
   height: 560px;
   margin: 20px auto 25px auto;
   perspective: 2500px;
+  perspective-origin: 50% 50%;
   position: relative;
   z-index: 2;
   transform-style: preserve-3d;
@@ -454,11 +490,12 @@ h1 {
   top: 0; left: 50%;
   width: 36px; height: 100%;
   transform: translateX(-50%);
-  background: linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.1) 100%);
+  background: linear-gradient(to right, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.18) 100%);
   z-index: 10;
   pointer-events: none;
 }
 
+/* ★ 以前のシンプルかつ上品な回転めくりスタイルへ復元 ★ */
 .page {
   width: 100%; height: 100%;
   position: absolute;
@@ -474,7 +511,7 @@ h1 {
   -webkit-backface-visibility: hidden;
   overflow: hidden;
   gap: 30px;
-  transition: transform 1.3s var(--ease-3d), opacity 0.9s ease;
+  transition: transform 0.8s var(--ease-3d), opacity 0.6s ease;
   border: 1px solid rgba(220, 210, 195, 0.8) !important;
   transform-style: preserve-3d;
 }
@@ -547,13 +584,14 @@ h1 {
   padding: 10px;
 }
 
+/* ★ 写真の無駄な出現遅延をゼロにし、めくった瞬間すぐ滑らかに浮き出る ★ */
 .photo-front img {
   width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 4px;
   opacity: 0;
-  transform: scale(0.92) translateY(12px);
-  transition: opacity 1s ease 0.35s, transform 1.2s var(--ease-3d) 0.35s;
+  transform: scale(0.95) translateY(8px);
+  transition: opacity 0.4s ease 0.1s, transform 0.5s var(--ease-3d) 0.1s;
 }
 
 .page.active .photo-front img {
@@ -589,31 +627,14 @@ h1 {
 
 .page-tag, .date-title, .text, .author {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.8s ease, transform 0.8s var(--ease-3d);
+  transform: translateY(10px);
+  transition: opacity 0.4s ease 0.1s, transform 0.4s var(--ease-3d) 0.1s;
 }
 
-.page.active .page-tag { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
-.page.active .date-title { transition-delay: 0.45s; opacity: 1; transform: translateY(0); }
-.page.active .text { transition-delay: 0.55s; opacity: 1; transform: translateY(0); }
-.page.active .author { transition-delay: 0.65s; opacity: 1; transform: translateY(0); }
+.page.active .page-tag { opacity: 1; transform: translateY(0); }
+.page.active .date-title { opacity: 1; transform: translateY(0); }
 
-.page-tag {
-  font-family: var(--font-en);
-  font-size: 0.8rem;
-  letter-spacing: 0.25em;
-  color: var(--gold-dark) !important;
-  font-weight: 600;
-}
-
-.date-title {
-  font-size: 1.05rem;
-  color: var(--text-dark) !important;
-  border-bottom: 1px solid #efe8dc;
-  padding-bottom: 8px;
-  font-weight: 600;
-}
-
+/* ★ 文章の出現遅延もゼロにし、心地よくすっと現れる ★ */
 .text {
   font-family: var(--font-ja) !important;
   font-size: 0.92rem !important;
@@ -622,6 +643,14 @@ h1 {
   white-space: pre-wrap;
   color: var(--text-body) !important;
   letter-spacing: 0.02em;
+  filter: blur(2px);
+  transition: filter 0.5s ease 0.15s, opacity 0.5s ease 0.15s, transform 0.5s var(--ease-3d) 0.15s !important;
+}
+
+.page.active .text {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0);
 }
 
 .author { text-align: right; font-size: 0.85rem; color: var(--text-muted) !important; margin-top: 14px; font-weight: 500; }
@@ -660,7 +689,7 @@ h1 {
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 12px 32px; font-size: 0.9rem; color: #ffffff; cursor: pointer; border-radius: 30px; transition: background 0.3s ease; }
 button:hover { background: var(--gold-primary); color: #1a1510; }
 
-/* ★★★ スマホ（iPhone/Android）完璧レスポンシブ適用 ★★★ */
+/* スマホ用設定 */
 @media (max-width: 768px) {
   .album-container {
     width: 90vw;
@@ -677,49 +706,17 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
   .pass-input-group input { height: 36px; font-size: 0.88rem; }
   .pass-input-group button { height: 36px; padding: 0 12px; font-size: 0.75rem; }
   
-  .count-num { font-size: 5.8rem; }
-  
-  /* スマホでの「START！！！」超大迫力画面全域爆発 */
-  .start-text {
-    font-size: 5rem !important;
-  }
+  .count-wrapper { width: 200px; height: 200px; }
+  .count-num { font-size: 6.2rem; }
+  .start-text { font-size: 4.2rem !important; letter-spacing: 0.15em; }
 
   .cover-content {
     width: 82vw !important;
-    padding: 22px 18px !important;
+    padding: 24px 20px !important;
   }
-  .cover-title { font-size: 1.7rem !important; }
-  .cover-sub { font-size: 0.8rem !important; margin-bottom: 18px !important; }
+  .cover-title { font-size: 1.65rem !important; }
+  .cover-sub { font-size: 0.8rem !important; margin-bottom: 20px !important; }
   .open-btn { padding: 10px 28px !important; font-size: 0.88rem !important; }
-
-  #random-photos-container::before,
-  #random-photos-container::after {
-    content: '';
-    position: absolute;
-    left: -5%;
-    width: 110vw;
-    height: 2px;
-    background: linear-gradient(90deg, #8c6a2d 0%, #b88e3d 50%, #8c6a2d 100%);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  #random-photos-container::before { top: 10.2%; }
-  #random-photos-container::after { bottom: 16.2%; }
-
-  .random-polaroid::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 18px;
-    background: #d4a359;
-    border: 1px solid #8c6a2d;
-    border-radius: 2px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
-    z-index: 10;
-  }
 
   .polaroid-1, .polaroid-2, .polaroid-3, .polaroid-4,
   .polaroid-5, .polaroid-6, .polaroid-7, .polaroid-8 {
@@ -730,13 +727,13 @@ button:hover { background: var(--gold-primary); color: #1a1510; }
     padding: 4px 4px 16px 4px !important;
   }
 
-  .polaroid-1 { top: 10.5%; left: 1vw !important; transform: rotate(-5deg); z-index: 2; }
-  .polaroid-7 { top: 10.5%; left: 25.5vw !important; transform: rotate(4deg); z-index: 3; }
-  .polaroid-5 { top: 10.5%; left: 50vw !important; transform: rotate(-6deg); z-index: 2; }
-  .polaroid-2 { top: 10.5%; left: 74.5vw !important; transform: rotate(5deg); z-index: 3; }
+  .polaroid-1 { top: 2.5%; left: 1vw !important; transform: rotate(-5deg); z-index: 2; animation: floatAnim1 6.0s infinite alternate ease-in-out; }
+  .polaroid-7 { top: 2.5%; left: 25.5vw !important; transform: rotate(4deg); z-index: 3; animation: floatAnim2 6.5s infinite alternate ease-in-out 0.4s; }
+  .polaroid-5 { top: 2.5%; left: 50vw !important; transform: rotate(-6deg); z-index: 2; animation: floatAnim3 6.2s infinite alternate ease-in-out 0.8s; }
+  .polaroid-2 { top: 2.5%; left: 74.5vw !important; transform: rotate(5deg); z-index: 3; animation: floatAnim1 7.0s infinite alternate ease-in-out 0.2s; }
 
-  .polaroid-6 { bottom: 2.2%; left: 1vw !important; top: auto !important; transform: rotate(-4deg); z-index: 2; }
-  .polaroid-8 { bottom: 2.2%; left: 25.5vw !important; top: auto !important; transform: rotate(6deg); z-index: 3; }
-  .polaroid-3 { bottom: 2.2%; left: 50vw !important; top: auto !important; transform: rotate(-5deg); z-index: 2; }
-  .polaroid-4 { bottom: 2.2%; left: 74.5vw !important; top: auto !important; transform: rotate(4deg); z-index: 3; }
+  .polaroid-6 { bottom: 2.5%; left: 1vw !important; top: auto !important; transform: rotate(-4deg); z-index: 2; animation: floatAnim2 6.4s infinite alternate ease-in-out 0.6s; }
+  .polaroid-8 { bottom: 2.5%; left: 25.5vw !important; top: auto !important; transform: rotate(6deg); z-index: 3; animation: floatAnim3 6.8s infinite alternate ease-in-out 0.3s; }
+  .polaroid-3 { bottom: 2.5%; left: 50vw !important; top: auto !important; transform: rotate(-5deg); z-index: 2; animation: floatAnim1 6.3s infinite alternate ease-in-out 0.9s; }
+  .polaroid-4 { bottom: 2.5%; left: 74.5vw !important; top: auto !important; transform: rotate(4deg); z-index: 3; animation: floatAnim2 6.7s infinite alternate ease-in-out 0.5s; }
 }
