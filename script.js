@@ -50,25 +50,25 @@ function playHeartbeatSound() {
 
     osc.type = 'sine';
     osc.frequency.setValueAtTime(55, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(22, audioCtx.currentTime + 0.45);
+    osc.frequency.exponentialRampToValueAtTime(22, audioCtx.currentTime + 0.35);
 
     gain.gain.setValueAtTime(0.95, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
 
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.45);
+    osc.stop(audioCtx.currentTime + 0.35);
 
     document.body.classList.add('heartbeat-pulse');
-    setTimeout(() => document.body.classList.remove('heartbeat-pulse'), 450);
+    setTimeout(() => document.body.classList.remove('heartbeat-pulse'), 350);
   } catch (e) {
     console.log('Audio Context error:', e);
   }
 }
 
-// === オープニング＆リアル黄金蝶（SVG羽ばたき）要素生成 ===
+// === オープニング＆枠線ゼロの金色のSVG蝶々生成 ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -139,7 +139,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// オープニングボタン動作
+// オープニングボタン動作＆快適な高速カウントダウン演出
 const startBtn = document.getElementById('startBtn');
 const countOverlay = document.createElement('div');
 countOverlay.id = 'countdown-overlay';
@@ -148,9 +148,11 @@ document.body.appendChild(countOverlay);
 startBtn.addEventListener('click', () => {
   startBtn.style.display = 'none';
 
+  // 1. 暗転 ＆ 蝶が優雅に素早く中央へ引き寄せる (1.1秒)
   countOverlay.classList.add('show');
-  setTimeout(() => document.body.classList.add('draw-ribbon'), 100);
+  setTimeout(() => document.body.classList.add('draw-ribbon'), 80);
 
+  // 2. 1.1秒後にカウントダウン開始 (各ステップ 0.65秒ずつテンポよく)
   setTimeout(() => {
     const countSequence = [3, 2, 1];
     let step = 0;
@@ -160,8 +162,9 @@ startBtn.addEventListener('click', () => {
         countOverlay.innerHTML = `<div class="count-num">${countSequence[step]}</div>`;
         playHeartbeatSound();
         step++;
-        setTimeout(runCountStep, 1200);
+        setTimeout(runCountStep, 650); // サクサク快適なテンポに変更
       } else {
+        // 3. カウント終了後、蝶が飛翔 ＆ ポラロイド爆発発散
         document.body.classList.remove('draw-ribbon');
         document.body.classList.add('untie-ribbon');
         document.body.classList.add('fly-heart');
@@ -173,21 +176,23 @@ startBtn.addEventListener('click', () => {
           p.style.transform = `translate3d(${moveX}px, ${moveY}px, 800px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
         });
 
+        // 4. スマホ・PC全画面へ「START！！！」爆発発散
         countOverlay.innerHTML = `<div class="start-text">START！！！</div>`;
         playHeartbeatSound();
 
+        // 5. アルバム本が開く
         setTimeout(() => {
           countOverlay.classList.remove('show');
           document.body.classList.remove('cover-active');
           openingCover.classList.add('open-book');
           launchExplosion();
           triggerCameraFlash();
-        }, 1000);
+        }, 850);
       }
     }
 
     runCountStep();
-  }, 2200);
+  }, 1100);
 });
 
 // リアルタイムタイマー
@@ -216,7 +221,7 @@ function startAnniversaryTimer() {
   update();
 }
 
-// 独立写真反転 & 独立ボタン拡大表示
+// 独立写真反転 & 拡大表示
 function initPhotoFlipAndZoom() {
   const columns = document.querySelectorAll('.photo-column');
   const lightbox = document.getElementById('lightbox');
@@ -227,17 +232,15 @@ function initPhotoFlipAndZoom() {
     const frame = col.querySelector('.photo-frame');
     const zoomBtn = col.querySelector('.photo-zoom-btn');
 
-    // 写真フレーム（カード）を押した時だけ180度反転
     if (frame) {
       frame.addEventListener('click', (e) => {
         frame.classList.toggle('flipped-photo');
       });
     }
 
-    // 🔍 「写真を拡大する」ボタンを押した時だけライトボックス大画面拡大
     if (zoomBtn && frame) {
       zoomBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // 写真カードへのイベント伝破（反転）を完全に阻止
+        e.stopPropagation();
         const img = frame.querySelector('.photo-front img');
         if (img) {
           lightboxImg.src = img.src;
