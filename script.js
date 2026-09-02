@@ -68,7 +68,29 @@ function playHeartbeatSound() {
   }
 }
 
-// === オープニング ＆ ランダム写真選出 ===
+// === ★【演出1】スマホの傾き（ジャイロセンサー）連動 3D立体パララックス ★ ===
+function initGyroParallax() {
+  const albumContainer = document.querySelector('.album-container');
+  if (!albumContainer) return;
+
+  // スマホの傾き検知
+  window.addEventListener('deviceorientation', (e) => {
+    if (e.gamma === null || e.beta === null) return;
+    const tiltX = Math.max(-15, Math.min(15, e.gamma / 2)); // 左右傾き (-15 ~ 15度)
+    const tiltY = Math.max(-15, Math.min(15, (e.beta - 40) / 2)); // 上下傾き (-15 ~ 15度)
+
+    albumContainer.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
+  });
+
+  // PCフォールバック (マウス位置追従)
+  window.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 12;
+    const y = (e.clientY / window.innerHeight - 0.5) * 12;
+    albumContainer.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+  });
+}
+
+// === オープニング ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -114,7 +136,6 @@ document.body.prepend(ribbonContainer);
 
 document.body.classList.add('cover-active');
 
-// 🎲 最後のEPILOGUE（秘密の鍵）の写真をランダムセットする関数
 function setupRandomEpiloguePhoto() {
   const epilogueImg = document.getElementById('epilogueRandomImg');
   if (epilogueImg && masterPhotoList.length > 0) {
@@ -138,13 +159,14 @@ window.addEventListener('load', () => {
     setTimeout(() => { pDiv.style.opacity = '0.96'; }, 100 + idx * 70);
   });
 
-  setupRandomEpiloguePhoto(); // ランダム写真セット実行
+  setupRandomEpiloguePhoto();
   initPages();
   initQuiz();
   initOmikuji();
   initPhotoFlipAndZoom();
   initPassUnlock();
   initInteractiveTouch();
+  initGyroParallax(); // 3D傾き機能スタート
   startAnniversaryTimer();
 });
 
@@ -202,7 +224,6 @@ startBtn.addEventListener('click', () => {
   runCountStep();
 });
 
-// 📱 スマホ広範囲金箔全画面発散
 function launchGoldenDust() {
   const particleCount = 75;
   const screenW = window.innerWidth;
@@ -300,6 +321,39 @@ function initPhotoFlipAndZoom() {
   }
 }
 
+// === ★【演出5】秘密の鍵解錠時の大爆発コンフェティ（金＆サクラ紙吹雪）★ ===
+function launchConfettiBurst() {
+  const colors = ['#f1c40f', '#e74c3c', '#ffb7c5', '#f3e5ab', '#ffffff', '#d4af37'];
+  for (let i = 0; i < 90; i++) {
+    const conf = document.createElement('div');
+    conf.style.position = 'fixed';
+    const size = Math.random() * 9 + 6;
+    conf.style.width = size + 'px';
+    conf.style.height = (Math.random() > 0.4 ? size : size * 1.6) + 'px';
+    conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    conf.style.left = '50vw';
+    conf.style.top = '50vh';
+    conf.style.borderRadius = Math.random() > 0.6 ? '50%' : '2px';
+    conf.style.zIndex = '999999';
+    conf.style.pointerEvents = 'none';
+    conf.style.transition = 'transform 2.2s cubic-bezier(0.1, 1, 0.2, 1), opacity 2.2s ease-out';
+
+    document.body.appendChild(conf);
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 450 + 100;
+    const moveX = Math.cos(angle) * distance;
+    const moveY = Math.sin(angle) * distance;
+
+    setTimeout(() => {
+      conf.style.opacity = '0';
+      conf.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${Math.random() * 720}deg) scale(1.4)`;
+    }, 20);
+
+    setTimeout(() => conf.remove(), 2300);
+  }
+}
+
 function initPassUnlock() {
   const unlockBtn = document.getElementById('unlockBtn');
   const passInput = document.getElementById('passInput');
@@ -310,9 +364,10 @@ function initPassUnlock() {
     unlockBtn.addEventListener('click', () => {
       if (passInput.value === '0703') {
         passMessage.style.color = '#2d8a4e';
-        passMessage.textContent = '鍵が開きました';
+        passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
-        launchExplosion();
+        launchConfettiBurst(); // 豪華コンフェティ大爆発
+        playHeartbeatSound();
       } else {
         passMessage.style.color = '#c0392b';
         passMessage.textContent = 'パスワードが違います（ヒント: 0703）';
@@ -481,11 +536,11 @@ function initOmikuji() {
     '【超大吉】今日はお泊まり決定。朝までゆっくり過ごせます',
     '【大吉】みなみさんのおねだりが何でも通る特別な日',
     '【会える吉】今ゆなに「会いたい」と連絡したら、すぐ会えるよ',
-    '【電話吉】今日はふたりでゆっくり電話する日。声を見るだけで幸せです',
+    '【電話吉】今日はふたりでゆっくり電話する日。声を聞くだけで幸せです',
     '【散歩吉】一緒に手をつないでお散歩する日。風が気持ちいいです',
     '【遠出吉】遠出注意報が出ています。ふたりのワクワクが止まりません',
     '【グルメ吉】どこか美味しいものを食べに行っちゃう日',
-    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買のんびり過ごす日',
+    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買ってのんびり過ごす日',
     '【メロ大吉】結南がみなみさんにメロメロで離れてくれません',
     '【キスマ吉】キスマ攻防戦が開幕。今日勝つのはどちらでしょうか',
     '【サウナ吉】一緒にサウナや温泉旅行の計画を立てると吉です',

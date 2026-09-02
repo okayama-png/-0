@@ -37,6 +37,7 @@ body {
   overflow-x: hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
+  perspective: 2000px;
 }
 
 /* 💓 心臓音パルス */
@@ -129,7 +130,7 @@ h1 {
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
 }
 
-/* === 📱 スマホオープニングカバー（最優先） === */
+/* === 📱 スマホオープニングカバー === */
 #opening-cover {
   position: fixed;
   top: 0; left: 0;
@@ -256,7 +257,7 @@ h1 {
   100% { transform: translate(200px, -300px) rotate(40deg); opacity: 0; }
 }
 
-/* スマホ用 3.2.1 カウントダウン */
+/* カウントダウン */
 .count-wrapper {
   position: relative;
   display: flex;
@@ -296,7 +297,7 @@ h1 {
   100% { opacity: 1; transform: scale(1); filter: blur(0px); }
 }
 
-/* 📱 スマホ用 START！大爆発発散 */
+/* START！大爆発発散 */
 .start-text {
   font-family: var(--font-en);
   font-size: 3.6rem !important;
@@ -320,7 +321,7 @@ h1 {
   100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); filter: blur(25px); }
 }
 
-/* 📱 中央タイトルカード（スマホ最適サイズ） */
+/* タイトルカード */
 .cover-content {
   text-align: center;
   padding: 24px 20px;
@@ -378,7 +379,7 @@ h1 {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* 📱📱📱 スマホ専用フローティングポラロイド位置（手前に浮遊） 📱📱📱 */
+/* 📱 フローティングポラロイド位置 */
 #random-photos-container {
   position: absolute;
   top: 0; left: 0;
@@ -410,35 +411,19 @@ h1 {
   display: block;
 }
 
-/* 上側ギャラリー4枚（スマホ画面の真上スペースへ綺麗に収まる） */
 .polaroid-1 { top: 2.5%; left: 1vw; transform: rotate(-5deg); z-index: 2; animation: floatAnim1 6.0s infinite alternate ease-in-out; }
 .polaroid-7 { top: 2.5%; left: 25.5vw; transform: rotate(4deg); z-index: 3; animation: floatAnim2 6.5s infinite alternate ease-in-out 0.4s; }
 .polaroid-5 { top: 2.5%; left: 50vw; transform: rotate(-6deg); z-index: 2; animation: floatAnim3 6.2s infinite alternate ease-in-out 0.8s; }
 .polaroid-2 { top: 2.5%; left: 74.5vw; transform: rotate(5deg); z-index: 3; animation: floatAnim1 7.0s infinite alternate ease-in-out 0.2s; }
 
-/* 下側ギャラリー4枚（スマホ画面の真下スペースへ綺麗に収まる） */
 .polaroid-6 { bottom: 2.5%; left: 1vw; transform: rotate(-4deg); z-index: 2; animation: floatAnim2 6.4s infinite alternate ease-in-out 0.6s; }
 .polaroid-8 { bottom: 2.5%; left: 25.5vw; transform: rotate(6deg); z-index: 3; animation: floatAnim3 6.8s infinite alternate ease-in-out 0.3s; }
 .polaroid-3 { bottom: 2.5%; left: 50vw; transform: rotate(-5deg); z-index: 2; animation: floatAnim1 6.3s infinite alternate ease-in-out 0.9s; }
 .polaroid-4 { bottom: 2.5%; left: 74.5vw; transform: rotate(4deg); z-index: 3; animation: floatAnim2 6.7s infinite alternate ease-in-out 0.5s; }
 
-@keyframes floatAnim1 {
-  0% { transform: translateY(0px) rotate(-5deg); }
-  50% { transform: translateY(-8px) rotate(-2deg); }
-  100% { transform: translateY(6px) rotate(-7deg); }
-}
-
-@keyframes floatAnim2 {
-  0% { transform: translateY(0px) rotate(6deg); }
-  50% { transform: translateY(8px) rotate(8deg); }
-  100% { transform: translateY(-10px) rotate(3deg); }
-}
-
-@keyframes floatAnim3 {
-  0% { transform: translateY(0px) rotate(-3deg); }
-  50% { transform: translateY(-10px) rotate(1deg); }
-  100% { transform: translateY(6px) rotate(-5deg); }
-}
+@keyframes floatAnim1 { 0% { transform: translateY(0px) rotate(-5deg); } 50% { transform: translateY(-8px) rotate(-2deg); } 100% { transform: translateY(6px) rotate(-7deg); } }
+@keyframes floatAnim2 { 0% { transform: translateY(0px) rotate(6deg); } 50% { transform: translateY(8px) rotate(8deg); } 100% { transform: translateY(-10px) rotate(3deg); } }
+@keyframes floatAnim3 { 0% { transform: translateY(0px) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(1deg); } 100% { transform: translateY(6px) rotate(-5deg); } }
 
 .burst-photos .random-polaroid {
   animation: none !important;
@@ -446,7 +431,7 @@ h1 {
   opacity: 0 !important;
 }
 
-/* === 📱 アルバム本体（スマホ最優先） === */
+/* === 📱 アルバム本体（ジャイロパララックス対応） === */
 .album-container {
   width: 90vw;
   max-width: 420px;
@@ -456,6 +441,7 @@ h1 {
   perspective: 2000px;
   position: relative;
   z-index: 2;
+  transition: transform 0.15s ease-out; /* スマホ傾きに滑らかに追従 */
 }
 
 .book-spine { display: none; }
@@ -500,7 +486,7 @@ h1 {
   width: 100%;
   height: 180px;
   background: transparent;
-  perspective: 1000px;
+  perspective: 1200px;
   cursor: pointer;
 }
 
@@ -515,16 +501,20 @@ h1 {
   cursor: pointer;
 }
 
+/* ★★★ 【演出4】写真タップ時：画面手前浮き上がり ＆ 金光グラデーションフチ 3Dカードフリップ ★★★ */
 .photo-inner {
   position: relative;
   width: 100%; height: 100%;
   text-align: center;
-  transition: transform 0.8s var(--ease-3d);
+  transition: transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.85s ease;
   transform-style: preserve-3d;
+  border-radius: 8px;
 }
 
+/* タップして裏面を見る時の立体持ち上がり＆ゴールドシャドウ */
 .photo-frame.flipped-photo .photo-inner {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(25px) scale(1.02);
+  box-shadow: 0 18px 35px rgba(212, 175, 55, 0.35), 0 0 20px rgba(243, 229, 171, 0.6);
 }
 
 .photo-front, .photo-back {
@@ -532,13 +522,24 @@ h1 {
   width: 100%; height: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #efe8dc;
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
   background: #fbf9f5;
   padding: 8px;
 }
 
+/* ゴールド光フチ効果 */
+.photo-front::after, .photo-back::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* ★★★ 【演出3】シネマティック・フィルムノイズ ＆ 光漏れ（レンズフレア）効果 ★★★ */
 .photo-front img {
   width: 100%; height: 100%;
   object-fit: cover;
@@ -546,6 +547,19 @@ h1 {
   opacity: 0;
   transform: scale(0.95) translateY(6px);
   transition: opacity 0.4s ease 0.1s, transform 0.5s var(--ease-3d) 0.1s;
+  /* ほんのりレトロフィルム＆コントラスト調整 */
+  filter: contrast(1.04) saturate(1.05);
+}
+
+/* レンズフレア（暖かい光漏れ）オーバーレイ */
+.photo-front::before {
+  content: '';
+  position: absolute;
+  top: -20%; left: -20%;
+  width: 80%; height: 80%;
+  background: radial-gradient(circle, rgba(255, 225, 160, 0.28) 0%, rgba(255, 180, 120, 0.12) 50%, transparent 80%);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .page.active .photo-front img {
@@ -636,7 +650,7 @@ h1 {
 
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 10px 26px; font-size: 0.85rem; color: #ffffff; border-radius: 25px; }
 
-/* PC用調整（PCで見た時も崩れない安全フォールバック） */
+/* PC用調整 */
 @media (min-width: 769px) {
   .album-container { width: 880px; max-width: 92vw; height: 560px; }
   .book-spine { display: block; }
