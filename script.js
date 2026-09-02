@@ -68,13 +68,13 @@ function playHeartbeatSound() {
   }
 }
 
-// === オープニング ===
+// === オープニング ＆ ランダム写真選出 ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
   'images/page08.png', 'images/page09.png', 'images/page10.png', 'images/page11.png',
   'images/page12.png', 'images/page13.png', 'images/page14.png', 'images/page15.png',
-  'images/page16.png', 'images/page17.png'
+  'images/page16.png', 'images/page17.png', 'images/page18.png', 'images/extra11.png'
 ];
 
 const openingCover = document.getElementById('opening-cover');
@@ -114,6 +114,15 @@ document.body.prepend(ribbonContainer);
 
 document.body.classList.add('cover-active');
 
+// 🎲 最後のEPILOGUE（秘密の鍵）の写真をランダムセットする関数
+function setupRandomEpiloguePhoto() {
+  const epilogueImg = document.getElementById('epilogueRandomImg');
+  if (epilogueImg && masterPhotoList.length > 0) {
+    const randomSrc = masterPhotoList[Math.floor(Math.random() * masterPhotoList.length)];
+    epilogueImg.src = randomSrc;
+  }
+}
+
 window.addEventListener('load', () => {
   const shuffled = masterPhotoList.sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 8);
@@ -129,6 +138,7 @@ window.addEventListener('load', () => {
     setTimeout(() => { pDiv.style.opacity = '0.96'; }, 100 + idx * 70);
   });
 
+  setupRandomEpiloguePhoto(); // ランダム写真セット実行
   initPages();
   initQuiz();
   initOmikuji();
@@ -471,11 +481,11 @@ function initOmikuji() {
     '【超大吉】今日はお泊まり決定。朝までゆっくり過ごせます',
     '【大吉】みなみさんのおねだりが何でも通る特別な日',
     '【会える吉】今ゆなに「会いたい」と連絡したら、すぐ会えるよ',
-    '【電話吉】今日はふたりでゆっくり電話する日。声を聞くだけで幸せです',
+    '【電話吉】今日はふたりでゆっくり電話する日。声を見るだけで幸せです',
     '【散歩吉】一緒に手をつないでお散歩する日。風が気持ちいいです',
     '【遠出吉】遠出注意報が出ています。ふたりのワクワクが止まりません',
     '【グルメ吉】どこか美味しいものを食べに行っちゃう日',
-    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買ってのんびり過ごす日',
+    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買のんびり過ごす日',
     '【メロ大吉】結南がみなみさんにメロメロで離れてくれません',
     '【キスマ吉】キスマ攻防戦が開幕。今日勝つのはどちらでしょうか',
     '【サウナ吉】一緒にサウナや温泉旅行の計画を立てると吉です',
