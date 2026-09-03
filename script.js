@@ -88,7 +88,7 @@ function initGyroParallax() {
   });
 }
 
-// === オープニング写真リスト ===
+// === オープニング写真リスト（30枚対応） ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -171,46 +171,54 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 0.1秒（100ms）刻みの写真連続湧き上がり演出
+// ★★★ 【完全修正】0.1秒ごとに画面のあっちこっち（ランダム座標）に写真を生成して出現させる ★★★
 function launchPhotoFlyBurst() {
-  const shuffledPhotos = masterPhotoList.sort(() => 0.5 - Math.random());
+  const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = Math.min(12, shuffledPhotos.length);
+  const isMobile = window.innerWidth <= 768;
 
-  for (let i = 0; i < burstCount; i++) {
+  let index = 0;
+  
+  // 0.1秒（100ミリ秒）ごとに厳密に1枚ずつ生成
+  const intervalId = setInterval(() => {
+    if (index >= burstCount) {
+      clearInterval(intervalId);
+      return;
+    }
+
     const photoContainer = document.createElement('div');
     photoContainer.className = 'burst-photo-fly';
 
-    const isMobile = window.innerWidth <= 768;
-    const baseW = isMobile ? 85 : 120;
-    const cardW = Math.random() * 30 + baseW;
+    // 画面のあっちこっち（10% 〜 75% のランダム位置）に配置
+    const posX = Math.random() * 65 + 10; 
+    const posY = Math.random() * 65 + 10; 
+    photoContainer.style.left = posX + 'vw';
+    photoContainer.style.top = posY + 'vh';
+
+    // サイズ指定（スマホにちょうど良い2/3サイズ）
+    const cardW = isMobile ? (Math.random() * 25 + 75) : (Math.random() * 35 + 110);
     const cardH = cardW * 1.15;
-    
     photoContainer.style.width = cardW + 'px';
     photoContainer.style.height = cardH + 'px';
 
     const img = document.createElement('img');
-    img.src = shuffledPhotos[i];
+    img.src = shuffledPhotos[index];
     photoContainer.appendChild(img);
 
-    const angle = Math.random() * Math.PI * 2;
-    const spreadDist = Math.random() * (isMobile ? 200 : 350) + 100;
-    const targetX = Math.cos(angle) * spreadDist;
-    const targetY = Math.sin(angle) * spreadDist;
+    // 回転角設定
+    const startRot = (Math.random() - 0.5) * 25;
+    const endRot = startRot + (Math.random() - 0.5) * 40;
 
-    const startRot = (Math.random() - 0.5) * 30;
-    const endRot = startRot + (Math.random() - 0.5) * 60;
-
-    photoContainer.style.setProperty('--target-x', `${targetX}px`);
-    photoContainer.style.setProperty('--target-y', `${targetY}px`);
     photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
     photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
 
-    photoContainer.style.animationDelay = `${i * 0.10}s`;
-
     document.body.appendChild(photoContainer);
 
-    setTimeout(() => photoContainer.remove(), 2300);
-  }
+    // アニメーション終了後に消去
+    setTimeout(() => photoContainer.remove(), 1600);
+
+    index++;
+  }, 100); // ★ 0.1秒ごとのタイマー生成
 }
 
 // オープニングボタン動作
@@ -253,7 +261,7 @@ startBtn.addEventListener('click', () => {
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
       playHeartbeatSound();
       launchGoldenDust();
-      launchPhotoFlyBurst();
+      launchPhotoFlyBurst(); // あっちこっちから0.1秒ごとぽんぽん連続生成開始！
 
       setTimeout(() => {
         countOverlay.classList.remove('show');
@@ -261,7 +269,7 @@ startBtn.addEventListener('click', () => {
         openingCover.classList.add('open-book');
         launchExplosion();
         triggerCameraFlash();
-      }, 1200);
+      }, 1400);
     }
   }
 
@@ -687,7 +695,7 @@ function initOmikuji() {
     '【散歩吉】一緒に手をつないでお散歩する日。風が気持ちいいです',
     '【遠出吉】遠出注意報が出ています。ふたりのワクワクが止まりません',
     '【グルメ吉】どこか美味しいものを食べに行っちゃう日',
-    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買のんびり過ごす日',
+    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買ってのんびり過ごす日',
     '【メロ大吉】結南がみなみさんにメロメロで離れてくれません',
     '【キスマ吉】キスマ攻防戦が開幕。今日勝つのはどちらでしょうか',
     '【サウナ吉】一緒にサウナや温泉旅行の計画を立てると吉です',

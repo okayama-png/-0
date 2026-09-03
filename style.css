@@ -124,13 +124,13 @@ h1 {
   margin-top: 8px;
 }
 
-.omikuji-btn, .map-open-btn {
+.omikuji-btn {
   background: linear-gradient(135deg, #2b2520, #42372f);
   border: 1px solid var(--gold-primary);
   color: #fff8e7;
   font-weight: 500;
   font-size: 0.78rem;
-  padding: 6px 14px;
+  padding: 6px 18px;
   border-radius: 20px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
@@ -326,44 +326,43 @@ h1 {
   100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); filter: blur(25px); }
 }
 
-/* ★★★ 手前へ連続出現し拡大フェードアウトする写真（スマホサイズ2/3に調整） ★★★ */
+/* ★★★ 【完全修正】画面のあっちこっちから徐々に浮かび上がり拡大消滅するアニメーション ★★★ */
 .burst-photo-fly {
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  border-radius: 5px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.3);
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.3);
   border: 1.5px solid #ffffff;
   pointer-events: none;
   z-index: 100005 !important;
-  animation: photoFlyZoomOut 1.8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards !important;
-  background: #fff;
+  animation: photoEmergeAndFade 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  background: #ffffff;
   padding: 3px;
+  transform-origin: center center;
 }
 
 .burst-photo-fly img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 2px;
+  border-radius: 3px;
   display: block;
 }
 
-/* 最大拡大倍率を1.8倍（元の2/3スケール）に抑えてフェードアウト */
-@keyframes photoFlyZoomOut {
+/* ぽんっと浮き上がって徐々に大きくなりながら消える */
+@keyframes photoEmergeAndFade {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.15) rotate(var(--start-rot, 0deg));
-    filter: blur(3px);
+    transform: scale(0.3) rotate(var(--start-rot, 0deg));
+    filter: blur(4px);
   }
-  20% {
+  30% {
     opacity: 1;
     filter: blur(0px);
   }
   100% {
     opacity: 0;
-    transform: translate(calc(-50% + var(--target-x, 0px)), calc(-50% + var(--target-y, 0px))) scale(1.8) rotate(var(--end-rot, 20deg));
-    filter: blur(10px);
+    transform: scale(1.6) rotate(var(--end-rot, 15deg));
+    filter: blur(8px);
   }
 }
 
@@ -721,47 +720,6 @@ h1 {
 
 .modal-title { font-size: 1.1rem; color: var(--text-dark); margin-bottom: 4px; }
 .modal-sub { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px; }
-
-/* MAP ビジュアル */
-.map-visual-container {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  background: radial-gradient(circle, #fbf7f0 0%, #ede3d3 100%);
-  border-radius: 12px;
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-
-.map-spot-pin {
-  position: absolute;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: translate(-50%, -100%);
-  transition: transform 0.2s var(--ease-bounce);
-}
-
-.map-spot-pin:hover, .map-spot-pin:active {
-  transform: translate(-50%, -115%) scale(1.15);
-}
-
-.pin-icon { font-size: 1.4rem; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3)); }
-.pin-label { font-size: 0.65rem; background: rgba(26,21,16,0.85); color: #fff; padding: 2px 6px; border-radius: 10px; white-space: nowrap; margin-top: -2px; }
-
-.map-spot-detail {
-  font-size: 0.82rem;
-  color: var(--text-dark);
-  background: #f5efe6;
-  padding: 10px;
-  border-radius: 8px;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 /* お絵かきキャンバス */
 .canvas-wrapper {
