@@ -171,7 +171,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// ★★★ 【スマホ完全対応】あっちこっちから0.1秒ごとに写真生成 ➔ 最後の1枚が中央で1秒静止 ➔ アルバムへ自然接続 ★★★
+// ★★★ 【完全な連続シネマシーケンス】写真ストリーム ➔ 中央1秒静止 ➔ アルバムへ吸い込まれる着地 ★★★
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -180,7 +180,7 @@ function launchPhotoPageTransition(onComplete) {
   let count = 0;
   let lastTime = performance.now();
 
-  // スマホブラウザでも正確に100ms（0.1秒）間隔を守るフレームループ
+  // スマホでも正確に100ms（0.1秒）ごとに画面のあっちこっちから連続発生
   function spawnStep(now) {
     if (now - lastTime >= 100 && count < burstCount) {
       lastTime = now;
@@ -188,9 +188,9 @@ function launchPhotoPageTransition(onComplete) {
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // 画面のあっちこっち（12% 〜 72% のランダムエリア）
-      const posX = Math.random() * 60 + 12;
-      const posY = Math.random() * 60 + 12;
+      // 画面のあっちこっち（12% 〜 70% の位置）
+      const posX = Math.random() * 58 + 12;
+      const posY = Math.random() * 58 + 12;
       photoContainer.style.left = posX + 'vw';
       photoContainer.style.top = posY + 'vh';
 
@@ -208,7 +208,7 @@ function launchPhotoPageTransition(onComplete) {
       photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
 
       document.body.appendChild(photoContainer);
-      setTimeout(() => photoContainer.remove(), 1400);
+      setTimeout(() => photoContainer.remove(), 1500);
 
       count++;
     }
@@ -216,41 +216,42 @@ function launchPhotoPageTransition(onComplete) {
     if (count < burstCount) {
       requestAnimationFrame(spawnStep);
     } else {
-      // あっちこっちからの出現完了 ➔ 最後の1枚が中央で1秒静止演出へ
-      setTimeout(() => showFinalHeroPhoto(onComplete), 200);
+      // ストリーム完了 ➔ 最後の1枚がシームレスに中央で1秒静止
+      setTimeout(() => showFinalHeroPhoto(onComplete), 250);
     }
   }
 
   requestAnimationFrame(spawnStep);
 }
 
-// 画面中央で1秒静止し、アルバムの1ページ目へと綺麗に吸い込まれる演出
+// 運命の1枚が中央で1秒静止 ➔ アルバム内へ吸い込まれるように着地（モーフィング）
 function showFinalHeroPhoto(onComplete) {
   const heroDiv = document.createElement('div');
   heroDiv.className = 'final-hero-photo';
 
   const heroImg = document.createElement('img');
-  heroImg.src = 'images/prologue.png'; // 始まりの思い出写真
+  heroImg.src = 'images/prologue.png'; // 始まりの大切な思い出
   heroDiv.appendChild(heroImg);
 
   document.body.appendChild(heroDiv);
 
-  // 画面中央へふわっと出現
+  // 滑らかに画面中央へ登場
   requestAnimationFrame(() => {
     heroDiv.classList.add('active-show');
   });
 
   playHeartbeatSound();
 
-  // 中央で1秒間そのまま静止
+  // 中央でビシッと1秒間静止
   setTimeout(() => {
-    heroDiv.style.transition = 'all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)';
-    heroDiv.style.opacity = '0';
-    heroDiv.style.transform = 'translate(-50%, -50%) scale(0.6)';
-
+    // 1秒後、アルバムを開いて背景を表示
     if (onComplete) onComplete();
 
-    setTimeout(() => heroDiv.remove(), 800);
+    // 中央の写真をアルバムの1ページ目の位置へ吸い込まれるように着地！
+    heroDiv.classList.add('absorb-into-album');
+
+    // 重なった瞬間に消去
+    setTimeout(() => heroDiv.remove(), 850);
   }, 1100);
 }
 
@@ -295,7 +296,7 @@ startBtn.addEventListener('click', () => {
       playHeartbeatSound();
       launchGoldenDust();
 
-      // ★ 0.1秒ごとの写真浮遊 ➔ 中央1秒静止 ➔ アルバム表示の完璧な繋ぎ実行
+      // ★ 流れる一連のシネマシーケンスを実行！
       launchPhotoPageTransition(() => {
         countOverlay.classList.remove('show');
         document.body.classList.remove('cover-active');

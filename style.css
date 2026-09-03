@@ -170,7 +170,7 @@ h1 {
   z-index: 10000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease;
 }
 
 #countdown-overlay.show { opacity: 1; }
@@ -326,7 +326,7 @@ h1 {
   100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); filter: blur(25px); }
 }
 
-/* ★★★ 【スマホ最適化】あっちこっちから0.1秒ごとに連続出現する写真 ★★★ */
+/* ★★★ 【シネマストリーム】奥から滑らかに手前へ流れる思い出の写真 ★★★ */
 .burst-photo-fly {
   position: fixed !important;
   border-radius: 6px;
@@ -334,7 +334,7 @@ h1 {
   border: 1.5px solid #ffffff;
   pointer-events: none;
   z-index: 100005 !important;
-  animation: photoEmergeAndFade 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  animation: photoSeamlessStream 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
   background: #ffffff;
   padding: 3px;
   transform-origin: center center;
@@ -348,45 +348,56 @@ h1 {
   display: block;
 }
 
-@keyframes photoEmergeAndFade {
+@keyframes photoSeamlessStream {
   0% {
     opacity: 0;
-    transform: scale(0.2) rotate(var(--start-rot, 0deg));
-    filter: blur(4px);
+    transform: scale(0.15) rotate(var(--start-rot, 0deg));
+    filter: blur(5px);
   }
-  25% {
+  20% {
     opacity: 1;
     filter: blur(0px);
   }
+  80% {
+    opacity: 0.95;
+  }
   100% {
     opacity: 0;
-    transform: scale(1.5) rotate(var(--end-rot, 15deg));
+    transform: scale(1.55) rotate(var(--end-rot, 15deg));
     filter: blur(8px);
   }
 }
 
-/* ★★★ 【新演出】中央で1秒静止する運命の最後の1枚写真 ★★★ */
+/* ★★★ 【収束＆着地】中央で静止し、アルバムの1ページ目へ吸い込まれる写真 ★★★ */
 .final-hero-photo {
   position: fixed !important;
   top: 50% !important;
   left: 50% !important;
-  width: 180px !important;
-  height: 215px !important;
+  width: 175px !important;
+  height: 210px !important;
   background: #ffffff !important;
   padding: 6px 6px 20px 6px !important;
-  border-radius: 4px !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.6) !important;
+  border-radius: 5px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.7) !important;
   border: 2px solid var(--gold-glow) !important;
   z-index: 100010 !important;
   pointer-events: none;
-  transform: translate(-50%, -50%) scale(0.3);
+  transform: translate(-50%, -50%) scale(0.2) rotate(-5deg);
   opacity: 0;
-  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+  transition: transform 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
 }
 
 .final-hero-photo.active-show {
   opacity: 1 !important;
-  transform: translate(-50%, -50%) scale(1.08) rotate(-1deg) !important;
+  transform: translate(-50%, -50%) scale(1.05) rotate(-1deg) !important;
+}
+
+/* アルバム枠内へ収着（吸い込まれるモーフィング） */
+.final-hero-photo.absorb-into-album {
+  transition: all 0.85s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+  opacity: 0 !important;
+  transform: translate(-50%, -85%) scale(0.65) rotate(0deg) !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
 }
 
 .final-hero-photo img {
