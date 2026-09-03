@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Minami & Yuna — Cinema Film Flow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="cinema.css?v=1.0">
+</head>
+<body>
+
+  <!-- 背景シネマキャンバス -->
+  <div class="cinema-bg"></div>
+
+  <!-- タイトルヘッダー -->
+  <header class="cinema-header">
+    <div class="brand">CINEMATIC ARCHIVE</div>
+    <h1>Minami & Yuna</h1>
+    <p class="sub">〜 フィルムに刻まれたふたりの軌跡 〜</p>
+  </header>
+
+  <!-- 🎞️ 巨大シネマフィルムリール（ドラッグ＆タップ対応） -->
+  <main class="film-viewport">
+    <div class="film-track" id="filmTrack">
+      <!-- JavaScriptで30枚の写真フィルムカードが自動で無限ループ生成されます -->
+    </div>
+  </main>
+
+  <!-- 操作ヒントガイド -->
+  <div class="cinema-guide">
+    <p>👈 スワイプでフィルムを移動 / 写真タップで飛び出す 👉</p>
+  </div>
+
+  <!-- 3D飛び出しモーダル -->
+  <div class="photo-pop-modal" id="photoModal">
+    <div class="pop-card-inner">
+      <div class="pop-card-front">
+        <img id="modalImg" src="" alt="飛び出し写真">
+        <div class="pop-timestamp" id="modalStamp">'26.07.03</div>
+      </div>
+      <div class="pop-card-info">
+        <h3 id="modalTitle">Memory Title</h3>
+        <p id="modalDesc">ここに思い出のエピソードが入ります。</p>
+        <button class="pop-close-btn" id="modalClose">CLOSE</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="cinema.js?v=1.0"></script>
+</body>
+</html>
