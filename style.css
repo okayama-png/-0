@@ -303,7 +303,7 @@ h1 {
   100% { opacity: 1; transform: scale(1); filter: blur(0px); }
 }
 
-/* ★★★ 【修正】STARTの文字は大きさを変えず下へスライドしながらフェードアウト ★★★ */
+/* ★★★ START文字：1.0秒間かけてゆっくり下へスライドしながらフェードアウト ★★★ */
 .start-text {
   font-family: var(--font-en);
   font-size: 2.8rem !important;
@@ -318,14 +318,15 @@ h1 {
   z-index: 999999 !important;
   white-space: nowrap;
   line-height: 1;
-  animation: startSlideDownFade 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+  /* 写真の浮き上がりと綺麗に被るよう1.0秒間の時間をかけてゆっくり消える */
+  animation: startSlideDownFade 1.0s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
 }
 
 @keyframes startSlideDownFade {
   0% {
     opacity: 0;
     transform: translate(-50%, -50%);
-    filter: blur(4px);
+    filter: blur(2px);
   }
   20% {
     opacity: 1;
@@ -333,12 +334,12 @@ h1 {
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, calc(-50% + 55px)); /* 大きさは変えず下へ移動しながら消える */
-    filter: blur(6px);
+    transform: translate(-50%, calc(-50% + 70px)); /* ゆっくり下へ移動しながら1秒でフェードアウト */
+    filter: blur(8px);
   }
 }
 
-/* ★★★ あっちこっちから写真が同時に浮き上がるアニメーション ★★★ */
+/* あっちこっちから写真が浮き上がるアニメーション */
 .burst-photo-fly {
   position: fixed !important;
   border-radius: 6px;
@@ -380,7 +381,7 @@ h1 {
   }
 }
 
-/* ★★★ 中央静止・アルバム吸い込み ★★★ */
+/* 中央静止・アルバム吸い込み */
 .final-hero-photo {
   position: fixed !important;
   top: 50% !important;

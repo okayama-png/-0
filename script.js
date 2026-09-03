@@ -171,7 +171,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// ★★★ 「START」下移動フェードアウトと「同時」に写真が連続ストリーム浮上 ★★★
+// 写真ストリーム出現（STARTフェードアウトと完全同期）
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -187,7 +187,7 @@ function launchPhotoPageTransition(onComplete) {
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // 画面のあっちこっちに分散配置
+      // あっちこっちから分散配置
       const posX = Math.random() * 58 + 12;
       const posY = Math.random() * 58 + 12;
       photoContainer.style.left = posX + 'vw';
@@ -215,7 +215,6 @@ function launchPhotoPageTransition(onComplete) {
     if (count < burstCount) {
       requestAnimationFrame(spawnStep);
     } else {
-      // 写真ストリーム完了 ➔ 最後の1枚が中央で1秒静止へ
       setTimeout(() => showFinalHeroPhoto(onComplete), 250);
     }
   }
@@ -223,13 +222,13 @@ function launchPhotoPageTransition(onComplete) {
   requestAnimationFrame(spawnStep);
 }
 
-// 運命の1枚が中央で1秒静止 ➔ アルバム内へ吸い込まれるように着地（モーフィング）
+// 運命の1枚が中央で1秒静止 ➔ アルバムへ吸い込まれるように着地
 function showFinalHeroPhoto(onComplete) {
   const heroDiv = document.createElement('div');
   heroDiv.className = 'final-hero-photo';
 
   const heroImg = document.createElement('img');
-  heroImg.src = 'images/prologue.png'; // 始まりの大切な思い出
+  heroImg.src = 'images/prologue.png';
   heroDiv.appendChild(heroImg);
 
   document.body.appendChild(heroDiv);
@@ -240,11 +239,9 @@ function showFinalHeroPhoto(onComplete) {
 
   playHeartbeatSound();
 
-  // 中央でビシッと1秒間静止
   setTimeout(() => {
     if (onComplete) onComplete();
 
-    // 中央の写真をアルバムの1ページ目の位置へ吸い込まれるように着地！
     heroDiv.classList.add('absorb-into-album');
 
     setTimeout(() => heroDiv.remove(), 850);
@@ -293,7 +290,7 @@ startBtn.addEventListener('click', () => {
       playHeartbeatSound();
       launchGoldenDust();
 
-      // ★ START表示と「同時」に写真の浮上ストリームをスタート！
+      // ★ STARTの1秒間フェードアウトと「完全同時」に写真浮遊ストリームを開始！
       launchPhotoPageTransition(() => {
         countOverlay.classList.remove('show');
         document.body.classList.remove('cover-active');
