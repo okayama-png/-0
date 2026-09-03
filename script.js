@@ -274,31 +274,28 @@ function showFinalHeroPhoto(onComplete) {
   }, 1100);
 }
 
-// ★★★ 【ダイナミック新演出】最後のページで写真たちが大輪の花火となってドカンと弾ける ★★★
+// クライマックス写真花火
 function launchPhotoFireworkBurst() {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const fireworkCount = Math.min(16, shuffledPhotos.length);
   const isMobile = window.innerWidth <= 768;
 
-  // 打ち上げ位置（左右中央付近）から放射状に花火散開
   for (let i = 0; i < fireworkCount; i++) {
     const photoCard = document.createElement('div');
     photoCard.className = 'photo-firework-card';
 
-    // 画面下中央から打ち上げ
     photoCard.style.left = '50vw';
 
     const img = document.createElement('img');
     img.src = shuffledPhotos[i];
     photoCard.appendChild(img);
 
-    // 放射状の角度と飛散距離の計算
     const angle = (i / fireworkCount) * Math.PI * 2 + (Math.random() * 0.3 - 0.15);
     const distance = Math.random() * (isMobile ? 180 : 320) + 90;
     const targetX = Math.cos(angle) * distance;
     const targetY = Math.sin(angle) * distance;
 
-    const explodeY = (Math.random() - 0.5) * 20 - 15; // 画面上部寄りで花火開花
+    const explodeY = (Math.random() - 0.5) * 20 - 15;
     const rot = (Math.random() - 0.5) * 30;
     const endRot = rot + (Math.random() - 0.5) * 80;
 
@@ -308,7 +305,6 @@ function launchPhotoFireworkBurst() {
     photoCard.style.setProperty('--rot', `${rot}deg`);
     photoCard.style.setProperty('--end-rot', `${endRot}deg`);
 
-    // アニメーションを微時差で順次打ち上げ
     photoCard.style.animationDelay = `${(i % 3) * 0.08}s`;
 
     document.body.appendChild(photoCard);
@@ -513,7 +509,7 @@ function initPassUnlock() {
         passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
         launchConfettiBurst();
-        launchPhotoFireworkBurst(); // ★ 秘密の手紙開錠時に思い出写真の花火がドカンと打ち上がる！
+        launchPhotoFireworkBurst();
         playHeartbeatSound();
       } else {
         passMessage.style.color = '#c0392b';
@@ -633,6 +629,7 @@ function initQuiz() {
   });
 }
 
+// ★★★ 「会いたい吉」を削除し、新しい4つの結果（おでかけ吉、あ〜ん吉、甘やかし吉、おうちデート吉）を追加！ ★★★
 function initOmikuji() {
   const omikujiBtn = document.getElementById('omikujiBtn');
   if (!omikujiBtn) return;
@@ -640,11 +637,15 @@ function initOmikuji() {
   const fortunes = [
     '【超大吉】今日はお泊まり決定。朝までゆっくり過ごせます',
     '【大吉】みなみさんのおねだりが何でも通る特別な日',
+    '【おでかけ吉】今日はふたりで寄り道する日。見たことのない景色に会いに行こう',
+    '【あ〜ん吉】美味しいものを「あ〜ん」し合う日。甘い時間と笑顔が溢れます',
+    '【甘やかし吉】今日はみなみさんを全力で甘やかす日。おねだりもワガママも全部OK！',
+    '【おうちデート吉】どこにも出かけずお部屋でごろごろする日。手をつないで映画でも観よう',
     '【電話吉】今日はふたりでゆっくり電話する日。声を聞くだけで幸せです',
     '【散歩吉】一緒に手をつないでお散歩する日。風が気持ちいいです',
     '【遠出吉】遠出注意報が出ています。ふたりのワクワクが止まりません',
     '【グルメ吉】どこか美味しいものを食べに行っちゃう日',
-    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買のんびり過ごす日',
+    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買ってのんびり過ごす日',
     '【メロ大吉】結南がみなみさんにメロメロで離れてくれません',
     '【キスマ吉】キスマ攻防戦が開幕。今日勝つのはどちらでしょうか',
     '【サウナ吉】一緒にサウナや温泉旅行の計画を立てると吉です',
