@@ -303,7 +303,7 @@ h1 {
   100% { opacity: 1; transform: scale(1); filter: blur(0px); }
 }
 
-/* ★★★ 【改修】START文字：光とともに滑らかに手前へ拡散消失 ★★★ */
+/* START文字 */
 .start-text {
   font-family: var(--font-en);
   font-size: 3.2rem !important;
@@ -586,6 +586,7 @@ h1 {
   background: transparent;
   perspective: 1200px;
   cursor: pointer;
+  position: relative;
 }
 
 .photo-btn-group {
@@ -594,7 +595,7 @@ h1 {
   margin-top: 2px;
 }
 
-.photo-zoom-btn, .photo-draw-btn {
+.photo-zoom-btn {
   background: rgba(255, 253, 248, 0.95);
   border: 1px solid var(--gold-primary);
   color: var(--text-dark);
@@ -638,6 +639,29 @@ h1 {
   border-radius: 7px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   pointer-events: none;
+}
+
+/* ★★★ 【新機能】写真右下のアンティークゴールド・フィルムタイムスタンプ ★★★ */
+.film-timestamp {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-family: var(--font-en);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--gold-glow);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(212, 175, 55, 0.7);
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.8s ease 0.4s, transform 0.8s ease 0.4s;
+}
+
+.page.active .film-timestamp {
+  opacity: 0.9;
+  transform: translateY(0);
 }
 
 .photo-front img {
@@ -769,57 +793,6 @@ h1 {
   font-size: 2rem;
   color: var(--text-dark);
   cursor: pointer;
-}
-
-.modal-title { font-size: 1.1rem; color: var(--text-dark); margin-bottom: 4px; }
-.modal-sub { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px; }
-
-/* お絵かきキャンバス */
-.canvas-wrapper {
-  width: 100%;
-  height: 220px;
-  background: #ffffff;
-  border: 1px dashed var(--gold-primary);
-  border-radius: 8px;
-  overflow: hidden;
-  touch-action: none;
-  margin-bottom: 12px;
-}
-
-#paintCanvas { width: 100%; height: 100%; display: block; }
-
-.draw-tools {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.color-btn {
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-}
-
-.color-btn.active {
-  outline: 2px solid var(--gold-primary);
-  outline-offset: 2px;
-}
-
-.tool-action-btn {
-  font-size: 0.75rem;
-  padding: 5px 12px;
-  border-radius: 15px;
-  border: 1px solid #ccc;
-  background: #fff;
-  cursor: pointer;
-}
-
-.tool-action-btn.primary {
-  background: var(--text-dark);
-  color: #fff;
-  border: 1px solid var(--gold-primary);
 }
 
 .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; }

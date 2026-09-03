@@ -144,6 +144,33 @@ function setupRandomEpiloguePhoto() {
   }
 }
 
+// ★ 各写真へフィルム刻印（日付タイムスタンプ）を自動設定する関数
+function applyFilmTimestamps() {
+  const photoFrames = document.querySelectorAll('.photo-frame');
+  photoFrames.forEach(frame => {
+    const front = frame.querySelector('.photo-front');
+    const page = frame.closest('.page');
+    if (!front || !page) return;
+
+    const dateTitle = page.querySelector('.date-title');
+    let dateStr = "2026 MEMORIES";
+
+    if (dateTitle) {
+      const match = page.querySelector('.text')?.textContent.match(/\d{4}\.\d{2}\.\d{2}/);
+      if (match) {
+        dateStr = match[0];
+      }
+    }
+
+    if (!front.querySelector('.film-timestamp')) {
+      const stamp = document.createElement('div');
+      stamp.className = 'film-timestamp';
+      stamp.textContent = `'${dateStr.slice(2)}`;
+      front.appendChild(stamp);
+    }
+  });
+}
+
 window.addEventListener('load', () => {
   const shuffled = masterPhotoList.sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 8);
@@ -160,6 +187,7 @@ window.addEventListener('load', () => {
   });
 
   setupRandomEpiloguePhoto();
+  applyFilmTimestamps(); // フィルム刻印を適用
   initPages();
   initQuiz();
   initOmikuji();
@@ -167,11 +195,10 @@ window.addEventListener('load', () => {
   initPassUnlock();
   initInteractiveTouch();
   initGyroParallax();
-  initHandDrawModal();
   startAnniversaryTimer();
 });
 
-// ★★★ 0.2秒（200ms）ごとに写真が連続浮遊出現する処理 ★★★
+// 写真ストリーム出現（0.2秒刻み）
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -181,14 +208,12 @@ function launchPhotoPageTransition(onComplete) {
   let lastTime = performance.now();
 
   function spawnStep(now) {
-    // 200ms（0.2秒）間隔で写真を生成
     if (now - lastTime >= 200 && count < burstCount) {
       lastTime = now;
 
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // 画面のあっちこっちから分散出現
       const posX = Math.random() * 58 + 12;
       const posY = Math.random() * 58 + 12;
       photoContainer.style.left = posX + 'vw';
@@ -223,7 +248,7 @@ function launchPhotoPageTransition(onComplete) {
   requestAnimationFrame(spawnStep);
 }
 
-// 運命の1枚が中央で1秒静止 ➔ アルバムへ吸い込まれるように着地
+// 運命の1枚が中央で1秒静止 ➔ アルバムへ着地
 function showFinalHeroPhoto(onComplete) {
   const heroDiv = document.createElement('div');
   heroDiv.className = 'final-hero-photo';
@@ -286,12 +311,10 @@ startBtn.addEventListener('click', () => {
         p.style.transform = `translate3d(${moveX}px, ${moveY}px, 600px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
       });
 
-      // STARTを表示
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
       playHeartbeatSound();
       launchGoldenDust();
 
-      // START文字の消絶と同時に0.2秒刻みの写真浮遊ストリームを開始
       launchPhotoPageTransition(() => {
         countOverlay.classList.remove('show');
         document.body.classList.remove('cover-active');
@@ -485,111 +508,6 @@ function initInteractiveTouch() {
       setTimeout(() => p.remove(), 950);
     }
   });
-}
-
-function initHandDrawModal() {
-  const drawModal = document.getElementById('drawModal');
-  const drawCloseBtn = document.getElementById('drawCloseBtn');
-  const paintCanvas = document.getElementById('paintCanvas');
-  const clearBtn = document.getElementById('clearCanvasBtn');
-  const saveBtn = document.getElementById('saveCanvasBtn');
-  const colorBtns = document.querySelectorAll('.color-btn');
-
-  if (!paintCanvas) return;
-  const pCtx = paintCanvas.getContext('2d');
-  let isDrawing = false;
-  let currentColor = '#e91e63';
-  let targetImgEl = null;
-
-  function resizePaintCanvas() {
-    paintCanvas.width = paintCanvas.parentElement.clientWidth;
-    paintCanvas.height = paintCanvas.parentElement.clientHeight;
-  }
-
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('photo-draw-btn')) {
-      const page = e.target.closest('.page');
-      targetImgEl = page.querySelector('.photo-front img');
-      
-      resizePaintCanvas();
-      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
-      
-      if (targetImgEl) {
-        const tempImg = new Image();
-        tempImg.src = targetImgEl.src;
-        tempImg.onload = () => {
-          pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
-        };
-      }
-      
-      drawModal.classList.add('active');
-    }
-  });
-
-  if (drawCloseBtn) drawCloseBtn.addEventListener('click', () => drawModal.classList.remove('active'));
-
-  colorBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      colorBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentColor = btn.getAttribute('data-color');
-    });
-  });
-
-  function getPos(e) {
-    const rect = paintCanvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: clientX - rect.left, y: clientY - rect.top };
-  }
-
-  function startDraw(e) {
-    isDrawing = true;
-    const pos = getPos(e);
-    pCtx.beginPath();
-    pCtx.moveTo(pos.x, pos.y);
-    pCtx.strokeStyle = currentColor;
-    pCtx.lineWidth = 4;
-    pCtx.lineCap = 'round';
-  }
-
-  function moveDraw(e) {
-    if (!isDrawing) return;
-    const pos = getPos(e);
-    pCtx.lineTo(pos.x, pos.y);
-    pCtx.stroke();
-  }
-
-  function stopDraw() { isDrawing = false; }
-
-  paintCanvas.addEventListener('mousedown', startDraw);
-  paintCanvas.addEventListener('mousemove', moveDraw);
-  paintCanvas.addEventListener('mouseup', stopDraw);
-
-  paintCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
-  paintCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); moveDraw(e); }, { passive: false });
-  paintCanvas.addEventListener('touchend', stopDraw);
-
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
-      if (targetImgEl) {
-        const tempImg = new Image();
-        tempImg.src = targetImgEl.src;
-        tempImg.onload = () => pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
-      }
-    });
-  }
-
-  if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-      if (targetImgEl) {
-        targetImgEl.src = paintCanvas.toDataURL();
-      }
-      drawModal.classList.remove('active');
-      launchExplosion();
-    });
-  }
 }
 
 let pages = [];
