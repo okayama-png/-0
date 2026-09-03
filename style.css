@@ -303,30 +303,42 @@ h1 {
   100% { opacity: 1; transform: scale(1); filter: blur(0px); }
 }
 
+/* ★★★ 【修正】STARTの文字は大きさを変えず下へスライドしながらフェードアウト ★★★ */
 .start-text {
   font-family: var(--font-en);
-  font-size: 3.6rem !important;
+  font-size: 2.8rem !important;
   font-weight: 700;
   color: #ffffff;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  text-shadow: 0 0 25px #ffffff, 0 0 50px var(--gold-glow);
-  animation: burstOutCinemaMobile 1.0s cubic-bezier(0.12, 1, 0.2, 1) forwards;
+  text-shadow: 0 0 20px #ffffff, 0 0 40px var(--gold-glow);
   position: fixed !important;
   top: 50% !important; left: 50% !important;
   transform: translate(-50%, -50%) !important;
   z-index: 999999 !important;
   white-space: nowrap;
   line-height: 1;
+  animation: startSlideDownFade 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
 }
 
-@keyframes burstOutCinemaMobile {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); filter: blur(8px); }
-  35% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); filter: blur(0px); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); filter: blur(25px); }
+@keyframes startSlideDownFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    filter: blur(4px);
+  }
+  20% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 55px)); /* 大きさは変えず下へ移動しながら消える */
+    filter: blur(6px);
+  }
 }
 
-/* ★★★ 【シネマストリーム】奥から滑らかに手前へ流れる思い出の写真 ★★★ */
+/* ★★★ あっちこっちから写真が同時に浮き上がるアニメーション ★★★ */
 .burst-photo-fly {
   position: fixed !important;
   border-radius: 6px;
@@ -368,7 +380,7 @@ h1 {
   }
 }
 
-/* ★★★ 【収束＆着地】中央で静止し、アルバムの1ページ目へ吸い込まれる写真 ★★★ */
+/* ★★★ 中央静止・アルバム吸い込み ★★★ */
 .final-hero-photo {
   position: fixed !important;
   top: 50% !important;
@@ -392,7 +404,6 @@ h1 {
   transform: translate(-50%, -50%) scale(1.05) rotate(-1deg) !important;
 }
 
-/* アルバム枠内へ収着（吸い込まれるモーフィング） */
 .final-hero-photo.absorb-into-album {
   transition: all 0.85s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
   opacity: 0 !important;

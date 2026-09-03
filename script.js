@@ -171,7 +171,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// ★★★ 【完全な連続シネマシーケンス】写真ストリーム ➔ 中央1秒静止 ➔ アルバムへ吸い込まれる着地 ★★★
+// ★★★ 「START」下移動フェードアウトと「同時」に写真が連続ストリーム浮上 ★★★
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -180,7 +180,6 @@ function launchPhotoPageTransition(onComplete) {
   let count = 0;
   let lastTime = performance.now();
 
-  // スマホでも正確に100ms（0.1秒）ごとに画面のあっちこっちから連続発生
   function spawnStep(now) {
     if (now - lastTime >= 100 && count < burstCount) {
       lastTime = now;
@@ -188,7 +187,7 @@ function launchPhotoPageTransition(onComplete) {
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // 画面のあっちこっち（12% 〜 70% の位置）
+      // 画面のあっちこっちに分散配置
       const posX = Math.random() * 58 + 12;
       const posY = Math.random() * 58 + 12;
       photoContainer.style.left = posX + 'vw';
@@ -216,7 +215,7 @@ function launchPhotoPageTransition(onComplete) {
     if (count < burstCount) {
       requestAnimationFrame(spawnStep);
     } else {
-      // ストリーム完了 ➔ 最後の1枚がシームレスに中央で1秒静止
+      // 写真ストリーム完了 ➔ 最後の1枚が中央で1秒静止へ
       setTimeout(() => showFinalHeroPhoto(onComplete), 250);
     }
   }
@@ -235,7 +234,6 @@ function showFinalHeroPhoto(onComplete) {
 
   document.body.appendChild(heroDiv);
 
-  // 滑らかに画面中央へ登場
   requestAnimationFrame(() => {
     heroDiv.classList.add('active-show');
   });
@@ -244,13 +242,11 @@ function showFinalHeroPhoto(onComplete) {
 
   // 中央でビシッと1秒間静止
   setTimeout(() => {
-    // 1秒後、アルバムを開いて背景を表示
     if (onComplete) onComplete();
 
     // 中央の写真をアルバムの1ページ目の位置へ吸い込まれるように着地！
     heroDiv.classList.add('absorb-into-album');
 
-    // 重なった瞬間に消去
     setTimeout(() => heroDiv.remove(), 850);
   }, 1100);
 }
@@ -292,11 +288,12 @@ startBtn.addEventListener('click', () => {
         p.style.transform = `translate3d(${moveX}px, ${moveY}px, 600px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
       });
 
+      // STARTを表示
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
       playHeartbeatSound();
       launchGoldenDust();
 
-      // ★ 流れる一連のシネマシーケンスを実行！
+      // ★ START表示と「同時」に写真の浮上ストリームをスタート！
       launchPhotoPageTransition(() => {
         countOverlay.classList.remove('show');
         document.body.classList.remove('cover-active');
