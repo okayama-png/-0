@@ -381,6 +381,46 @@ h1 {
   }
 }
 
+/* ★★★ 【新演出】クライマックス写真花火（シュルシュル上昇 ➔ ドカンと弾ける） ★★★ */
+.photo-firework-card {
+  position: fixed !important;
+  width: 85px !important;
+  height: 100px !important;
+  background: #ffffff !important;
+  padding: 3px 3px 12px 3px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 20px rgba(243, 229, 171, 0.8) !important;
+  border: 1.5px solid #ffffff !important;
+  z-index: 100015 !important;
+  pointer-events: none;
+  animation: fireworkBurst 2.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards !important;
+}
+
+.photo-firework-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+@keyframes fireworkBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 80vh) scale(0.15) rotate(0deg);
+    filter: blur(4px);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, var(--explode-y, -20vh)) scale(0.4) rotate(var(--rot, 0deg));
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--target-x, 0px)), calc(var(--explode-y, -20vh) + var(--target-y, 0px))) scale(1.3) rotate(var(--end-rot, 40deg));
+    filter: blur(10px);
+  }
+}
+
 /* 中央静止・アルバム吸い込み */
 .final-hero-photo {
   position: fixed !important;

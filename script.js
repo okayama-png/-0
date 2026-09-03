@@ -198,7 +198,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// ★ 0.3秒（300ms）ごとに写真が連続浮遊出現する処理
+// 0.3秒（300ms）ごとに写真が連続浮遊出現する処理
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -208,7 +208,6 @@ function launchPhotoPageTransition(onComplete) {
   let lastTime = performance.now();
 
   function spawnStep(now) {
-    // 300ms（0.3秒）間隔で写真を生成
     if (now - lastTime >= 300 && count < burstCount) {
       lastTime = now;
 
@@ -273,6 +272,49 @@ function showFinalHeroPhoto(onComplete) {
 
     setTimeout(() => heroDiv.remove(), 850);
   }, 1100);
+}
+
+// ★★★ 【ダイナミック新演出】最後のページで写真たちが大輪の花火となってドカンと弾ける ★★★
+function launchPhotoFireworkBurst() {
+  const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
+  const fireworkCount = Math.min(16, shuffledPhotos.length);
+  const isMobile = window.innerWidth <= 768;
+
+  // 打ち上げ位置（左右中央付近）から放射状に花火散開
+  for (let i = 0; i < fireworkCount; i++) {
+    const photoCard = document.createElement('div');
+    photoCard.className = 'photo-firework-card';
+
+    // 画面下中央から打ち上げ
+    photoCard.style.left = '50vw';
+
+    const img = document.createElement('img');
+    img.src = shuffledPhotos[i];
+    photoCard.appendChild(img);
+
+    // 放射状の角度と飛散距離の計算
+    const angle = (i / fireworkCount) * Math.PI * 2 + (Math.random() * 0.3 - 0.15);
+    const distance = Math.random() * (isMobile ? 180 : 320) + 90;
+    const targetX = Math.cos(angle) * distance;
+    const targetY = Math.sin(angle) * distance;
+
+    const explodeY = (Math.random() - 0.5) * 20 - 15; // 画面上部寄りで花火開花
+    const rot = (Math.random() - 0.5) * 30;
+    const endRot = rot + (Math.random() - 0.5) * 80;
+
+    photoCard.style.setProperty('--explode-y', `${explodeY}vh`);
+    photoCard.style.setProperty('--target-x', `${targetX}px`);
+    photoCard.style.setProperty('--target-y', `${targetY}px`);
+    photoCard.style.setProperty('--rot', `${rot}deg`);
+    photoCard.style.setProperty('--end-rot', `${endRot}deg`);
+
+    // アニメーションを微時差で順次打ち上げ
+    photoCard.style.animationDelay = `${(i % 3) * 0.08}s`;
+
+    document.body.appendChild(photoCard);
+
+    setTimeout(() => photoCard.remove(), 2300);
+  }
 }
 
 // オープニングボタン動作
@@ -471,6 +513,7 @@ function initPassUnlock() {
         passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
         launchConfettiBurst();
+        launchPhotoFireworkBurst(); // ★ 秘密の手紙開錠時に思い出写真の花火がドカンと打ち上がる！
         playHeartbeatSound();
       } else {
         passMessage.style.color = '#c0392b';
