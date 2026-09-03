@@ -88,13 +88,15 @@ function initGyroParallax() {
   });
 }
 
-// === オープニング ===
+// ★ extra12～16 を masterPhotoList に追加登録！
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
   'images/page08.png', 'images/page09.png', 'images/page10.png', 'images/page11.png',
   'images/page12.png', 'images/page13.png', 'images/page14.png', 'images/page15.png',
-  'images/page16.png', 'images/page17.png', 'images/page18.png', 'images/extra11.png'
+  'images/page16.png', 'images/page17.png', 'images/page18.png', 'images/extra11.png',
+  'images/extra12.png', 'images/extra13.png', 'images/extra14.png', 'images/extra15.png',
+  'images/extra16.png'
 ];
 
 const openingCover = document.getElementById('opening-cover');
@@ -170,137 +172,42 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 🗺️ 1. ふたりの思い出MAP モーダル制御
-function initMemoryMapModal() {
-  const mapOpenBtn = document.getElementById('mapOpenBtn');
-  const mapModal = document.getElementById('mapModal');
-  const mapCloseBtn = document.getElementById('mapCloseBtn');
-  const detailEl = document.getElementById('mapSpotDetail');
+// START時の写真湧き上がり＆手前ズームフェードアウト処理
+function launchPhotoFlyBurst() {
+  const shuffledPhotos = masterPhotoList.sort(() => 0.5 - Math.random());
+  const burstCount = Math.min(14, shuffledPhotos.length);
 
-  if (mapOpenBtn && mapModal) {
-    mapOpenBtn.addEventListener('click', () => mapModal.classList.add('active'));
-    mapCloseBtn.addEventListener('click', () => mapModal.classList.remove('active'));
-    mapModal.addEventListener('click', (e) => { if (e.target === mapModal) mapModal.classList.remove('active'); });
+  for (let i = 0; i < burstCount; i++) {
+    const photoContainer = document.createElement('div');
+    photoContainer.className = 'burst-photo-fly';
 
-    const pins = mapModal.querySelectorAll('.map-spot-pin');
-    pins.forEach(pin => {
-      pin.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const spotName = pin.getAttribute('data-spot');
-        detailEl.innerHTML = `<strong>📍 ${spotName}</strong><br>ふたりの大切な笑顔が詰まった思い出の場所です✨`;
-        launchExplosion();
-      });
-    });
-  }
-}
+    const cardW = Math.random() * 50 + 110;
+    const cardH = cardW * 1.15;
+    photoContainer.style.width = cardW + 'px';
+    photoContainer.style.height = cardH + 'px';
 
-// 🎨 2. 写真への指でお絵かき（手書きペイント）機能
-function initHandDrawModal() {
-  const drawModal = document.getElementById('drawModal');
-  const drawCloseBtn = document.getElementById('drawCloseBtn');
-  const paintCanvas = document.getElementById('paintCanvas');
-  const clearBtn = document.getElementById('clearCanvasBtn');
-  const saveBtn = document.getElementById('saveCanvasBtn');
-  const colorBtns = document.querySelectorAll('.color-btn');
+    const img = document.createElement('img');
+    img.src = shuffledPhotos[i];
+    photoContainer.appendChild(img);
 
-  if (!paintCanvas) return;
-  const pCtx = paintCanvas.getContext('2d');
-  let isDrawing = false;
-  let currentColor = '#e91e63';
-  let targetImgEl = null;
+    const angle = Math.random() * Math.PI * 2;
+    const spreadDist = Math.random() * 320 + 150;
+    const targetX = Math.cos(angle) * spreadDist;
+    const targetY = Math.sin(angle) * spreadDist;
 
-  function resizePaintCanvas() {
-    paintCanvas.width = paintCanvas.parentElement.clientWidth;
-    paintCanvas.height = paintCanvas.parentElement.clientHeight;
-  }
+    const startRot = (Math.random() - 0.5) * 40;
+    const endRot = startRot + (Math.random() - 0.5) * 80;
 
-  // 「🎨 手書きデコ」ボタンイベント
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('photo-draw-btn')) {
-      const page = e.target.closest('.page');
-      targetImgEl = page.querySelector('.photo-front img');
-      
-      resizePaintCanvas();
-      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
-      
-      // 背景に写真を一旦描画
-      if (targetImgEl) {
-        const tempImg = new Image();
-        tempImg.src = targetImgEl.src;
-        tempImg.onload = () => {
-          pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
-        };
-      }
-      
-      drawModal.classList.add('active');
-    }
-  });
+    photoContainer.style.setProperty('--target-x', `${targetX}px`);
+    photoContainer.style.setProperty('--target-y', `${targetY}px`);
+    photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
+    photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
 
-  if (drawCloseBtn) drawCloseBtn.addEventListener('click', () => drawModal.classList.remove('active'));
+    photoContainer.style.animationDelay = `${i * 0.06}s`;
 
-  // 色切り替え
-  colorBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      colorBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentColor = btn.getAttribute('data-color');
-    });
-  });
+    document.body.appendChild(photoContainer);
 
-  // タッチ＆マウス描き込みイベント
-  function getPos(e) {
-    const rect = paintCanvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return { x: clientX - rect.left, y: clientY - rect.top };
-  }
-
-  function startDraw(e) {
-    isDrawing = true;
-    const pos = getPos(e);
-    pCtx.beginPath();
-    pCtx.moveTo(pos.x, pos.y);
-    pCtx.strokeStyle = currentColor;
-    pCtx.lineWidth = 4;
-    pCtx.lineCap = 'round';
-  }
-
-  function moveDraw(e) {
-    if (!isDrawing) return;
-    const pos = getPos(e);
-    pCtx.lineTo(pos.x, pos.y);
-    pCtx.stroke();
-  }
-
-  function stopDraw() { isDrawing = false; }
-
-  paintCanvas.addEventListener('mousedown', startDraw);
-  paintCanvas.addEventListener('mousemove', moveDraw);
-  paintCanvas.addEventListener('mouseup', stopDraw);
-
-  paintCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
-  paintCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); moveDraw(e); }, { passive: false });
-  paintCanvas.addEventListener('touchend', stopDraw);
-
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
-      if (targetImgEl) {
-        const tempImg = new Image();
-        tempImg.src = targetImgEl.src;
-        tempImg.onload = () => pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
-      }
-    });
-  }
-
-  if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-      if (targetImgEl) {
-        targetImgEl.src = paintCanvas.toDataURL(); // 手書きイラストを写真に保存反映！
-      }
-      drawModal.classList.remove('active');
-      launchExplosion();
-    });
+    setTimeout(() => photoContainer.remove(), 2100);
   }
 }
 
@@ -344,6 +251,7 @@ startBtn.addEventListener('click', () => {
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
       playHeartbeatSound();
       launchGoldenDust();
+      launchPhotoFlyBurst();
 
       setTimeout(() => {
         countOverlay.classList.remove('show');
@@ -540,7 +448,134 @@ function initInteractiveTouch() {
   });
 }
 
-// ページめくり制御
+function initMemoryMapModal() {
+  const mapOpenBtn = document.getElementById('mapOpenBtn');
+  const mapModal = document.getElementById('mapModal');
+  const mapCloseBtn = document.getElementById('mapCloseBtn');
+  const detailEl = document.getElementById('mapSpotDetail');
+
+  if (mapOpenBtn && mapModal) {
+    mapOpenBtn.addEventListener('click', () => mapModal.classList.add('active'));
+    mapCloseBtn.addEventListener('click', () => mapModal.classList.remove('active'));
+    mapModal.addEventListener('click', (e) => { if (e.target === mapModal) mapModal.classList.remove('active'); });
+
+    const pins = mapModal.querySelectorAll('.map-spot-pin');
+    pins.forEach(pin => {
+      pin.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const spotName = pin.getAttribute('data-spot');
+        detailEl.innerHTML = `<strong>📍 ${spotName}</strong><br>ふたりの大切な笑顔が詰まった思い出の場所です✨`;
+        launchExplosion();
+      });
+    });
+  }
+}
+
+function initHandDrawModal() {
+  const drawModal = document.getElementById('drawModal');
+  const drawCloseBtn = document.getElementById('drawCloseBtn');
+  const paintCanvas = document.getElementById('paintCanvas');
+  const clearBtn = document.getElementById('clearCanvasBtn');
+  const saveBtn = document.getElementById('saveCanvasBtn');
+  const colorBtns = document.querySelectorAll('.color-btn');
+
+  if (!paintCanvas) return;
+  const pCtx = paintCanvas.getContext('2d');
+  let isDrawing = false;
+  let currentColor = '#e91e63';
+  let targetImgEl = null;
+
+  function resizePaintCanvas() {
+    paintCanvas.width = paintCanvas.parentElement.clientWidth;
+    paintCanvas.height = paintCanvas.parentElement.clientHeight;
+  }
+
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('photo-draw-btn')) {
+      const page = e.target.closest('.page');
+      targetImgEl = page.querySelector('.photo-front img');
+      
+      resizePaintCanvas();
+      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+      
+      if (targetImgEl) {
+        const tempImg = new Image();
+        tempImg.src = targetImgEl.src;
+        tempImg.onload = () => {
+          pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
+        };
+      }
+      
+      drawModal.classList.add('active');
+    }
+  });
+
+  if (drawCloseBtn) drawCloseBtn.addEventListener('click', () => drawModal.classList.remove('active'));
+
+  colorBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      colorBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentColor = btn.getAttribute('data-color');
+    });
+  });
+
+  function getPos(e) {
+    const rect = paintCanvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function startDraw(e) {
+    isDrawing = true;
+    const pos = getPos(e);
+    pCtx.beginPath();
+    pCtx.moveTo(pos.x, pos.y);
+    pCtx.strokeStyle = currentColor;
+    pCtx.lineWidth = 4;
+    pCtx.lineCap = 'round';
+  }
+
+  function moveDraw(e) {
+    if (!isDrawing) return;
+    const pos = getPos(e);
+    pCtx.lineTo(pos.x, pos.y);
+    pCtx.stroke();
+  }
+
+  function stopDraw() { isDrawing = false; }
+
+  paintCanvas.addEventListener('mousedown', startDraw);
+  paintCanvas.addEventListener('mousemove', moveDraw);
+  paintCanvas.addEventListener('mouseup', stopDraw);
+
+  paintCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
+  paintCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); moveDraw(e); }, { passive: false });
+  paintCanvas.addEventListener('touchend', stopDraw);
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+      if (targetImgEl) {
+        const tempImg = new Image();
+        tempImg.src = targetImgEl.src;
+        tempImg.onload = () => pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
+      }
+    });
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      if (targetImgEl) {
+        targetImgEl.src = paintCanvas.toDataURL();
+      }
+      drawModal.classList.remove('active');
+      launchExplosion();
+    });
+  }
+}
+
 let pages = [];
 let currentPage = 0;
 
