@@ -18,88 +18,95 @@ body {
   color: #ffffff;
   font-family: var(--font-ja);
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   overflow: hidden;
   position: relative;
-  touch-action: pan-x;
+  touch-action: none;
 }
 
 .cinema-bg {
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: radial-gradient(circle at center, #1f1a15 0%, #080605 100%);
+  background: radial-gradient(circle at center, #231c15 0%, #080605 100%);
   z-index: 0;
 }
 
-/* ヘッダー */
+/* === ヘッダー（画面上部に固定） === */
 .cinema-header {
   position: fixed;
-  top: 20px; left: 0; width: 100%;
+  top: 25px; left: 0; width: 100%;
   text-align: center;
   z-index: 10;
   pointer-events: none;
+  padding: 0 15px;
 }
 
 .cinema-header .brand {
   font-family: var(--font-en);
   font-size: 0.7rem;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.35em;
   color: var(--gold-primary);
+  text-transform: uppercase;
 }
 
 .cinema-header h1 {
   font-family: var(--font-en);
-  font-size: 1.8rem;
-  letter-spacing: 0.15em;
+  font-size: 1.7rem;
+  letter-spacing: 0.12em;
   font-weight: 600;
   margin-top: 2px;
+  color: #ffffff;
 }
 
 .cinema-header .sub {
   font-size: 0.75rem;
   color: #a89f91;
   letter-spacing: 0.1em;
+  margin-top: 2px;
 }
 
-/* 🎞️ フィルムトラック（斜めに一直線に配置） */
+/* === 🎞️ スマホ画面中央に確実に表示されるフィルムトラック === */
 .film-viewport {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 50%; left: 0;
+  width: 100vw;
+  transform: translateY(-50%); /* 画面の上下ぴったり中央に配置 */
+  z-index: 5;
   display: flex;
   align-items: center;
-  z-index: 2;
-  perspective: 1200px;
+  overflow: visible;
 }
 
 .film-track {
   display: flex;
-  gap: 18px;
-  padding: 30px 0;
-  background: #111111;
-  border-top: 8px repeating-linear-gradient(90deg, #000 0px, #000 12px, #fff 12px, #fff 20px);
-  border-bottom: 8px repeating-linear-gradient(90deg, #000 0px, #000 12px, #fff 12px, #fff 20px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.2);
-  transform: rotate(-8deg) scale(1.05);
-  cursor: grab;
+  gap: 15px;
+  padding: 22px 0;
+  background: #12100e;
+  /* 上下にフィルムの送り穴風デザイン */
+  border-top: 10px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
+  border-bottom: 10px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 55, 0.25);
+  width: max-content;
   will-change: transform;
+  cursor: grab;
 }
 
-/* フィルム上の個別写真カード */
+/* フィルム上の1枚1枚の写真コマ */
 .film-frame {
   flex: none;
-  width: 130px;
-  height: 165px;
+  width: 125px;
+  height: 155px;
   background: #ffffff;
-  padding: 6px 6px 20px 6px;
+  padding: 5px 5px 18px 5px;
   border-radius: 3px;
   position: relative;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  transition: transform 0.2s ease;
 }
 
 .film-frame:active {
-  transform: scale(0.95);
+  transform: scale(0.94);
 }
 
 .film-frame img {
@@ -112,17 +119,17 @@ body {
 
 .film-frame .frame-stamp {
   position: absolute;
-  bottom: 4px; right: 6px;
+  bottom: 3px; right: 5px;
   font-family: var(--font-en);
-  font-size: 0.6rem;
+  font-size: 0.62rem;
   color: #8c6a2d;
   font-weight: 600;
 }
 
-/* ガイド表示 */
+/* === ガイド表示（画面下部に固定） === */
 .cinema-guide {
   position: fixed;
-  bottom: 25px; left: 0; width: 100%;
+  bottom: 35px; left: 0; width: 100%;
   text-align: center;
   z-index: 10;
   pointer-events: none;
@@ -131,24 +138,27 @@ body {
 .cinema-guide p {
   font-size: 0.75rem;
   color: var(--gold-glow);
-  background: rgba(20, 16, 12, 0.8);
+  background: rgba(20, 16, 12, 0.85);
   display: inline-block;
-  padding: 6px 16px;
-  border-radius: 20px;
+  padding: 8px 18px;
+  border-radius: 25px;
   border: 1px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-/* 💥 3D飛び出しモーダル */
+/* === 💥 タップで飛び出す3Dポップアップモーダル === */
 .photo-pop-modal {
   display: none;
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(5, 4, 3, 0.9);
+  background: rgba(5, 4, 3, 0.92);
   backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
   z-index: 100;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 
 .photo-pop-modal.show {
@@ -156,29 +166,30 @@ body {
 }
 
 .pop-card-inner {
-  width: 85vw;
+  width: 88vw;
   max-width: 340px;
   background: #fdfbf7;
   color: var(--cinema-bg);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.5);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.5);
   border: 1.5px solid var(--gold-primary);
-  animation: popUp3D 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: popUp3D 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 @keyframes popUp3D {
-  0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  0% { transform: scale(0.3) translateY(40px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
 }
 
 .pop-card-front {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 210px;
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
 .pop-card-front img {
@@ -199,23 +210,27 @@ body {
   font-size: 1.1rem;
   color: #1a1a1a;
   margin-bottom: 6px;
+  font-weight: 600;
 }
 
 .pop-card-info p {
   font-size: 0.82rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: #4a423a;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
+  max-height: 120px;
+  overflow-y: auto;
 }
 
 .pop-close-btn {
   background: #1a1a1a;
   color: #ffffff;
   border: 1px solid var(--gold-primary);
-  padding: 8px 24px;
+  padding: 9px 24px;
   border-radius: 20px;
   font-family: var(--font-en);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   cursor: pointer;
   width: 100%;
+  letter-spacing: 0.1em;
 }
