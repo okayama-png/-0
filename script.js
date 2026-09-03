@@ -144,7 +144,7 @@ function setupRandomEpiloguePhoto() {
   }
 }
 
-// ★ 各写真へフィルム刻印（日付タイムスタンプ）を自動設定する関数
+// 各写真へフィルム刻印（日付タイムスタンプ）を自動設定する関数
 function applyFilmTimestamps() {
   const photoFrames = document.querySelectorAll('.photo-frame');
   photoFrames.forEach(frame => {
@@ -187,7 +187,7 @@ window.addEventListener('load', () => {
   });
 
   setupRandomEpiloguePhoto();
-  applyFilmTimestamps(); // フィルム刻印を適用
+  applyFilmTimestamps();
   initPages();
   initQuiz();
   initOmikuji();
@@ -198,7 +198,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 写真ストリーム出現（0.2秒刻み）
+// ★ 0.3秒（300ms）ごとに写真が連続浮遊出現する処理
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -208,7 +208,8 @@ function launchPhotoPageTransition(onComplete) {
   let lastTime = performance.now();
 
   function spawnStep(now) {
-    if (now - lastTime >= 200 && count < burstCount) {
+    // 300ms（0.3秒）間隔で写真を生成
+    if (now - lastTime >= 300 && count < burstCount) {
       lastTime = now;
 
       const photoContainer = document.createElement('div');
@@ -525,9 +526,6 @@ function initPages() {
   pages.forEach((page, index) => {
     page.style.zIndex = pages.length - index;
     page.classList.remove('flipped', 'active');
-    if (!page.querySelector('.page-reaction-wrapper')) {
-      setupPageReaction(page, index);
-    }
   });
 
   currentPage = 0;
@@ -540,44 +538,6 @@ function updateActivePage() {
     if (index === currentPage) page.classList.add('active');
     else page.classList.remove('active');
   });
-}
-
-function setupPageReaction(pageEl, pageIdx) {
-  const diaryEntry = pageEl.querySelector('.diary-entry');
-  if (!diaryEntry) return;
-
-  const reactionWrapper = document.createElement('div');
-  reactionWrapper.className = 'page-reaction-wrapper';
-
-  const reactions = [
-    { id: 'like', icon: '💖', label: 'すき' },
-    { id: 'emo',  icon: '✨', label: 'エモい' },
-    { id: 'cry',  icon: '😭', label: '泣ける' },
-    { id: 'laugh',icon: '🤣', label: 'ウケる' },
-    { id: 'go',   icon: '🎆', label: '行こう' }
-  ];
-
-  reactions.forEach(item => {
-    const storageKey = `minami_p${pageIdx + 1}_${item.id}`;
-    let countVal = parseInt(localStorage.getItem(storageKey) || '0', 10);
-
-    const btn = document.createElement('button');
-    btn.className = 'stamp-btn';
-    btn.innerHTML = `${item.icon} <span class="stamp-count">${countVal}</span>`;
-
-    btn.addEventListener('click', (e) => {
-      countVal++;
-      localStorage.setItem(storageKey, countVal);
-      btn.querySelector('.stamp-count').textContent = countVal;
-      btn.classList.add('pop-anim');
-      setTimeout(() => btn.classList.remove('pop-anim'), 300);
-      launchStampEffect(item.icon, e.clientX, e.clientY);
-    });
-
-    reactionWrapper.appendChild(btn);
-  });
-
-  diaryEntry.appendChild(reactionWrapper);
 }
 
 nextBtn.addEventListener('click', () => {
