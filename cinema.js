@@ -28,73 +28,86 @@ const cinemaMemories = [
 ];
 
 const filmTrack = document.getElementById('filmTrack');
+let rotationY = 0;
+let isDragging = false;
+let startX = 0;
+let autoSpeed = 0.25; // 自動回転の速度
 
-// 無限ループ用にデータを3セット複製（切れ目を防止）
-function buildFilmTrack() {
+// 🎡 写真カードを真ん丸（立体輪っか状）に360度配置
+function build3DWheel() {
   filmTrack.innerHTML = '';
-  const fullList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
-  
-  fullList.forEach((item) => {
+  const count = cinemaMemories.length;
+  const radius = Math.min(window.innerWidth * 0.95, 480); // 輪っかの半径（奥行き）
+  const angleStep = 360 / count;
+
+  cinemaMemories.forEach((item, index) => {
     const frame = document.createElement('div');
     frame.className = 'film-frame';
-    
+
+    const angle = angleStep * index;
+    // 3D空間上で円環状に配置する計算
+    frame.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+
     const img = document.createElement('img');
     img.src = item.src;
     img.alt = item.title;
-    
+
     const stamp = document.createElement('div');
     stamp.className = 'frame-stamp';
     stamp.textContent = item.date;
-    
+
     frame.appendChild(img);
     frame.appendChild(stamp);
-    
-    // タップでモーダル表示
+
+    // タップで拡大表示
     frame.addEventListener('click', (e) => {
       e.stopPropagation();
       openModal(item);
     });
-    
+
     filmTrack.appendChild(frame);
   });
 }
 
-// 🎞️ スマホ完全対応の移動ループ
-let currentX = 0;
-let isDragging = false;
-let startX = 0;
-let speed = -0.8;
-
-function animateFilm() {
+// 🎡 3Dホイールの自動回転ループ
+function animateWheel() {
   if (!isDragging) {
-    currentX += speed;
-    // 画面外まで行ったら位置を自然に戻す
-    if (currentX < -2500) {
-      currentX = 0;
-    } else if (currentX > 0) {
-      currentX = -2500;
-    }
+    rotationY += autoSpeed;
   }
-  filmTrack.style.transform = `translateX(${currentX}px)`;
-  requestAnimationFrame(animateFilm);
+  // 少しだけ傾けて立体感を際立たせる（rotateX(-6deg)）
+  filmTrack.style.transform = `rotateX(-6deg) rotateY(${rotationY}deg)`;
+  requestAnimationFrame(animateWheel);
 }
 
-// スマホタッチ＆マウス操作
+// スマホタッチ＆マウスでクルクル回す処理
 const viewport = document.querySelector('.film-viewport');
 
 if (viewport) {
-  viewport.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX - currentX; });
-  window.addEventListener('mousemove', (e) => { if (isDragging) currentX = e.clientX - startX; });
+  viewport.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      const deltaX = e.clientX - startX;
+      rotationY += deltaX * 0.4;
+      startX = e.clientX;
+    }
+  });
+
   window.addEventListener('mouseup', () => { isDragging = false; });
 
-  viewport.addEventListener('touchstart', (e) => { 
-    isDragging = true; 
-    startX = e.touches[0].clientX - currentX; 
+  viewport.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX;
   }, { passive: true });
 
-  window.addEventListener('touchmove', (e) => { 
+  window.addEventListener('touchmove', (e) => {
     if (isDragging) {
-      currentX = e.touches[0].clientX - startX; 
+      const deltaX = e.touches[0].clientX - startX;
+      rotationY += deltaX * 0.5;
+      startX = e.touches[0].clientX;
     }
   }, { passive: true });
 
@@ -127,8 +140,10 @@ if (modal) {
   });
 }
 
-// 画面読み込み完了時に実行
+// 初期化
 document.addEventListener('DOMContentLoaded', () => {
-  buildFilmTrack();
-  animateFilm();
+  build3DWheel();
+  animateWheel();
 });
+
+window.addEventListener('resize', build3DWheel);
