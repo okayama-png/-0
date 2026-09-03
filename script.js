@@ -171,7 +171,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// ★★★ START文字の1秒間フェードアウトと完全同期して写真ストリーム開始 ★★★
+// ★★★ 0.2秒（200ms）ごとに写真が連続浮遊出現する処理 ★★★
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -181,13 +181,14 @@ function launchPhotoPageTransition(onComplete) {
   let lastTime = performance.now();
 
   function spawnStep(now) {
-    if (now - lastTime >= 100 && count < burstCount) {
+    // 200ms（0.2秒）間隔で写真を生成
+    if (now - lastTime >= 200 && count < burstCount) {
       lastTime = now;
 
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // あっちこっちから分散出現
+      // 画面のあっちこっちから分散出現
       const posX = Math.random() * 58 + 12;
       const posY = Math.random() * 58 + 12;
       photoContainer.style.left = posX + 'vw';
@@ -290,7 +291,7 @@ startBtn.addEventListener('click', () => {
       playHeartbeatSound();
       launchGoldenDust();
 
-      // ★ STARTが下へ消える1秒間のアニメーションと「完全同時」に写真が連続出現！
+      // START文字の消絶と同時に0.2秒刻みの写真浮遊ストリームを開始
       launchPhotoPageTransition(() => {
         countOverlay.classList.remove('show');
         document.body.classList.remove('cover-active');
@@ -723,7 +724,7 @@ function initOmikuji() {
     '【散歩吉】一緒に手をつないでお散歩する日。風が気持ちいいです',
     '【遠出吉】遠出注意報が出ています。ふたりのワクワクが止まりません',
     '【グルメ吉】どこか美味しいものを食べに行っちゃう日',
-    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買ってのんびり過ごす日',
+    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買のんびり過ごす日',
     '【メロ大吉】結南がみなみさんにメロメロで離れてくれません',
     '【キスマ吉】キスマ攻防戦が開幕。今日勝つのはどちらでしょうか',
     '【サウナ吉】一緒にサウナや温泉旅行の計画を立てると吉です',
