@@ -326,15 +326,15 @@ h1 {
   100% { opacity: 0; transform: translate(-50%, -50%) scale(3.2); filter: blur(25px); }
 }
 
-/* ★★★ 【完全修正】画面のあっちこっちから徐々に浮かび上がり拡大消滅するアニメーション ★★★ */
+/* ★★★ 【スマホ最適化】あっちこっちから0.1秒ごとに連続出現する写真 ★★★ */
 .burst-photo-fly {
   position: fixed !important;
   border-radius: 6px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(212, 175, 55, 0.35);
   border: 1.5px solid #ffffff;
   pointer-events: none;
   z-index: 100005 !important;
-  animation: photoEmergeAndFade 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  animation: photoEmergeAndFade 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
   background: #ffffff;
   padding: 3px;
   transform-origin: center center;
@@ -348,22 +348,52 @@ h1 {
   display: block;
 }
 
-/* ぽんっと浮き上がって徐々に大きくなりながら消える */
 @keyframes photoEmergeAndFade {
   0% {
     opacity: 0;
-    transform: scale(0.3) rotate(var(--start-rot, 0deg));
+    transform: scale(0.2) rotate(var(--start-rot, 0deg));
     filter: blur(4px);
   }
-  30% {
+  25% {
     opacity: 1;
     filter: blur(0px);
   }
   100% {
     opacity: 0;
-    transform: scale(1.6) rotate(var(--end-rot, 15deg));
+    transform: scale(1.5) rotate(var(--end-rot, 15deg));
     filter: blur(8px);
   }
+}
+
+/* ★★★ 【新演出】中央で1秒静止する運命の最後の1枚写真 ★★★ */
+.final-hero-photo {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 180px !important;
+  height: 215px !important;
+  background: #ffffff !important;
+  padding: 6px 6px 20px 6px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.6) !important;
+  border: 2px solid var(--gold-glow) !important;
+  z-index: 100010 !important;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.3);
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+}
+
+.final-hero-photo.active-show {
+  opacity: 1 !important;
+  transform: translate(-50%, -50%) scale(1.08) rotate(-1deg) !important;
+}
+
+.final-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
 }
 
 /* タイトルカード */

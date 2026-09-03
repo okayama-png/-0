@@ -88,7 +88,7 @@ function initGyroParallax() {
   });
 }
 
-// === オープニング写真リスト（30枚対応） ===
+// === オープニング写真リスト ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -171,54 +171,87 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// ★★★ 【完全修正】0.1秒ごとに画面のあっちこっち（ランダム座標）に写真を生成して出現させる ★★★
-function launchPhotoFlyBurst() {
+// ★★★ 【スマホ完全対応】あっちこっちから0.1秒ごとに写真生成 ➔ 最後の1枚が中央で1秒静止 ➔ アルバムへ自然接続 ★★★
+function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
-  const burstCount = Math.min(12, shuffledPhotos.length);
+  const burstCount = 10;
   const isMobile = window.innerWidth <= 768;
 
-  let index = 0;
-  
-  // 0.1秒（100ミリ秒）ごとに厳密に1枚ずつ生成
-  const intervalId = setInterval(() => {
-    if (index >= burstCount) {
-      clearInterval(intervalId);
-      return;
+  let count = 0;
+  let lastTime = performance.now();
+
+  // スマホブラウザでも正確に100ms（0.1秒）間隔を守るフレームループ
+  function spawnStep(now) {
+    if (now - lastTime >= 100 && count < burstCount) {
+      lastTime = now;
+
+      const photoContainer = document.createElement('div');
+      photoContainer.className = 'burst-photo-fly';
+
+      // 画面のあっちこっち（12% 〜 72% のランダムエリア）
+      const posX = Math.random() * 60 + 12;
+      const posY = Math.random() * 60 + 12;
+      photoContainer.style.left = posX + 'vw';
+      photoContainer.style.top = posY + 'vh';
+
+      const cardW = isMobile ? (Math.random() * 25 + 75) : (Math.random() * 35 + 110);
+      photoContainer.style.width = cardW + 'px';
+      photoContainer.style.height = (cardW * 1.15) + 'px';
+
+      const img = document.createElement('img');
+      img.src = shuffledPhotos[count];
+      photoContainer.appendChild(img);
+
+      const startRot = (Math.random() - 0.5) * 30;
+      const endRot = startRot + (Math.random() - 0.5) * 40;
+      photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
+      photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
+
+      document.body.appendChild(photoContainer);
+      setTimeout(() => photoContainer.remove(), 1400);
+
+      count++;
     }
 
-    const photoContainer = document.createElement('div');
-    photoContainer.className = 'burst-photo-fly';
+    if (count < burstCount) {
+      requestAnimationFrame(spawnStep);
+    } else {
+      // あっちこっちからの出現完了 ➔ 最後の1枚が中央で1秒静止演出へ
+      setTimeout(() => showFinalHeroPhoto(onComplete), 200);
+    }
+  }
 
-    // 画面のあっちこっち（10% 〜 75% のランダム位置）に配置
-    const posX = Math.random() * 65 + 10; 
-    const posY = Math.random() * 65 + 10; 
-    photoContainer.style.left = posX + 'vw';
-    photoContainer.style.top = posY + 'vh';
+  requestAnimationFrame(spawnStep);
+}
 
-    // サイズ指定（スマホにちょうど良い2/3サイズ）
-    const cardW = isMobile ? (Math.random() * 25 + 75) : (Math.random() * 35 + 110);
-    const cardH = cardW * 1.15;
-    photoContainer.style.width = cardW + 'px';
-    photoContainer.style.height = cardH + 'px';
+// 画面中央で1秒静止し、アルバムの1ページ目へと綺麗に吸い込まれる演出
+function showFinalHeroPhoto(onComplete) {
+  const heroDiv = document.createElement('div');
+  heroDiv.className = 'final-hero-photo';
 
-    const img = document.createElement('img');
-    img.src = shuffledPhotos[index];
-    photoContainer.appendChild(img);
+  const heroImg = document.createElement('img');
+  heroImg.src = 'images/prologue.png'; // 始まりの思い出写真
+  heroDiv.appendChild(heroImg);
 
-    // 回転角設定
-    const startRot = (Math.random() - 0.5) * 25;
-    const endRot = startRot + (Math.random() - 0.5) * 40;
+  document.body.appendChild(heroDiv);
 
-    photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
-    photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
+  // 画面中央へふわっと出現
+  requestAnimationFrame(() => {
+    heroDiv.classList.add('active-show');
+  });
 
-    document.body.appendChild(photoContainer);
+  playHeartbeatSound();
 
-    // アニメーション終了後に消去
-    setTimeout(() => photoContainer.remove(), 1600);
+  // 中央で1秒間そのまま静止
+  setTimeout(() => {
+    heroDiv.style.transition = 'all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)';
+    heroDiv.style.opacity = '0';
+    heroDiv.style.transform = 'translate(-50%, -50%) scale(0.6)';
 
-    index++;
-  }, 100); // ★ 0.1秒ごとのタイマー生成
+    if (onComplete) onComplete();
+
+    setTimeout(() => heroDiv.remove(), 800);
+  }, 1100);
 }
 
 // オープニングボタン動作
@@ -261,15 +294,15 @@ startBtn.addEventListener('click', () => {
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
       playHeartbeatSound();
       launchGoldenDust();
-      launchPhotoFlyBurst(); // あっちこっちから0.1秒ごとぽんぽん連続生成開始！
 
-      setTimeout(() => {
+      // ★ 0.1秒ごとの写真浮遊 ➔ 中央1秒静止 ➔ アルバム表示の完璧な繋ぎ実行
+      launchPhotoPageTransition(() => {
         countOverlay.classList.remove('show');
         document.body.classList.remove('cover-active');
         openingCover.classList.add('open-book');
         launchExplosion();
         triggerCameraFlash();
-      }, 1400);
+      });
     }
   }
 
