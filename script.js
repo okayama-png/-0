@@ -88,7 +88,7 @@ function initGyroParallax() {
   });
 }
 
-// ★ extra12～16 を masterPhotoList に追加登録！
+// === オープニング写真リスト（images内の30枚対応） ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -172,17 +172,21 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// START時の写真湧き上がり＆手前ズームフェードアウト処理
+// ★★★ 【新演出】0.1秒（100ms）ごとに写真がぽんぽん連続手前浮遊ウェーブ ★★★
 function launchPhotoFlyBurst() {
   const shuffledPhotos = masterPhotoList.sort(() => 0.5 - Math.random());
-  const burstCount = Math.min(14, shuffledPhotos.length);
+  const burstCount = Math.min(12, shuffledPhotos.length);
 
   for (let i = 0; i < burstCount; i++) {
     const photoContainer = document.createElement('div');
     photoContainer.className = 'burst-photo-fly';
 
-    const cardW = Math.random() * 50 + 110;
+    // スマホ表示に優しいコンパクトサイズ（従来の2/3）
+    const isMobile = window.innerWidth <= 768;
+    const baseW = isMobile ? 85 : 120;
+    const cardW = Math.random() * 30 + baseW;
     const cardH = cardW * 1.15;
+    
     photoContainer.style.width = cardW + 'px';
     photoContainer.style.height = cardH + 'px';
 
@@ -190,24 +194,26 @@ function launchPhotoFlyBurst() {
     img.src = shuffledPhotos[i];
     photoContainer.appendChild(img);
 
+    // 画面中央から放射状に広がる距離と方向
     const angle = Math.random() * Math.PI * 2;
-    const spreadDist = Math.random() * 320 + 150;
+    const spreadDist = Math.random() * (isMobile ? 200 : 350) + 100;
     const targetX = Math.cos(angle) * spreadDist;
     const targetY = Math.sin(angle) * spreadDist;
 
-    const startRot = (Math.random() - 0.5) * 40;
-    const endRot = startRot + (Math.random() - 0.5) * 80;
+    const startRot = (Math.random() - 0.5) * 30;
+    const endRot = startRot + (Math.random() - 0.5) * 60;
 
     photoContainer.style.setProperty('--target-x', `${targetX}px`);
     photoContainer.style.setProperty('--target-y', `${targetY}px`);
     photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
     photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
 
-    photoContainer.style.animationDelay = `${i * 0.06}s`;
+    // ★ 0.1秒（100ms）刻みで時差出現ウェーブ
+    photoContainer.style.animationDelay = `${i * 0.10}s`;
 
     document.body.appendChild(photoContainer);
 
-    setTimeout(() => photoContainer.remove(), 2100);
+    setTimeout(() => photoContainer.remove(), 2300);
   }
 }
 
@@ -251,7 +257,7 @@ startBtn.addEventListener('click', () => {
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
       playHeartbeatSound();
       launchGoldenDust();
-      launchPhotoFlyBurst();
+      launchPhotoFlyBurst(); // 0.1秒ごとの写真連動スタート
 
       setTimeout(() => {
         countOverlay.classList.remove('show');
