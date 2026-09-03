@@ -68,21 +68,19 @@ function playHeartbeatSound() {
   }
 }
 
-// === ★【演出1】スマホの傾き（ジャイロセンサー）連動 3D立体パララックス ★ ===
+// === スマホ傾き連動 3Dパララックス ===
 function initGyroParallax() {
   const albumContainer = document.querySelector('.album-container');
   if (!albumContainer) return;
 
-  // スマホの傾き検知
   window.addEventListener('deviceorientation', (e) => {
     if (e.gamma === null || e.beta === null) return;
-    const tiltX = Math.max(-15, Math.min(15, e.gamma / 2)); // 左右傾き (-15 ~ 15度)
-    const tiltY = Math.max(-15, Math.min(15, (e.beta - 40) / 2)); // 上下傾き (-15 ~ 15度)
+    const tiltX = Math.max(-15, Math.min(15, e.gamma / 2));
+    const tiltY = Math.max(-15, Math.min(15, (e.beta - 40) / 2));
 
     albumContainer.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
   });
 
-  // PCフォールバック (マウス位置追従)
   window.addEventListener('mousemove', (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 12;
     const y = (e.clientY / window.innerHeight - 0.5) * 12;
@@ -166,9 +164,145 @@ window.addEventListener('load', () => {
   initPhotoFlipAndZoom();
   initPassUnlock();
   initInteractiveTouch();
-  initGyroParallax(); // 3D傾き機能スタート
+  initGyroParallax();
+  initMemoryMapModal();
+  initHandDrawModal();
   startAnniversaryTimer();
 });
+
+// 🗺️ 1. ふたりの思い出MAP モーダル制御
+function initMemoryMapModal() {
+  const mapOpenBtn = document.getElementById('mapOpenBtn');
+  const mapModal = document.getElementById('mapModal');
+  const mapCloseBtn = document.getElementById('mapCloseBtn');
+  const detailEl = document.getElementById('mapSpotDetail');
+
+  if (mapOpenBtn && mapModal) {
+    mapOpenBtn.addEventListener('click', () => mapModal.classList.add('active'));
+    mapCloseBtn.addEventListener('click', () => mapModal.classList.remove('active'));
+    mapModal.addEventListener('click', (e) => { if (e.target === mapModal) mapModal.classList.remove('active'); });
+
+    const pins = mapModal.querySelectorAll('.map-spot-pin');
+    pins.forEach(pin => {
+      pin.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const spotName = pin.getAttribute('data-spot');
+        detailEl.innerHTML = `<strong>📍 ${spotName}</strong><br>ふたりの大切な笑顔が詰まった思い出の場所です✨`;
+        launchExplosion();
+      });
+    });
+  }
+}
+
+// 🎨 2. 写真への指でお絵かき（手書きペイント）機能
+function initHandDrawModal() {
+  const drawModal = document.getElementById('drawModal');
+  const drawCloseBtn = document.getElementById('drawCloseBtn');
+  const paintCanvas = document.getElementById('paintCanvas');
+  const clearBtn = document.getElementById('clearCanvasBtn');
+  const saveBtn = document.getElementById('saveCanvasBtn');
+  const colorBtns = document.querySelectorAll('.color-btn');
+
+  if (!paintCanvas) return;
+  const pCtx = paintCanvas.getContext('2d');
+  let isDrawing = false;
+  let currentColor = '#e91e63';
+  let targetImgEl = null;
+
+  function resizePaintCanvas() {
+    paintCanvas.width = paintCanvas.parentElement.clientWidth;
+    paintCanvas.height = paintCanvas.parentElement.clientHeight;
+  }
+
+  // 「🎨 手書きデコ」ボタンイベント
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('photo-draw-btn')) {
+      const page = e.target.closest('.page');
+      targetImgEl = page.querySelector('.photo-front img');
+      
+      resizePaintCanvas();
+      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+      
+      // 背景に写真を一旦描画
+      if (targetImgEl) {
+        const tempImg = new Image();
+        tempImg.src = targetImgEl.src;
+        tempImg.onload = () => {
+          pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
+        };
+      }
+      
+      drawModal.classList.add('active');
+    }
+  });
+
+  if (drawCloseBtn) drawCloseBtn.addEventListener('click', () => drawModal.classList.remove('active'));
+
+  // 色切り替え
+  colorBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      colorBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentColor = btn.getAttribute('data-color');
+    });
+  });
+
+  // タッチ＆マウス描き込みイベント
+  function getPos(e) {
+    const rect = paintCanvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return { x: clientX - rect.left, y: clientY - rect.top };
+  }
+
+  function startDraw(e) {
+    isDrawing = true;
+    const pos = getPos(e);
+    pCtx.beginPath();
+    pCtx.moveTo(pos.x, pos.y);
+    pCtx.strokeStyle = currentColor;
+    pCtx.lineWidth = 4;
+    pCtx.lineCap = 'round';
+  }
+
+  function moveDraw(e) {
+    if (!isDrawing) return;
+    const pos = getPos(e);
+    pCtx.lineTo(pos.x, pos.y);
+    pCtx.stroke();
+  }
+
+  function stopDraw() { isDrawing = false; }
+
+  paintCanvas.addEventListener('mousedown', startDraw);
+  paintCanvas.addEventListener('mousemove', moveDraw);
+  paintCanvas.addEventListener('mouseup', stopDraw);
+
+  paintCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDraw(e); }, { passive: false });
+  paintCanvas.addEventListener('touchmove', (e) => { e.preventDefault(); moveDraw(e); }, { passive: false });
+  paintCanvas.addEventListener('touchend', stopDraw);
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      pCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+      if (targetImgEl) {
+        const tempImg = new Image();
+        tempImg.src = targetImgEl.src;
+        tempImg.onload = () => pCtx.drawImage(tempImg, 0, 0, paintCanvas.width, paintCanvas.height);
+      }
+    });
+  }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      if (targetImgEl) {
+        targetImgEl.src = paintCanvas.toDataURL(); // 手書きイラストを写真に保存反映！
+      }
+      drawModal.classList.remove('active');
+      launchExplosion();
+    });
+  }
+}
 
 // オープニングボタン動作
 const startBtn = document.getElementById('startBtn');
@@ -321,7 +455,6 @@ function initPhotoFlipAndZoom() {
   }
 }
 
-// === ★【演出5】秘密の鍵解錠時の大爆発コンフェティ（金＆サクラ紙吹雪）★ ===
 function launchConfettiBurst() {
   const colors = ['#f1c40f', '#e74c3c', '#ffb7c5', '#f3e5ab', '#ffffff', '#d4af37'];
   for (let i = 0; i < 90; i++) {
@@ -366,7 +499,7 @@ function initPassUnlock() {
         passMessage.style.color = '#2d8a4e';
         passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
-        launchConfettiBurst(); // 豪華コンフェティ大爆発
+        launchConfettiBurst();
         playHeartbeatSound();
       } else {
         passMessage.style.color = '#c0392b';

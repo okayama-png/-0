@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2200000">
+  <link rel="stylesheet" href="style.css?v=2300000">
 </head>
 <body>
 
@@ -36,7 +36,10 @@
       <span id="loveTimer">計算中...</span>
     </div>
 
-    <button id="omikujiBtn" class="omikuji-btn">🎲 今日のふたりの運勢を占う</button>
+    <div class="header-btn-group">
+      <button id="omikujiBtn" class="omikuji-btn">🎲 今日のふたりの運勢を占う</button>
+      <button id="mapOpenBtn" class="map-open-btn">🗺️ ふたりの思い出MAP</button>
+    </div>
   </header>
 
   <!-- アルバム本体 -->
@@ -52,7 +55,10 @@
             <div class="photo-back"><p class="back-text">💌 この日から全てが始まったね.運命に感謝</p></div>
           </div>
         </div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -80,7 +86,10 @@
             <div class="photo-back"><p class="back-text">☕ コーヒー味の初キス、一生忘れない宝物</p></div>
           </div>
         </div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -119,7 +128,10 @@
     <article class="page" id="page3">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page02.png" alt="初めてダンスを見た日"></div><div class="photo-back"><p class="back-text">💃 ステージの上のみなみさん、格好良すぎて鳥肌立った</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -142,7 +154,10 @@
     <article class="page" id="page4">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page03.png" alt="七夕"></div><div class="photo-back"><p class="back-text">🎋 美しい字で「大好き」って書いてくれてキュン死</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -164,7 +179,10 @@
     <article class="page" id="page5">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page04.png" alt="初めてのお弁当"></div><div class="photo-back"><p class="back-text">🍱 失敗したご飯もおいしいって食べてくれた優しさに感動。</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -182,11 +200,14 @@
       </div>
     </article>
 
-    <!-- 005 [フォトカード風レイアウト] -->
+    <!-- 005 -->
     <article class="page layout-photocard" id="page6">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page05.png" alt="水族館と初お泊り"></div><div class="photo-back"><p class="back-text">🐠 青い光の中のみなみさん、女神みたいに綺麗だった</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -210,7 +231,10 @@
     <article class="page" id="page7">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page06.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">🍨 アイス食べて照れる顔、可愛すぎてメロメロだぜぇ</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -235,7 +259,10 @@
     <article class="page" id="page8">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page07.png" alt="映画とお泊り"></div><div class="photo-back"><p class="back-text">🎬 1枚ポカ事件（笑）映画館でのキス写真は私の宝物</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -266,11 +293,14 @@
       </div>
     </article>
 
-    <!-- 008 [スクラップブック風レイアウト] -->
+    <!-- 008 -->
     <article class="page layout-scrapbook" id="page9">
       <div class="photo-column">
         <div class="photo-frame"><div class="tape-decor"></div><div class="photo-inner"><div class="photo-front"><img src="images/page08.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">😏 ちょっぴりSっ気みなみさん、本当にメロすぎ！</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -295,7 +325,10 @@
     <article class="page" id="page10">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page09.png" alt="飲みとお泊り"></div><div class="photo-back"><p class="back-text">🍻 チンチロメガジョッキ笑った！ありのままの君が好き</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -319,7 +352,10 @@
     <article class="page" id="page11">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page10.png" alt="ダンスの送迎"></div><div class="photo-back"><p class="back-text">📱 サプライズ大失敗したけど喜んでくれて嬉しかった！</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -356,7 +392,10 @@
     <article class="page" id="page12">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page11.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">♨️ サウナハットサプライズ、最高に嬉しかった！</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -380,7 +419,10 @@
     <article class="page" id="page13">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page12.png" alt="お泊まり"></div><div class="photo-back"><p class="back-text">🎮 ゲーセンではしゃぐ二人最高！私にはみなみさんだけ。</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -404,11 +446,14 @@
       </div>
     </article>
 
-    <!-- 013 [シネマティック大画面レイアウト] -->
+    <!-- 013 -->
     <article class="page layout-cinematic" id="page14">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page13.png" alt="花火大会"></div><div class="photo-back"><p class="back-text">🎆 傘の中の二人だけの死角。『愛は勝つ』永遠の曲！</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -430,11 +475,14 @@
       </div>
     </article>
 
-    <!-- 014 [シネマティック大画面レイアウト] -->
+    <!-- 014 -->
     <article class="page layout-cinematic" id="page15">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page14.png" alt="葛西臨海公園"></div><div class="photo-back"><p class="back-text">🌊 海辺でずっとキスした夜。ひまわりも綺麗だった！</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -457,11 +505,14 @@
       </div>
     </article>
 
-    <!-- 015 [マガジン風レイアウト] -->
+    <!-- 015 -->
     <article class="page layout-magazine" id="page16">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page15.png" alt="ダンス公演"></div><div class="photo-back"><p class="back-text">✨ 踊るみなみさんは世界一かっこいい！一番のファンだよ</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -487,7 +538,10 @@
     <article class="page" id="page17">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page16.png" alt="九十九里浜ドライブ"></div><div class="photo-back"><p class="back-text">🏖️ ずぶ濡れ青春最高！手持ち花火も絶対やろう！</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -510,11 +564,14 @@
       </div>
     </article>
 
-    <!-- 017 [フォトカード風レイアウト] -->
+    <!-- 017 -->
     <article class="page layout-photocard" id="page18">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page17.png" alt="5日間のお泊り"></div><div class="photo-back"><p class="back-text">🎹 夢の同棲に一歩前進！チェリー弾いてあげるね</p></div></div></div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -544,7 +601,10 @@
             <div class="photo-back"><p class="back-text">チューチューランドにチューチュー公園に京葉線は大変だね笑</p></div>
           </div>
         </div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -570,12 +630,14 @@
       <div class="photo-column">
         <div class="photo-frame">
           <div class="photo-inner">
-            <!-- ★ id="epilogueRandomImg" を追加して写真がランダム変化するように設定！ -->
             <div class="photo-front"><img id="epilogueRandomImg" src="images/prologue.png" alt="秘密のメッセージ"></div>
             <div class="photo-back"><p class="back-text">🔑 ふたりの秘密の暗号だよ</p></div>
           </div>
         </div>
-        <button class="photo-zoom-btn">🔍 写真を拡大する</button>
+        <div class="photo-btn-group">
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
+          <button class="photo-draw-btn">🎨 手書きデコ</button>
+        </div>
       </div>
       <div class="diary-entry">
         <div class="entry-content">
@@ -596,14 +658,18 @@
               <h3> I Love You </h3>
               <p>みなみさんへ
 
-アルバムを最後まで見てくれて本当にありがとう！
-付き合ってから今日まで、みなみさんと過ごしたすべての瞬間が私の宝物です。
+付き合ってから今日まで、みなみさんと過ごしたすべての時間が私の宝物です。
 
-照れくさくて普段は直接言えないけれど、みなみさんの笑顔も、真っ直ぐなところも、甘えてくるところも、全部全部愛おしいよ。
+照れくさくて普段は直接言えないけれど、みなみさんの笑顔も、真っ直ぐなところも、甘えてくるところも、少し変なところも、一緒にいて楽しいところも、ダンス頑張っているところも全部全部愛おしいよ。
 
 これからもずっと一番近くでみなみさんを応援させてね。
-何があっても私たちが手をつないでいれば大丈夫！
-世界でいっちばん大好きだよ！
+何があっても私たちが手をつないでいれば大丈夫。
+どんなことだって乗り越えていける。
+だから安心して好きなことをやり続けていこうね。
+
+これからも自分たちのペースで少しずつお互いのこと知っていこうね
+一生かけてみなみさんのこと知り尽くす所存です。
+大好きだよ。
 
 結南より</p>
             </div>
@@ -615,6 +681,62 @@
     </article>
 
   </main>
+
+  <!-- 🗺️ ふたりの思い出MAP モーダル -->
+  <div id="mapModal" class="custom-modal">
+    <div class="modal-content map-modal-content">
+      <span class="modal-close" id="mapCloseBtn">&times;</span>
+      <h3 class="modal-title">🗺️ ふたりの思い出MAP（聖地巡礼）</h3>
+      <p class="modal-sub">ピンをタップすると、その場所の思い出が読み上がります📍</p>
+      
+      <div class="map-visual-container">
+        <!-- マップ風イラスト＆スポットピン -->
+        <div class="map-spot-pin" style="top: 25%; left: 30%;" data-spot="埼玉会館（ダンス送迎）">
+          <span class="pin-icon">📍</span><span class="pin-label">埼玉会館</span>
+        </div>
+        <div class="map-spot-pin" style="top: 45%; left: 45%;" data-spot="高田馬場（居酒屋・ゲーセン）">
+          <span class="pin-icon">📍</span><span class="pin-label">高田馬場</span>
+        </div>
+        <div class="map-spot-pin" style="top: 55%; left: 60%;" data-spot="すみだ水族館（初お泊り）">
+          <span class="pin-icon">📍</span><span class="pin-label">すみだ水族館</span>
+        </div>
+        <div class="map-spot-pin" style="top: 65%; left: 68%;" data-spot="葛西臨海公園（観覧車・ひまわり）">
+          <span class="pin-icon">📍</span><span class="pin-label">葛西臨海公園</span>
+        </div>
+        <div class="map-spot-pin" style="top: 75%; left: 75%;" data-spot="ディズニーシー（初めての夢の国）">
+          <span class="pin-icon">📍</span><span class="pin-label">ディズニーシー</span>
+        </div>
+        <div class="map-spot-pin" style="top: 60%; left: 90%;" data-spot="九十九里浜（ずぶ濡れ青春ドライブ）">
+          <span class="pin-icon">📍</span><span class="pin-label">九十九里浜</span>
+        </div>
+      </div>
+      <div id="mapSpotDetail" class="map-spot-detail">
+        <p>上のピン（📍）をタップして、思い出の場所を見てね！</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎨 手書きデコ画キャンバス モーダル -->
+  <div id="drawModal" class="custom-modal">
+    <div class="modal-content draw-modal-content">
+      <span class="modal-close" id="drawCloseBtn">&times;</span>
+      <h3 class="modal-title">🎨 指で手書きデコレーション</h3>
+      <p class="modal-sub">写真に直接イラストや文字を描いて残せるよ！</p>
+      
+      <div class="canvas-wrapper">
+        <canvas id="paintCanvas"></canvas>
+      </div>
+      
+      <div class="draw-tools">
+        <button class="color-btn active" style="background:#e91e63;" data-color="#e91e63"></button>
+        <button class="color-btn" style="background:#d4af37;" data-color="#d4af37"></button>
+        <button class="color-btn" style="background:#ffffff; border:1px solid #ccc;" data-color="#ffffff"></button>
+        <button class="color-btn" style="background:#1a1a1a;" data-color="#1a1a1a"></button>
+        <button id="clearCanvasBtn" class="tool-action-btn">🗑️ 消す</button>
+        <button id="saveCanvasBtn" class="tool-action-btn primary">💾 保存</button>
+      </div>
+    </div>
+  </div>
 
   <!-- 拡大ライトボックス Modal -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
@@ -633,6 +755,6 @@
     <button id="nextBtn" aria-label="次のページへ">NEXT ▶</button>
   </div>
 
-  <script src="script.js?v=2200000"></script>
+  <script src="script.js?v=2300000"></script>
 </body>
 </html>
