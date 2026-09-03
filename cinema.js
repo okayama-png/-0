@@ -16,7 +16,7 @@ const cinemaMemories = [
   { src: 'images/page13.png', date: "'26.07.28", title: "雨の花火大会", desc: "傘の中の二人だけの死角.『愛は勝つ』は永遠の思い出の曲！" },
   { src: 'images/page14.png', date: "'26.08.09", title: "葛西臨海公園の夜", desc: "海辺でずーっとキスした夜. ひまわりも綺麗だったね." },
   { src: 'images/page15.png', date: "'26.08.16", title: "ダンス公演", desc: "踊るみなみさんは世界一カッコいい！一番のファンだよ." },
-  { src: 'images/page16.png', date: "'26.08.22", title: "九十九里浜ドライブ", desc: "海でずぶ濡れ青春！沙浜にお絵描きして最高に楽しかった." },
+  { src: 'images/page16.png', date: "'26.08.22", title: "九十九里浜ドライブ", desc: "海でずぶ濡れ青春！砂浜にお絵描きして最高に楽しかった." },
   { src: 'images/page17.png', date: "'26.08.21", title: "5日間連続お泊り", desc: "夢の同棲に一歩前進！ピアノもギターも二人でデュエットしようね." },
   { src: 'images/page18.png', date: "'26.09.01", title: "ディズニーシー", desc: "トイマニ叫びすぎ笑 地球儀の前で膝抱えるポーズも最高だった！" },
   { src: 'images/extra11.png', date: "'26 MEMORIES", title: "Special Moment", desc: "ふたりの笑顔が弾けた最高に愛おしい一枚." },
@@ -29,11 +29,12 @@ const cinemaMemories = [
 
 const filmTrack = document.getElementById('filmTrack');
 
-// 無限ループ用に2セット並べて生成
+// 無限ループ用にデータを3セット複製（切れ目を防止）
 function buildFilmTrack() {
-  const fullList = [...cinemaMemories, ...cinemaMemories];
+  filmTrack.innerHTML = '';
+  const fullList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
   
-  fullList.forEach((item, index) => {
+  fullList.forEach((item) => {
     const frame = document.createElement('div');
     frame.className = 'film-frame';
     
@@ -48,39 +49,57 @@ function buildFilmTrack() {
     frame.appendChild(img);
     frame.appendChild(stamp);
     
-    // タップで3D飛び出しモーダル
-    frame.addEventListener('click', () => openModal(item));
+    // タップでモーダル表示
+    frame.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openModal(item);
+    });
     
     filmTrack.appendChild(frame);
   });
 }
 
-// 🎞️ 自動エンドレススライド ＋ タッチスワイプ移動処理
+// 🎞️ スマホ完全対応の移動ループ
 let currentX = 0;
 let isDragging = false;
 let startX = 0;
-let autoSpeed = -0.6; // スライド速度
+let speed = -0.8;
 
 function animateFilm() {
   if (!isDragging) {
-    currentX += autoSpeed;
-    const halfWidth = filmTrack.scrollWidth / 2;
-    if (Math.abs(currentX) >= halfWidth) {
+    currentX += speed;
+    // 画面外まで行ったら位置を自然に戻す
+    if (currentX < -2500) {
       currentX = 0;
+    } else if (currentX > 0) {
+      currentX = -2500;
     }
   }
-  filmTrack.style.transform = `rotate(-8deg) scale(1.05) translateX(${currentX}px)`;
+  filmTrack.style.transform = `translateX(${currentX}px)`;
   requestAnimationFrame(animateFilm);
 }
 
-// タッチ＆マウス操作
-window.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX - currentX; });
-window.addEventListener('mousemove', (e) => { if (isDragging) currentX = e.clientX - startX; });
-window.addEventListener('mouseup', () => { isDragging = false; });
+// スマホタッチ＆マウス操作
+const viewport = document.querySelector('.film-viewport');
 
-window.addEventListener('touchstart', (e) => { isDragging = true; startX = e.touches[0].clientX - currentX; });
-window.addEventListener('touchmove', (e) => { if (isDragging) currentX = e.touches[0].clientX - startX; });
-window.addEventListener('touchend', () => { isDragging = false; });
+if (viewport) {
+  viewport.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX - currentX; });
+  window.addEventListener('mousemove', (e) => { if (isDragging) currentX = e.clientX - startX; });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
+  viewport.addEventListener('touchstart', (e) => { 
+    isDragging = true; 
+    startX = e.touches[0].clientX - currentX; 
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => { 
+    if (isDragging) {
+      currentX = e.touches[0].clientX - startX; 
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => { isDragging = false; });
+}
 
 // 💥 モーダル処理
 const modal = document.getElementById('photoModal');
@@ -98,9 +117,18 @@ function openModal(item) {
   modal.classList.add('show');
 }
 
-modalClose.addEventListener('click', () => modal.classList.remove('show'));
-modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+if (modalClose) {
+  modalClose.addEventListener('click', () => modal.classList.remove('show'));
+}
 
-// 初期化
-buildFilmTrack();
-animateFilm();
+if (modal) {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('show');
+  });
+}
+
+// 画面読み込み完了時に実行
+document.addEventListener('DOMContentLoaded', () => {
+  buildFilmTrack();
+  animateFilm();
+});

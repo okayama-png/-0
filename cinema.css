@@ -5,7 +5,7 @@
   --gold-primary: #d4af37;
   --gold-glow: #f3e5ab;
   --font-en: 'Cormorant Garamond', Georgia, serif;
-  --font-ja: 'Shippori Mincho', serif;
+  --font-ja: 'Shippori Mincho', "游明朝", serif;
 }
 
 *, *::before, *::after {
@@ -13,15 +13,14 @@
   margin: 0; padding: 0;
 }
 
-body {
+html, body {
+  width: 100%;
+  height: 100%;
   background-color: var(--cinema-bg);
   color: #ffffff;
   font-family: var(--font-ja);
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
   overflow: hidden;
-  position: relative;
-  touch-action: none;
+  position: fixed; /* スマホでの不要なスクロールを防止 */
 }
 
 .cinema-bg {
@@ -32,10 +31,10 @@ body {
   z-index: 0;
 }
 
-/* === ヘッダー（画面上部に固定） === */
+/* === ヘッダー === */
 .cinema-header {
   position: fixed;
-  top: 25px; left: 0; width: 100%;
+  top: 20px; left: 0; width: 100%;
   text-align: center;
   z-index: 10;
   pointer-events: none;
@@ -52,7 +51,7 @@ body {
 
 .cinema-header h1 {
   font-family: var(--font-en);
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   letter-spacing: 0.12em;
   font-weight: 600;
   margin-top: 2px;
@@ -66,47 +65,44 @@ body {
   margin-top: 2px;
 }
 
-/* === 🎞️ スマホ画面中央に確実に表示されるフィルムトラック === */
+/* === 🎞️ スマホ画面の中央に確実に表示されるフィルム枠 === */
 .film-viewport {
   position: fixed;
   top: 50%; left: 0;
   width: 100vw;
-  transform: translateY(-50%); /* 画面の上下ぴったり中央に配置 */
+  height: 190px;
+  transform: translateY(-50%); /* 画面上下のぴったり中央 */
   z-index: 5;
   display: flex;
   align-items: center;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .film-track {
   display: flex;
   gap: 15px;
-  padding: 22px 0;
+  padding: 15px 10px;
   background: #12100e;
-  /* 上下にフィルムの送り穴風デザイン */
-  border-top: 10px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
-  border-bottom: 10px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
+  border-top: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
+  border-bottom: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 55, 0.25);
-  width: max-content;
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
   will-change: transform;
-  cursor: grab;
 }
 
-/* フィルム上の1枚1枚の写真コマ */
+/* フィルム上の個別写真コマ */
 .film-frame {
   flex: none;
-  width: 125px;
-  height: 155px;
+  width: 120px;
+  height: 150px;
   background: #ffffff;
   padding: 5px 5px 18px 5px;
   border-radius: 3px;
   position: relative;
   box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-  transition: transform 0.2s ease;
-}
-
-.film-frame:active {
-  transform: scale(0.94);
+  cursor: pointer;
 }
 
 .film-frame img {
@@ -115,21 +111,23 @@ body {
   object-fit: cover;
   border-radius: 2px;
   display: block;
+  pointer-events: none;
 }
 
 .film-frame .frame-stamp {
   position: absolute;
   bottom: 3px; right: 5px;
   font-family: var(--font-en);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   color: #8c6a2d;
   font-weight: 600;
+  pointer-events: none;
 }
 
-/* === ガイド表示（画面下部に固定） === */
+/* ガイド表示 */
 .cinema-guide {
   position: fixed;
-  bottom: 35px; left: 0; width: 100%;
+  bottom: 30px; left: 0; width: 100%;
   text-align: center;
   z-index: 10;
   pointer-events: none;
@@ -146,15 +144,15 @@ body {
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-/* === 💥 タップで飛び出す3Dポップアップモーダル === */
+/* === 💥 3D飛び出しモーダル === */
 .photo-pop-modal {
   display: none;
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
   background: rgba(5, 4, 3, 0.92);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 100;
   justify-content: center;
   align-items: center;
@@ -174,18 +172,18 @@ body {
   padding: 16px;
   box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.5);
   border: 1.5px solid var(--gold-primary);
-  animation: popUp3D 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: popUp3D 0.4s ease-out forwards;
 }
 
 @keyframes popUp3D {
-  0% { transform: scale(0.3) translateY(40px); opacity: 0; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .pop-card-front {
   position: relative;
   width: 100%;
-  height: 210px;
+  height: 200px;
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 12px;
@@ -207,7 +205,7 @@ body {
 }
 
 .pop-card-info h3 {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: #1a1a1a;
   margin-bottom: 6px;
   font-weight: 600;
@@ -215,10 +213,10 @@ body {
 
 .pop-card-info p {
   font-size: 0.82rem;
-  line-height: 1.65;
+  line-height: 1.6;
   color: #4a423a;
-  margin-bottom: 16px;
-  max-height: 120px;
+  margin-bottom: 15px;
+  max-height: 110px;
   overflow-y: auto;
 }
 
