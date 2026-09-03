@@ -8,10 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3700000">
+  <link rel="stylesheet" href="style.css?v=3800000">
 </head>
 <body>
 
+  <!-- オープニングカバー -->
   <div id="opening-cover" aria-hidden="false">
     <div class="cover-content">
       <div class="luxury-badge">EXCLUSIVE MEMORIES</div>
@@ -37,12 +38,15 @@
 
     <div class="header-btn-group">
       <button id="omikujiBtn" class="omikuji-btn">🎲 今日のふたりの運勢を占う</button>
+      <a href="cinema.html" class="cinema-nav-btn">🎬 CINEMA FILM を見る</a>
     </div>
   </header>
 
+  <!-- アルバム本体 -->
   <main class="album-container">
     <div class="book-spine"></div>
 
+    <!-- PROLOGUE [マガジン風レイアウト] -->
     <article class="page active layout-magazine" id="page1">
       <div class="photo-column">
         <div class="photo-frame" title="タップで裏面を見る">
@@ -71,6 +75,7 @@
       </div>
     </article>
 
+    <!-- 001 [スクラップブック風レイアウト] -->
     <article class="page layout-scrapbook" id="page2">
       <div class="photo-column">
         <div class="photo-frame" title="タップで裏面を見る">
@@ -117,6 +122,7 @@
       </div>
     </article>
 
+    <!-- 002 -->
     <article class="page" id="page3">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page02.png" alt="初めてダンスを見た日"></div><div class="photo-back"><p class="back-text">💃 ステージの上のみなみさん、格好良すぎて鳥肌立った</p></div></div></div>
@@ -141,6 +147,7 @@
       </div>
     </article>
 
+    <!-- 003 -->
     <article class="page" id="page4">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page03.png" alt="七夕"></div><div class="photo-back"><p class="back-text">🎋 美しい字で「大好き」って書いてくれてキュン死</p></div></div></div>
@@ -164,6 +171,7 @@
       </div>
     </article>
 
+    <!-- 004 -->
     <article class="page" id="page5">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page04.png" alt="初めてのお弁当"></div><div class="photo-back"><p class="back-text">🍱 失敗したご飯もおいしいって食べてくれた優しさに感動。</p></div></div></div>
@@ -187,6 +195,7 @@
       </div>
     </article>
 
+    <!-- 005 -->
     <article class="page layout-photocard" id="page6">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page05.png" alt="水族館と初お泊り"></div><div class="photo-back"><p class="back-text">🐠 青い光の中のみなみさん、女神みたいに綺麗だった</p></div></div></div>
@@ -212,6 +221,7 @@
       </div>
     </article>
 
+    <!-- 006 -->
     <article class="page" id="page7">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page06.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">🍨 アイス食べて照れる顔、可愛すぎてメロメロだぜぇ</p></div></div></div>
@@ -238,6 +248,7 @@
       </div>
     </article>
 
+    <!-- 007 -->
     <article class="page" id="page8">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page07.png" alt="映画とお泊り"></div><div class="photo-back"><p class="back-text">🎬 1枚ポカ事件（笑）映画館でのキス写真は私の宝物</p></div></div></div>
@@ -274,6 +285,7 @@
       </div>
     </article>
 
+    <!-- 008 -->
     <article class="page layout-scrapbook" id="page9">
       <div class="photo-column">
         <div class="photo-frame"><div class="tape-decor"></div><div class="photo-inner"><div class="photo-front"><img src="images/page08.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">😏 ちょっぴりSっ気みなみさん、本当にメロすぎ！</p></div></div></div>
@@ -300,6 +312,7 @@
       </div>
     </article>
 
+    <!-- 009 -->
     <article class="page" id="page10">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page09.png" alt="飲みとお泊り"></div><div class="photo-back"><p class="back-text">🍻 チンチロメガジョッキ笑った！ありのままの君が好き</p></div></div></div>
@@ -314,7 +327,7 @@
           <p class="text">2026.07.18 - 07.19
 馬場で私の友達と一緒に飲んで、そのままみなみさんの家にお泊りした日
 みなみさんが「チンチロしたい！」って言い出して、案の定メガジョッキを引き当ててた（笑）。……のはいいんだけど、結局その半分くらい私が飲んでたのはなんで？？ほんまにいい加減にして？（笑）
-きっと私を酔わせたかったんだろうな〜って思ってるけど、真相はいかに……！
+きっと私を酔わせたかったんだろうな〜っと思ってるけど、真相はいかに……！
 
 みなみさんと一緒にいる時しか味わえない幸せがあって、言葉にするのは少し難しいけれど。
 みなみさんが思っている以上に、みなみさんは周りのみんなに素敵な影響を与えているんだよ、ってことを伝えたいな。
@@ -325,6 +338,7 @@
       </div>
     </article>
 
+    <!-- 010 -->
     <article class="page" id="page11">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page10.png" alt="ダンスの送迎"></div><div class="photo-back"><p class="back-text">📱 サプライズ大失敗したけど喜んでくれて嬉しかった！</p></div></div></div>
@@ -363,6 +377,7 @@
       </div>
     </article>
 
+    <!-- 011 -->
     <article class="page" id="page12">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page11.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">♨️ サウナハットサプライズ、最高に嬉しかった！</p></div></div></div>
@@ -388,6 +403,7 @@
       </div>
     </article>
 
+    <!-- 012 -->
     <article class="page" id="page13">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page12.png" alt="お泊まり"></div><div class="photo-back"><p class="back-text">🎮 ゲーセンではしゃぐ二人最高！私にはみなみさんだけ。</p></div></div></div>
@@ -417,6 +433,7 @@
       </div>
     </article>
 
+    <!-- 013 -->
     <article class="page layout-cinematic" id="page14">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page13.png" alt="花火大会"></div><div class="photo-back"><p class="back-text">🎆 傘の中の二人だけの死角。『愛は勝つ』永遠の曲！</p></div></div></div>
@@ -444,6 +461,7 @@
       </div>
     </article>
 
+    <!-- 014 -->
     <article class="page layout-cinematic" id="page15">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page14.png" alt="葛西臨海公園"></div><div class="photo-back"><p class="back-text">🌊 海辺でずっとキスした夜。ひまわりも綺麗だった！</p></div></div></div>
@@ -472,6 +490,7 @@
       </div>
     </article>
 
+    <!-- 015 -->
     <article class="page layout-magazine" id="page16">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page15.png" alt="ダンス公演"></div><div class="photo-back"><p class="back-text">✨ 踊るみなみさんは世界一かっこいい！一番のファンだよ</p></div></div></div>
@@ -499,6 +518,7 @@
       </div>
     </article>
 
+    <!-- 016 -->
     <article class="page" id="page17">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page16.png" alt="九十九里浜ドライブ"></div><div class="photo-back"><p class="back-text">🏖️ ずぶ濡れ青春最高！手持ち花火も絶対やろう！</p></div></div></div>
@@ -527,6 +547,7 @@
       </div>
     </article>
 
+    <!-- 017 -->
     <article class="page layout-photocard" id="page18">
       <div class="photo-column">
         <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page17.png" alt="5日間のお泊り"></div><div class="photo-back"><p class="back-text">🎹 夢の同棲に一歩前進！チェリー弾いてあげるね</p></div></div></div>
@@ -553,6 +574,7 @@
       </div>
     </article>
 
+    <!-- 018 [ディズニーシー] -->
     <article class="page layout-cinematic" id="page19">
       <div class="photo-column">
         <div class="photo-frame" title="タップで裏面を見る">
@@ -584,6 +606,7 @@
       </div>
     </article>
 
+    <!-- EPILOGUE（一番最後の19ページ目：ランダム写真＆秘密の鍵） -->
     <article class="page layout-photocard" id="page20">
       <div class="photo-column">
         <div class="photo-frame">
@@ -639,11 +662,13 @@
 
   </main>
 
+  <!-- 拡大ライトボックス Modal -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
     <span class="lightbox-close">&times;</span>
     <img id="lightboxImg" src="" alt="拡大画像">
   </div>
 
+  <!-- 制御コントローラー -->
   <div class="page-indicator">
     <span class="indicator-label">PAGE</span>
     <span id="pageNum">1</span> / <span id="totalPages">20</span>
@@ -654,6 +679,6 @@
     <button id="nextBtn" aria-label="次のページへ">NEXT ▶</button>
   </div>
 
-  <script src="script.js?v=3700000"></script>
+  <script src="script.js?v=3800000"></script>
 </body>
 </html>

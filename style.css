@@ -122,6 +122,7 @@ h1 {
   gap: 8px;
   justify-content: center;
   margin-top: 8px;
+  flex-wrap: wrap;
 }
 
 .omikuji-btn {
@@ -130,10 +131,31 @@ h1 {
   color: #fff8e7;
   font-weight: 500;
   font-size: 0.78rem;
-  padding: 6px 18px;
+  padding: 6px 16px;
   border-radius: 20px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+}
+
+/* ★ 🎬 CINEMA FILM 移動ボタン ★ */
+.cinema-nav-btn {
+  background: linear-gradient(135deg, #1c1815, #3d3128);
+  border: 1px solid var(--gold-glow);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 6px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 15px rgba(212, 175, 55, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cinema-nav-btn:active {
+  transform: scale(0.95);
 }
 
 /* === 📱 スマホオープニングカバー === */
@@ -381,7 +403,7 @@ h1 {
   }
 }
 
-/* ★★★ 【新演出】クライマックス写真花火（シュルシュル上昇 ➔ ドカンと弾ける） ★★★ */
+/* クライマックス写真花火 */
 .photo-firework-card {
   position: fixed !important;
   width: 85px !important;
