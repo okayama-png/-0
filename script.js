@@ -171,7 +171,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 写真ストリーム出現（STARTフェードアウトと完全同期）
+// ★★★ START文字の1秒間フェードアウトと完全同期して写真ストリーム開始 ★★★
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -187,7 +187,7 @@ function launchPhotoPageTransition(onComplete) {
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // あっちこっちから分散配置
+      // あっちこっちから分散出現
       const posX = Math.random() * 58 + 12;
       const posY = Math.random() * 58 + 12;
       photoContainer.style.left = posX + 'vw';
@@ -290,7 +290,7 @@ startBtn.addEventListener('click', () => {
       playHeartbeatSound();
       launchGoldenDust();
 
-      // ★ STARTの1秒間フェードアウトと「完全同時」に写真浮遊ストリームを開始！
+      // ★ STARTが下へ消える1秒間のアニメーションと「完全同時」に写真が連続出現！
       launchPhotoPageTransition(() => {
         countOverlay.classList.remove('show');
         document.body.classList.remove('cover-active');

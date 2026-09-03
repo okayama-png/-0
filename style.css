@@ -303,43 +303,43 @@ h1 {
   100% { opacity: 1; transform: scale(1); filter: blur(0px); }
 }
 
-/* ★★★ START文字：1.0秒間かけてゆっくり下へスライドしながらフェードアウト ★★★ */
+/* ★★★ 【改修】START文字：光とともに滑らかに手前へ拡散消失 ★★★ */
 .start-text {
   font-family: var(--font-en);
-  font-size: 2.8rem !important;
+  font-size: 3.2rem !important;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  text-shadow: 0 0 20px #ffffff, 0 0 40px var(--gold-glow);
+  text-shadow: 0 0 25px #ffffff, 0 0 50px var(--gold-glow);
   position: fixed !important;
   top: 50% !important; left: 50% !important;
   transform: translate(-50%, -50%) !important;
-  z-index: 999999 !important;
+  z-index: 100008 !important;
   white-space: nowrap;
   line-height: 1;
-  /* 写真の浮き上がりと綺麗に被るよう1.0秒間の時間をかけてゆっくり消える */
-  animation: startSlideDownFade 1.0s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+  animation: startLightBurst 1.2s cubic-bezier(0.12, 0.8, 0.2, 1) forwards !important;
 }
 
-@keyframes startSlideDownFade {
+@keyframes startLightBurst {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%);
-    filter: blur(2px);
+    transform: translate(-50%, -50%) scale(0.5);
+    filter: blur(8px);
   }
-  20% {
+  25% {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1.0);
     filter: blur(0px);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, calc(-50% + 70px)); /* ゆっくり下へ移動しながら1秒でフェードアウト */
-    filter: blur(8px);
+    transform: translate(-50%, -50%) scale(2.2);
+    filter: blur(16px);
   }
 }
 
-/* あっちこっちから写真が浮き上がるアニメーション */
+/* あっちこっちから写真が手前へ飛び出すアニメーション */
 .burst-photo-fly {
   position: fixed !important;
   border-radius: 6px;
