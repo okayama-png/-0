@@ -88,7 +88,7 @@ function initGyroParallax() {
   });
 }
 
-// === オープニング写真リスト（images内の30枚対応） ===
+// === オープニング写真リスト ===
 const masterPhotoList = [
   'images/prologue.png', 'images/page01.png', 'images/page02.png', 'images/page03.png',
   'images/page04.png', 'images/page05.png', 'images/page06.png', 'images/page07.png',
@@ -167,12 +167,11 @@ window.addEventListener('load', () => {
   initPassUnlock();
   initInteractiveTouch();
   initGyroParallax();
-  initMemoryMapModal();
   initHandDrawModal();
   startAnniversaryTimer();
 });
 
-// ★★★ 【新演出】0.1秒（100ms）ごとに写真がぽんぽん連続手前浮遊ウェーブ ★★★
+// 0.1秒（100ms）刻みの写真連続湧き上がり演出
 function launchPhotoFlyBurst() {
   const shuffledPhotos = masterPhotoList.sort(() => 0.5 - Math.random());
   const burstCount = Math.min(12, shuffledPhotos.length);
@@ -181,7 +180,6 @@ function launchPhotoFlyBurst() {
     const photoContainer = document.createElement('div');
     photoContainer.className = 'burst-photo-fly';
 
-    // スマホ表示に優しいコンパクトサイズ（従来の2/3）
     const isMobile = window.innerWidth <= 768;
     const baseW = isMobile ? 85 : 120;
     const cardW = Math.random() * 30 + baseW;
@@ -194,7 +192,6 @@ function launchPhotoFlyBurst() {
     img.src = shuffledPhotos[i];
     photoContainer.appendChild(img);
 
-    // 画面中央から放射状に広がる距離と方向
     const angle = Math.random() * Math.PI * 2;
     const spreadDist = Math.random() * (isMobile ? 200 : 350) + 100;
     const targetX = Math.cos(angle) * spreadDist;
@@ -208,7 +205,6 @@ function launchPhotoFlyBurst() {
     photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
     photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
 
-    // ★ 0.1秒（100ms）刻みで時差出現ウェーブ
     photoContainer.style.animationDelay = `${i * 0.10}s`;
 
     document.body.appendChild(photoContainer);
@@ -257,7 +253,7 @@ startBtn.addEventListener('click', () => {
       countOverlay.innerHTML = `<div class="start-text">START</div>`;
       playHeartbeatSound();
       launchGoldenDust();
-      launchPhotoFlyBurst(); // 0.1秒ごとの写真連動スタート
+      launchPhotoFlyBurst();
 
       setTimeout(() => {
         countOverlay.classList.remove('show');
@@ -452,29 +448,6 @@ function initInteractiveTouch() {
       setTimeout(() => p.remove(), 950);
     }
   });
-}
-
-function initMemoryMapModal() {
-  const mapOpenBtn = document.getElementById('mapOpenBtn');
-  const mapModal = document.getElementById('mapModal');
-  const mapCloseBtn = document.getElementById('mapCloseBtn');
-  const detailEl = document.getElementById('mapSpotDetail');
-
-  if (mapOpenBtn && mapModal) {
-    mapOpenBtn.addEventListener('click', () => mapModal.classList.add('active'));
-    mapCloseBtn.addEventListener('click', () => mapModal.classList.remove('active'));
-    mapModal.addEventListener('click', (e) => { if (e.target === mapModal) mapModal.classList.remove('active'); });
-
-    const pins = mapModal.querySelectorAll('.map-spot-pin');
-    pins.forEach(pin => {
-      pin.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const spotName = pin.getAttribute('data-spot');
-        detailEl.innerHTML = `<strong>📍 ${spotName}</strong><br>ふたりの大切な笑顔が詰まった思い出の場所です✨`;
-        launchExplosion();
-      });
-    });
-  }
 }
 
 function initHandDrawModal() {
@@ -714,7 +687,7 @@ function initOmikuji() {
     '【散歩吉】一緒に手をつないでお散歩する日。風が気持ちいいです',
     '【遠出吉】遠出注意報が出ています。ふたりのワクワクが止まりません',
     '【グルメ吉】どこか美味しいものを食べに行っちゃう日',
-    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買ってのんびり過ごす日',
+    '【映画吉】ふたりで何か映画を観に行っちゃう？ポップコーンを買のんびり過ごす日',
     '【メロ大吉】結南がみなみさんにメロメロで離れてくれません',
     '【キスマ吉】キスマ攻防戦が開幕。今日勝つのはどちらでしょうか',
     '【サウナ吉】一緒にサウナや温泉旅行の計画を立てると吉です',

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2500000">
+  <link rel="stylesheet" href="style.css?v=2600000">
 </head>
 <body>
 
@@ -38,7 +38,6 @@
 
     <div class="header-btn-group">
       <button id="omikujiBtn" class="omikuji-btn">🎲 今日のふたりの運勢を占う</button>
-      <button id="mapOpenBtn" class="map-open-btn">🗺️ ふたりの思い出MAP</button>
     </div>
   </header>
 
@@ -66,7 +65,7 @@
           <h2 class="date-title">000 - Prologue</h2>
           <p class="text">きっかけはあの日入ったバー。あの時私がそのまま帰っていたら、みなみさんが別の予定のままだったら……そう思うと本当に奇跡や運命ってあるんだと感じます。見えなくなるまで改札で手を振り続けてくれた姿は、今も脳裏に焼き付いています。
 
-会話が驚くほど楽しくて「この人のためなら」と思えたこと。公務員として働きつつ大好きなダンスを楽しむ真っ直ぐさや、緊張する私を「楽しい」と優しく包み込んでくれる笑顔に惹かれていきました。両思いだと分かっていても、「好きです。付き合ってください」と手を震わせて告白したあの夜の緊張は、大切な宝物です。
+会話が驚くほど楽しくて「この人のためなら」と思えたこと。公務員として働きつつ大好きなダンスを楽しむ真っ直ぐさや、緊張する私を「楽しい」と優しく包み込んでくれる笑顔に惹かれていきました。両両思いだと分かっていても、「好きです。付き合ってください」と手を震わせて告白したあの夜の緊張は、大切な宝物です。
 
 どの思い出も一つだって忘れたくないから。普段上手く伝えられない「大好き」を込めて、このアルバムを作りました。喜んでくれるといいな。
 
@@ -430,7 +429,7 @@
           <h2 class="date-title">012 - お泊まり</h2>
           <p class="text">2026.07.26 - 07.27
 前日に急遽会うことが決まって、馬場でお寿司を食べた日
-そのあとはゲーセンへ行って、太鼓の達人にマリカー、モグラ叩きまで大はしゃぎ（笑）ゲーセンでこんなに夢中になって最高の時間を過ごせるのも、みなみさんとだからこそだな〜って感謝の気持ちでいっぱいでした。
+そのあとはゲーセンへ行って、太鼓の達人にマリカー、モグラ叩きまで大はしゃぎ（笑）ゲーセンでこんなに夢中になって最高の時間を過ごせるのも、みなみさんとだからこそだな〜っと感謝の気持ちでいっぱいでした。
 
 そのままみなみさんの家にお泊りして、翌朝はキスマをつけるかつけさせないかの真剣勝負（笑）。じゃれ合っていたら、いつも出かけるギリギリの時間になっちゃうのもお約束だね。
 
@@ -549,7 +548,7 @@
           <h2 class="date-title">016 - 九十九里浜ドライブ</h2>
           <p class="text">2026.08.22
 ふたりで九十九里浜までドライブに行った日
-到着してすぐに海へ飛び込んで、二人してずぶ濡れになりながら泳いだり、海辺をお散歩したり、砂浜にお絵描きしたり……なんだか「青春だなぁ」って笑い合えて、本当に楽しかった！
+到着してすぐに海へ飛び込んで、二人してずぶ濡れになりながら泳んだり、海辺をお散歩したり、砂浜にお絵描きしたり……なんだか「青春だなぁ」って笑い合えて、本当に楽しかった！
 
 お昼に食べたハンバーグもすごく美味しかったな。素敵な場所を見つけてくれてありがとう。計画性ないのにどのお店言ってもあたりだよね。愛の力ってやつ？
 
@@ -682,40 +681,6 @@
 
   </main>
 
-  <!-- 🗺️ ふたりの思い出MAP モーダル -->
-  <div id="mapModal" class="custom-modal">
-    <div class="modal-content map-modal-content">
-      <span class="modal-close" id="mapCloseBtn">&times;</span>
-      <h3 class="modal-title">🗺️ ふたりの思い出MAP（聖地巡礼）</h3>
-      <p class="modal-sub">ピンをタップすると、その場所の思い出が読み上がります📍</p>
-      
-      <div class="map-visual-container">
-        <!-- マップ風イラスト＆スポットピン -->
-        <div class="map-spot-pin" style="top: 25%; left: 30%;" data-spot="埼玉会館（ダンス送迎）">
-          <span class="pin-icon">📍</span><span class="pin-label">埼玉会館</span>
-        </div>
-        <div class="map-spot-pin" style="top: 45%; left: 45%;" data-spot="高田馬場（居酒屋・ゲーセン）">
-          <span class="pin-icon">📍</span><span class="pin-label">高田馬場</span>
-        </div>
-        <div class="map-spot-pin" style="top: 55%; left: 60%;" data-spot="すみだ水族館（初お泊り）">
-          <span class="pin-icon">📍</span><span class="pin-label">すみだ水族館</span>
-        </div>
-        <div class="map-spot-pin" style="top: 65%; left: 68%;" data-spot="葛西臨海公園（観覧車・ひまわり）">
-          <span class="pin-icon">📍</span><span class="pin-label">葛西臨海公園</span>
-        </div>
-        <div class="map-spot-pin" style="top: 75%; left: 75%;" data-spot="ディズニーシー（初めての夢の国）">
-          <span class="pin-icon">📍</span><span class="pin-label">ディズニーシー</span>
-        </div>
-        <div class="map-spot-pin" style="top: 60%; left: 90%;" data-spot="九十九里浜（ずぶ濡れ青春ドライブ）">
-          <span class="pin-icon">📍</span><span class="pin-label">九十九里浜</span>
-        </div>
-      </div>
-      <div id="mapSpotDetail" class="map-spot-detail">
-        <p>上のピン（📍）をタップして、思い出の場所を見てね！</p>
-      </div>
-    </div>
-  </div>
-
   <!-- 🎨 手書きデコ画キャンバス モーダル -->
   <div id="drawModal" class="custom-modal">
     <div class="modal-content draw-modal-content">
@@ -755,6 +720,6 @@
     <button id="nextBtn" aria-label="次のページへ">NEXT ▶</button>
   </div>
 
-  <script src="script.js?v=2500000"></script>
+  <script src="script.js?v=2600000"></script>
 </body>
 </html>
