@@ -31,7 +31,7 @@ html, body {
   z-index: 0;
 }
 
-/* === ヘッダー === */
+/* ヘッダー */
 .cinema-header {
   position: fixed;
   top: 20px; left: 0; width: 100%;
@@ -65,12 +65,12 @@ html, body {
   margin-top: 2px;
 }
 
-/* === 🎞️ 画面中央で流れて回るフィルムビューポート === */
+/* 🎞️ 画面中央のフィルム枠 */
 .film-viewport {
   position: fixed;
   top: 50%; left: 0;
   width: 100vw;
-  height: 190px;
+  height: 200px;
   transform: translateY(-50%);
   z-index: 5;
   display: flex;
@@ -81,7 +81,7 @@ html, body {
 .film-track {
   display: flex;
   gap: 15px;
-  padding: 15px 10px;
+  padding: 20px 10px;
   background: #12100e;
   border-top: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
   border-bottom: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
@@ -92,7 +92,7 @@ html, body {
   will-change: transform;
 }
 
-/* フィルム上の個別写真コマ */
+/* 写真コマ */
 .film-frame {
   flex: none;
   width: 120px;
@@ -103,6 +103,17 @@ html, body {
   position: relative;
   box-shadow: 0 6px 18px rgba(0,0,0,0.6);
   cursor: pointer;
+  transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
+  filter: brightness(0.65) grayscale(0.2);
+}
+
+/* ★ 中央のスポットライト輝き（はっきりと分かる変化） ★ */
+.film-frame.is-center {
+  filter: brightness(1.25) grayscale(0);
+  transform: scale(1.15) translateY(-2px);
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.7), 0 0 25px rgba(243, 229, 171, 0.9);
+  outline: 2px solid #f3e5ab;
+  z-index: 10;
 }
 
 .film-frame img {
@@ -144,7 +155,7 @@ html, body {
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-/* === 💥 3D飛び出しモーダル === */
+/* 💥 3Dモーダル ＆ 裏返しフリップ */
 .photo-pop-modal {
   display: none;
   position: fixed;
@@ -157,6 +168,7 @@ html, body {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  perspective: 1200px;
 }
 
 .photo-pop-modal.show {
@@ -166,31 +178,45 @@ html, body {
 .pop-card-inner {
   width: 88vw;
   max-width: 340px;
-  background: #fdfbf7;
-  color: var(--cinema-bg);
+  height: 380px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pop-card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.pop-card-front-face,
+.pop-card-back-face {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   border-radius: 14px;
   padding: 16px;
   box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.5);
   border: 1.5px solid var(--gold-primary);
-  animation: popUp3D 0.4s ease-out forwards;
+  background: #fdfbf7;
+  color: var(--cinema-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-@keyframes popUp3D {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.pop-card-front {
+/* 表面 */
+.pop-card-front-face .card-img-wrap {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 210px;
   border-radius: 8px;
   overflow: hidden;
-  margin-bottom: 12px;
   border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-.pop-card-front img {
+.pop-card-front-face img {
   width: 100%; height: 100%;
   object-fit: cover;
 }
@@ -204,31 +230,67 @@ html, body {
   text-shadow: 0 1px 4px rgba(0,0,0,0.9);
 }
 
-.pop-card-info h3 {
+.pop-card-front-face .pop-card-info h3 {
   font-size: 1.05rem;
   color: #1a1a1a;
-  margin-bottom: 6px;
+  margin-top: 8px;
   font-weight: 600;
 }
 
-.pop-card-info p {
-  font-size: 0.82rem;
-  line-height: 1.6;
+.flip-hint-text {
+  font-size: 0.72rem;
+  color: var(--gold-dark);
+  text-align: center;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* 裏面 */
+.pop-card-back-face {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #fefcf9, #f4ede2);
+  text-align: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.pop-card-back-face h3 {
+  font-size: 1.1rem;
+  color: #1a1a1a;
+  border-bottom: 1px dashed rgba(212, 175, 55, 0.5);
+  padding-bottom: 6px;
+}
+
+.pop-card-back-face p {
+  font-size: 0.88rem;
+  line-height: 1.8;
   color: #4a423a;
-  margin-bottom: 15px;
-  max-height: 110px;
+  white-space: pre-wrap;
+  text-align: left;
+  max-height: 220px;
   overflow-y: auto;
 }
 
-.pop-close-btn {
+.pop-btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.pop-btn {
+  flex: 1;
   background: #1a1a1a;
   color: #ffffff;
   border: 1px solid var(--gold-primary);
-  padding: 9px 24px;
+  padding: 9px 12px;
   border-radius: 20px;
   font-family: var(--font-en);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   cursor: pointer;
-  width: 100%;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
+}
+
+.pop-btn.flip-btn {
+  background: linear-gradient(135deg, #3d3128, #1c1815);
+  border-color: var(--gold-glow);
 }

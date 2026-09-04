@@ -1,4 +1,3 @@
-// === 30枚の写真とエピソードデータ ===
 const cinemaMemories = [
   { src: 'images/prologue.png', date: "'26.07.03", title: "Prologue", desc: "すべての始まりの夜. 見えなくなるまで手を振ってくれた笑顔は一生の宝物." },
   { src: 'images/page01.png', date: "'26.07.03", title: "付き合った日", desc: "もんじゃ焼き食べて、カラオケで初キスして、公園で告白！最高の夜." },
@@ -29,8 +28,8 @@ const cinemaMemories = [
 
 const filmTrack = document.getElementById('filmTrack');
 
-// 無限ループ用にデータを複製
 function buildFilmTrack() {
+  if (!filmTrack) return;
   filmTrack.innerHTML = '';
   const fullList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
   
@@ -49,7 +48,6 @@ function buildFilmTrack() {
     frame.appendChild(img);
     frame.appendChild(stamp);
     
-    // タップで拡大表示
     frame.addEventListener('click', (e) => {
       e.stopPropagation();
       openModal(item);
@@ -59,7 +57,7 @@ function buildFilmTrack() {
   });
 }
 
-// 🎞️ スムーズに流れて回り続ける無限ループ処理
+// 🎞️ アニメーション ＆ 中央スポットライト計算
 let currentX = 0;
 let isDragging = false;
 let startX = 0;
@@ -68,17 +66,33 @@ let speed = -0.8;
 function animateFilm() {
   if (!isDragging) {
     currentX += speed;
-    if (currentX < -2500) {
-      currentX = 0;
-    } else if (currentX > 0) {
-      currentX = -2500;
-    }
+    if (currentX < -2500) currentX = 0;
+    else if (currentX > 0) currentX = -2500;
   }
-  filmTrack.style.transform = `translateX(${currentX}px)`;
+  
+  if (filmTrack) {
+    filmTrack.style.transform = `translateX(${currentX}px)`;
+
+    const screenCenter = window.innerWidth / 2;
+    const frames = filmTrack.querySelectorAll('.film-frame');
+    
+    frames.forEach(frame => {
+      const rect = frame.getBoundingClientRect();
+      const frameCenter = rect.left + rect.width / 2;
+      
+      // 中央付近（±70px以内）の写真にスポットライト付与
+      if (Math.abs(frameCenter - screenCenter) < 70) {
+        frame.classList.add('is-center');
+      } else {
+        frame.classList.remove('is-center');
+      }
+    });
+  }
+
   requestAnimationFrame(animateFilm);
 }
 
-// タッチ＆ドラッグ操作
+// タッチ＆ドラッグ処理
 const viewport = document.querySelector('.film-viewport');
 
 if (viewport) {
@@ -92,41 +106,69 @@ if (viewport) {
   }, { passive: true });
 
   window.addEventListener('touchmove', (e) => { 
-    if (isDragging) {
-      currentX = e.touches[0].clientX - startX; 
-    }
+    if (isDragging) currentX = e.touches[0].clientX - startX; 
   }, { passive: true });
 
   window.addEventListener('touchend', () => { isDragging = false; });
 }
 
-// 💥 モーダル処理
+// モーダル ＆ フリップ処理
 const modal = document.getElementById('photoModal');
+const popCardInner = document.getElementById('popCardInner');
 const modalImg = document.getElementById('modalImg');
 const modalStamp = document.getElementById('modalStamp');
 const modalTitle = document.getElementById('modalTitle');
+const modalBackTitle = document.getElementById('modalBackTitle');
 const modalDesc = document.getElementById('modalDesc');
-const modalClose = document.getElementById('modalClose');
+
+const flipToBackBtn = document.getElementById('flipToBackBtn');
+const flipToFrontBtn = document.getElementById('flipToFrontBtn');
+const modalCloseFront = document.getElementById('modalCloseFront');
+const modalCloseBack = document.getElementById('modalCloseBack');
 
 function openModal(item) {
+  if (!modal) return;
   modalImg.src = item.src;
   modalStamp.textContent = item.date;
   modalTitle.textContent = item.title;
+  modalBackTitle.textContent = item.title;
   modalDesc.textContent = item.desc;
+  
+  popCardInner.classList.remove('is-flipped');
   modal.classList.add('show');
 }
 
-if (modalClose) {
-  modalClose.addEventListener('click', () => modal.classList.remove('show'));
+function toggleFlip(e) {
+  if (e) e.stopPropagation();
+  if (popCardInner) {
+    popCardInner.classList.toggle('is-flipped');
+  }
 }
 
-if (modal) {
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('show');
+if (flipToBackBtn) flipToBackBtn.addEventListener('click', toggleFlip);
+if (flipToFrontBtn) flipToFrontBtn.addEventListener('click', toggleFlip);
+
+if (popCardInner) {
+  popCardInner.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'BUTTON') {
+      toggleFlip(e);
+    }
   });
 }
 
-// 初期化
+function closeModal() {
+  if (modal) modal.classList.remove('show');
+}
+
+if (modalCloseFront) modalCloseFront.addEventListener('click', closeModal);
+if (modalCloseBack) modalCloseBack.addEventListener('click', closeModal);
+
+if (modal) {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   buildFilmTrack();
   animateFilm();
