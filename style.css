@@ -73,7 +73,7 @@ header, .album-container, .page-indicator, .controls {
   transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-/* === ヘッダー（スマホ最適） === */
+/* === ヘッダー === */
 header {
   margin-top: 15px;
   text-align: center;
@@ -137,7 +137,6 @@ h1 {
   box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
 }
 
-/* ★ 🎬 CINEMA FILM 移動ボタン ★ */
 .cinema-nav-btn {
   background: linear-gradient(135deg, #1c1815, #3d3128);
   border: 1px solid var(--gold-glow);
@@ -178,7 +177,6 @@ h1 {
   pointer-events: none;
 }
 
-/* 🌙 スマホ暗転スクリーン */
 #countdown-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -197,7 +195,6 @@ h1 {
 
 #countdown-overlay.show { opacity: 1; }
 
-/* 🦋 スマホ用蝶々＆レーザーライン */
 .ribbon-container {
   position: fixed;
   top: 0; left: 0;
@@ -285,7 +282,6 @@ h1 {
   100% { transform: translate(200px, -300px) rotate(40deg); opacity: 0; }
 }
 
-/* カウントダウン */
 .count-wrapper {
   position: relative;
   display: flex;
@@ -325,7 +321,6 @@ h1 {
   100% { opacity: 1; transform: scale(1); filter: blur(0px); }
 }
 
-/* START文字 */
 .start-text {
   font-family: var(--font-en);
   font-size: 3.2rem !important;
@@ -344,24 +339,11 @@ h1 {
 }
 
 @keyframes startLightBurst {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
-    filter: blur(8px);
-  }
-  25% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.0);
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2.2);
-    filter: blur(16px);
-  }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); filter: blur(8px); }
+  25% { opacity: 1; transform: translate(-50%, -50%) scale(1.0); filter: blur(0px); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); filter: blur(16px); }
 }
 
-/* あっちこっちから写真が手前へ飛び出すアニメーション */
 .burst-photo-fly {
   position: fixed !important;
   border-radius: 6px;
@@ -376,34 +358,19 @@ h1 {
 }
 
 .burst-photo-fly img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 3px;
   display: block;
 }
 
 @keyframes photoSeamlessStream {
-  0% {
-    opacity: 0;
-    transform: scale(0.15) rotate(var(--start-rot, 0deg));
-    filter: blur(5px);
-  }
-  20% {
-    opacity: 1;
-    filter: blur(0px);
-  }
-  80% {
-    opacity: 0.95;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.55) rotate(var(--end-rot, 15deg));
-    filter: blur(8px);
-  }
+  0% { opacity: 0; transform: scale(0.15) rotate(var(--start-rot, 0deg)); filter: blur(5px); }
+  20% { opacity: 1; filter: blur(0px); }
+  80% { opacity: 0.95; }
+  100% { opacity: 0; transform: scale(1.55) rotate(var(--end-rot, 15deg)); filter: blur(8px); }
 }
 
-/* クライマックス写真花火 */
 .photo-firework-card {
   position: fixed !important;
   width: 85px !important;
@@ -419,37 +386,21 @@ h1 {
 }
 
 .photo-firework-card img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 2px;
 }
 
 @keyframes fireworkBurst {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 80vh) scale(0.15) rotate(0deg);
-    filter: blur(4px);
-  }
-  30% {
-    opacity: 1;
-    transform: translate(-50%, var(--explode-y, -20vh)) scale(0.4) rotate(var(--rot, 0deg));
-    filter: blur(0px);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(calc(-50% + var(--target-x, 0px)), calc(var(--explode-y, -20vh) + var(--target-y, 0px))) scale(1.3) rotate(var(--end-rot, 40deg));
-    filter: blur(10px);
-  }
+  0% { opacity: 0; transform: translate(-50%, 80vh) scale(0.15) rotate(0deg); filter: blur(4px); }
+  30% { opacity: 1; transform: translate(-50%, var(--explode-y, -20vh)) scale(0.4) rotate(var(--rot, 0deg)); filter: blur(0px); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--target-x, 0px)), calc(var(--explode-y, -20vh) + var(--target-y, 0px))) scale(1.3) rotate(var(--end-rot, 40deg)); filter: blur(10px); }
 }
 
-/* 中央静止・アルバム吸い込み */
 .final-hero-photo {
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  width: 175px !important;
-  height: 210px !important;
+  top: 50% !important; left: 50% !important;
+  width: 175px !important; height: 210px !important;
   background: #ffffff !important;
   padding: 6px 6px 20px 6px !important;
   border-radius: 5px !important;
@@ -475,13 +426,11 @@ h1 {
 }
 
 .final-hero-photo img {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 2px;
 }
 
-/* タイトルカード */
 .cover-content {
   text-align: center;
   padding: 24px 20px;
@@ -539,7 +488,6 @@ h1 {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* 📱 フローティングポラロイド位置 */
 #random-photos-container {
   position: absolute;
   top: 0; left: 0;
@@ -557,10 +505,8 @@ h1 {
   border-radius: 2px;
   opacity: 0;
   transition: opacity 1s ease, transform 1s var(--ease-3d);
-  width: 23vw;
-  height: 23vw;
-  min-width: 90px;
-  min-height: 90px;
+  width: 23vw; height: 23vw;
+  min-width: 90px; min-height: 90px;
   pointer-events: auto;
 }
 
@@ -642,6 +588,7 @@ h1 {
   gap: 8px;
 }
 
+/* ★ 1. パララックス・立体深度（奥から手前へズーム） ★ */
 .photo-frame {
   width: 100%;
   height: 180px;
@@ -649,6 +596,12 @@ h1 {
   perspective: 1200px;
   cursor: pointer;
   position: relative;
+  transform: scale(0.92) translateZ(-30px);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page.active .photo-frame {
+  transform: scale(1.03) translateZ(20px);
 }
 
 .photo-btn-group {
@@ -703,7 +656,6 @@ h1 {
   pointer-events: none;
 }
 
-/* アンティークゴールド・フィルムタイムスタンプ */
 .film-timestamp {
   position: absolute;
   bottom: 12px;
@@ -726,14 +678,22 @@ h1 {
   transform: translateY(0);
 }
 
+/* ★ 2. モノクロ ➔ 鮮やかなカラーへのドラマチック発色 ★ */
 .photo-front img {
   width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 4px;
-  opacity: 0;
-  transform: scale(0.95) translateY(6px);
-  transition: opacity 0.4s ease 0.1s, transform 0.5s var(--ease-3d) 0.1s;
-  filter: contrast(1.04) saturate(1.05);
+  opacity: 1 !important; /* 表示漏れを防ぐため常時表示 */
+  transform: scale(0.96);
+  /* 待機時はモノクロ */
+  filter: grayscale(100%) brightness(0.8) contrast(1.1);
+  transition: transform 0.7s var(--ease-3d), filter 1.0s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* メインページ（アクティブ）になった瞬間に色づく */
+.page.active .photo-front img {
+  transform: scale(1);
+  filter: grayscale(0%) brightness(1.05) contrast(1.02);
 }
 
 .photo-front::before {
@@ -744,11 +704,6 @@ h1 {
   background: radial-gradient(circle, rgba(255, 225, 160, 0.28) 0%, rgba(255, 180, 120, 0.12) 50%, transparent 80%);
   pointer-events: none;
   z-index: 2;
-}
-
-.page.active .photo-front img {
-  opacity: 1;
-  transform: scale(1) translateY(0);
 }
 
 .photo-back {

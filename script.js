@@ -144,7 +144,6 @@ function setupRandomEpiloguePhoto() {
   }
 }
 
-// 各写真へフィルム刻印（日付タイムスタンプ）を自動設定する関数
 function applyFilmTimestamps() {
   const photoFrames = document.querySelectorAll('.photo-frame');
   photoFrames.forEach(frame => {
@@ -198,7 +197,6 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 0.3秒（300ms）ごとに写真が連続浮遊出現する処理
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -248,7 +246,6 @@ function launchPhotoPageTransition(onComplete) {
   requestAnimationFrame(spawnStep);
 }
 
-// 運命の1枚が中央で1秒静止 ➔ アルバムへ着地
 function showFinalHeroPhoto(onComplete) {
   const heroDiv = document.createElement('div');
   heroDiv.className = 'final-hero-photo';
@@ -274,7 +271,6 @@ function showFinalHeroPhoto(onComplete) {
   }, 1100);
 }
 
-// クライマックス写真花火
 function launchPhotoFireworkBurst() {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const fireworkCount = Math.min(16, shuffledPhotos.length);
@@ -313,7 +309,6 @@ function launchPhotoFireworkBurst() {
   }
 }
 
-// オープニングボタン動作
 const startBtn = document.getElementById('startBtn');
 const countOverlay = document.createElement('div');
 countOverlay.id = 'countdown-overlay';
@@ -572,10 +567,17 @@ function initPages() {
   updateUI();
 }
 
+// ページ切り替え時にアクティブクラスを確実に設定
 function updateActivePage() {
   pages.forEach((page, index) => {
-    if (index === currentPage) page.classList.add('active');
-    else page.classList.remove('active');
+    if (index === currentPage) {
+      page.classList.add('active');
+    } else {
+      page.classList.remove('active');
+      // めくられた（過ぎた）ページや未表示ページの反転状態をリセット
+      const frame = page.querySelector('.photo-frame');
+      if (frame) frame.classList.remove('flipped-photo');
+    }
   });
 }
 
@@ -629,7 +631,6 @@ function initQuiz() {
   });
 }
 
-// ★★★ 「会いたい吉」を削除し、新しい4つの結果（おでかけ吉、あ〜ん吉、甘やかし吉、おうちデート吉）を追加！ ★★★
 function initOmikuji() {
   const omikujiBtn = document.getElementById('omikujiBtn');
   if (!omikujiBtn) return;
@@ -638,7 +639,7 @@ function initOmikuji() {
     '【超大吉】今日はお泊まり決定。朝までゆっくり過ごせます',
     '【大吉】みなみさんのおねだりが何でも通る特別な日',
     '【おでかけ吉】今日はふたりで寄り道する日。見たことのない景色に会いに行こう',
-    '【あ〜ん吉】美味しいものを「あ〜ん」し合う日。甘い時間と笑顔が溢れます',
+    '【あ〜n吉】美味しいものを「あ〜ん」し合う日。甘い時間と笑顔が溢れます',
     '【甘やかし吉】今日はみなみさんを全力で甘やかす日。おねだりもワガママも全部OK！',
     '【おうちデート吉】どこにも出かけずお部屋でごろごろする日。手をつないで映画でも観よう',
     '【電話吉】今日はふたりでゆっくり電話する日。声を聞くだけで幸せです',
