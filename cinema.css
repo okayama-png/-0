@@ -104,13 +104,13 @@ html, body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.6);
   cursor: pointer;
   transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
-  filter: brightness(0.65) grayscale(0.2);
+  filter: brightness(0.7) grayscale(0.1);
 }
 
-/* ★ 中央のスポットライト輝き（はっきりと分かる変化） ★ */
+/* 中央のスポットライト輝き */
 .film-frame.is-center {
-  filter: brightness(1.25) grayscale(0);
-  transform: scale(1.15) translateY(-2px);
+  filter: brightness(1.2) grayscale(0);
+  transform: scale(1.12) translateY(-2px);
   box-shadow: 0 12px 35px rgba(212, 175, 55, 0.7), 0 0 25px rgba(243, 229, 171, 0.9);
   outline: 2px solid #f3e5ab;
   z-index: 10;
@@ -206,7 +206,6 @@ html, body {
   justify-content: space-between;
 }
 
-/* 表面 */
 .pop-card-front-face .card-img-wrap {
   position: relative;
   width: 100%;
@@ -245,7 +244,6 @@ html, body {
   font-weight: 600;
 }
 
-/* 裏面 */
 .pop-card-back-face {
   transform: rotateY(180deg);
   background: linear-gradient(135deg, #fefcf9, #f4ede2);

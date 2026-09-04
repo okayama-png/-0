@@ -57,7 +57,7 @@ function buildFilmTrack() {
   });
 }
 
-// 🎞️ アニメーション ＆ 中央スポットライト計算
+// アニメーション ＆ スポットライト計算
 let currentX = 0;
 let isDragging = false;
 let startX = 0;
@@ -80,7 +80,6 @@ function animateFilm() {
       const rect = frame.getBoundingClientRect();
       const frameCenter = rect.left + rect.width / 2;
       
-      // 中央付近（±70px以内）の写真にスポットライト付与
       if (Math.abs(frameCenter - screenCenter) < 70) {
         frame.classList.add('is-center');
       } else {
@@ -92,7 +91,7 @@ function animateFilm() {
   requestAnimationFrame(animateFilm);
 }
 
-// タッチ＆ドラッグ処理
+// タッチ＆ドラッグ
 const viewport = document.querySelector('.film-viewport');
 
 if (viewport) {
@@ -134,7 +133,7 @@ function openModal(item) {
   modalBackTitle.textContent = item.title;
   modalDesc.textContent = item.desc;
   
-  popCardInner.classList.remove('is-flipped');
+  if (popCardInner) popCardInner.classList.remove('is-flipped');
   modal.classList.add('show');
 }
 
