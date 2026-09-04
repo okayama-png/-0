@@ -64,18 +64,22 @@ function initFilmTracks() {
   }
 }
 
-// ♾️ 永遠ループアニメーション
+// ♾️ 永遠ループアニメーション（ゆったりスピード調整）
 let topX = 0;
 let bottomX = -1500;
 
+// ★ 数値を小さくするほどゆっくり回ります（例: -0.35）
+let speedTop = -0.35;
+let speedBottom = 0.35;
+
 function animateFilm() {
-  topX -= 0.8;
+  topX += speedTop;
   if (topX < -3000) topX = 0;
   
   const topEl = document.getElementById('filmTrackTop');
   if (topEl) topEl.style.transform = `translateX(${topX}px)`;
 
-  bottomX += 0.8;
+  bottomX += speedBottom;
   if (bottomX > 0) bottomX = -3000;
   
   const bottomEl = document.getElementById('filmTrackBottom');
@@ -132,13 +136,8 @@ function setupEvents() {
   }
 }
 
-// 即時初期化
-initFilmTracks();
-setupEvents();
-animateFilm();
-
-// 念のためロード完了時にも初期化
 window.addEventListener('DOMContentLoaded', () => {
   initFilmTracks();
   setupEvents();
+  animateFilm();
 });
