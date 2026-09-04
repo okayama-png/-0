@@ -28,86 +28,72 @@ const cinemaMemories = [
 ];
 
 const filmTrack = document.getElementById('filmTrack');
-let rotationY = 0;
-let isDragging = false;
-let startX = 0;
-let autoSpeed = 0.25; // 自動回転の速度
 
-// 🎡 写真カードを真ん丸（立体輪っか状）に360度配置
-function build3DWheel() {
+// 無限ループ用にデータを複製
+function buildFilmTrack() {
   filmTrack.innerHTML = '';
-  const count = cinemaMemories.length;
-  const radius = Math.min(window.innerWidth * 0.95, 480); // 輪っかの半径（奥行き）
-  const angleStep = 360 / count;
-
-  cinemaMemories.forEach((item, index) => {
+  const fullList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
+  
+  fullList.forEach((item) => {
     const frame = document.createElement('div');
     frame.className = 'film-frame';
-
-    const angle = angleStep * index;
-    // 3D空間上で円環状に配置する計算
-    frame.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
-
+    
     const img = document.createElement('img');
     img.src = item.src;
     img.alt = item.title;
-
+    
     const stamp = document.createElement('div');
     stamp.className = 'frame-stamp';
     stamp.textContent = item.date;
-
+    
     frame.appendChild(img);
     frame.appendChild(stamp);
-
+    
     // タップで拡大表示
     frame.addEventListener('click', (e) => {
       e.stopPropagation();
       openModal(item);
     });
-
+    
     filmTrack.appendChild(frame);
   });
 }
 
-// 🎡 3Dホイールの自動回転ループ
-function animateWheel() {
+// 🎞️ スムーズに流れて回り続ける無限ループ処理
+let currentX = 0;
+let isDragging = false;
+let startX = 0;
+let speed = -0.8;
+
+function animateFilm() {
   if (!isDragging) {
-    rotationY += autoSpeed;
+    currentX += speed;
+    if (currentX < -2500) {
+      currentX = 0;
+    } else if (currentX > 0) {
+      currentX = -2500;
+    }
   }
-  // 少しだけ傾けて立体感を際立たせる（rotateX(-6deg)）
-  filmTrack.style.transform = `rotateX(-6deg) rotateY(${rotationY}deg)`;
-  requestAnimationFrame(animateWheel);
+  filmTrack.style.transform = `translateX(${currentX}px)`;
+  requestAnimationFrame(animateFilm);
 }
 
-// スマホタッチ＆マウスでクルクル回す処理
+// タッチ＆ドラッグ操作
 const viewport = document.querySelector('.film-viewport');
 
 if (viewport) {
-  viewport.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startX = e.clientX;
-  });
-
-  window.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-      const deltaX = e.clientX - startX;
-      rotationY += deltaX * 0.4;
-      startX = e.clientX;
-    }
-  });
-
+  viewport.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX - currentX; });
+  window.addEventListener('mousemove', (e) => { if (isDragging) currentX = e.clientX - startX; });
   window.addEventListener('mouseup', () => { isDragging = false; });
 
-  viewport.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    startX = e.touches[0].clientX;
+  viewport.addEventListener('touchstart', (e) => { 
+    isDragging = true; 
+    startX = e.touches[0].clientX - currentX; 
   }, { passive: true });
 
-  window.addEventListener('touchmove', (e) => {
+  window.addEventListener('touchmove', (e) => { 
     if (isDragging) {
-      const deltaX = e.touches[0].clientX - startX;
-      rotationY += deltaX * 0.5;
-      startX = e.touches[0].clientX;
+      currentX = e.touches[0].clientX - startX; 
     }
   }, { passive: true });
 
@@ -142,8 +128,6 @@ if (modal) {
 
 // 初期化
 document.addEventListener('DOMContentLoaded', () => {
-  build3DWheel();
-  animateWheel();
+  buildFilmTrack();
+  animateFilm();
 });
-
-window.addEventListener('resize', build3DWheel);

@@ -20,7 +20,7 @@ html, body {
   color: #ffffff;
   font-family: var(--font-ja);
   overflow: hidden;
-  position: fixed; /* スマホでの不要なスクロールを防止 */
+  position: fixed;
 }
 
 .cinema-bg {
@@ -65,13 +65,13 @@ html, body {
   margin-top: 2px;
 }
 
-/* === 🎞️ スマホ画面の中央に確実に表示されるフィルム枠 === */
+/* === 🎞️ 画面中央で流れて回るフィルムビューポート === */
 .film-viewport {
   position: fixed;
   top: 50%; left: 0;
   width: 100vw;
   height: 190px;
-  transform: translateY(-50%); /* 画面上下のぴったり中央 */
+  transform: translateY(-50%);
   z-index: 5;
   display: flex;
   align-items: center;
