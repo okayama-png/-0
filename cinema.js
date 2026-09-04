@@ -64,26 +64,40 @@ function initFilmTracks() {
   }
 }
 
-// ♾️ 永遠ループアニメーション（ゆったりスピード調整）
+// ♾️ 永遠ループアニメーション ＆ ★ 中央スポットライト金枠計算 ★
 let topX = 0;
 let bottomX = -1500;
-
-// ★ 数値を小さくするほどゆっくり回ります（例: -0.35）
 let speedTop = -0.35;
 let speedBottom = 0.35;
 
 function animateFilm() {
   topX += speedTop;
-  if (topX < -3000) topX = 0;
+  if (topX < -3500) topX = 0;
   
   const topEl = document.getElementById('filmTrackTop');
   if (topEl) topEl.style.transform = `translateX(${topX}px)`;
 
   bottomX += speedBottom;
-  if (bottomX > 0) bottomX = -3000;
+  if (bottomX > 0) bottomX = -3500;
   
   const bottomEl = document.getElementById('filmTrackBottom');
   if (bottomEl) bottomEl.style.transform = `translateX(${bottomX}px)`;
+
+  // 画面真ん中を通過するコマを計算して輝かせる
+  const screenCenter = window.innerWidth / 2;
+  const allFrames = document.querySelectorAll('.film-frame');
+  
+  allFrames.forEach(frame => {
+    const rect = frame.getBoundingClientRect();
+    const frameCenter = rect.left + rect.width / 2;
+    
+    // 画面中央（±75px以内）にいる写真にゴールドフレーム付与
+    if (Math.abs(frameCenter - screenCenter) < 75) {
+      frame.classList.add('is-center');
+    } else {
+      frame.classList.remove('is-center');
+    }
+  });
 
   requestAnimationFrame(animateFilm);
 }

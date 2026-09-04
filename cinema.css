@@ -23,6 +23,40 @@ html, body {
   position: fixed;
 }
 
+/* === 🎞️ シネマ・オープニングカーテン === */
+.cinema-curtain {
+  position: fixed;
+  top: 0;
+  width: 50vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #1c1611 0%, #080605 100%);
+  border-color: var(--gold-primary);
+  z-index: 999;
+  pointer-events: none;
+}
+
+.curtain-left {
+  left: 0;
+  border-right: 2px solid var(--gold-primary);
+  animation: openCurtainLeft 1.8s cubic-bezier(0.77, 0, 0.175, 1) 0.3s forwards;
+}
+
+.curtain-right {
+  right: 0;
+  border-left: 2px solid var(--gold-primary);
+  animation: openCurtainRight 1.8s cubic-bezier(0.77, 0, 0.175, 1) 0.3s forwards;
+}
+
+@keyframes openCurtainLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes openCurtainRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
 .cinema-bg {
   position: fixed;
   top: 0; left: 0;
@@ -69,7 +103,7 @@ html, body {
   position: fixed;
   top: 52%; left: 0;
   width: 100vw;
-  height: 380px;
+  height: 480px;
   transform: translateY(-50%);
   z-index: 5;
   display: flex;
@@ -80,17 +114,17 @@ html, body {
 .film-track-row {
   position: relative;
   width: 100%;
-  height: 175px;
+  height: 225px;
   overflow: hidden;
 }
 
 .film-track {
   display: flex;
-  gap: 12px;
-  padding: 12px 10px;
+  gap: 16px;
+  padding: 16px 12px;
   background: #12100e;
-  border-top: 6px repeating-linear-gradient(90deg, #000 0px, #000 8px, #d4af37 8px, #d4af37 15px);
-  border-bottom: 6px repeating-linear-gradient(90deg, #000 0px, #000 8px, #d4af37 8px, #d4af37 15px);
+  border-top: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
+  border-bottom: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2);
   position: absolute;
   left: 0;
@@ -98,18 +132,29 @@ html, body {
   will-change: transform;
 }
 
-/* 写真コマ */
+/* 写真コマ（約1.3倍サイズ） */
 .film-frame {
   flex: none;
-  width: 110px;
-  height: 140px;
+  width: 145px;
+  height: 182px;
   background: #ffffff;
-  padding: 4px 4px 16px 4px;
-  border-radius: 3px;
+  padding: 5px 5px 20px 5px;
+  border-radius: 4px;
   position: relative;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.7);
   cursor: pointer;
-  filter: brightness(0.9);
+  transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease, outline 0.25s ease;
+  filter: brightness(0.75);
+}
+
+/* 中央に来た写真のズームアップ ＆ 金色グラデーションフレーム枠 */
+.film-frame.is-center {
+  filter: brightness(1.25) contrast(1.05);
+  transform: scale(1.15) translateY(-3px);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.8), 0 0 25px rgba(243, 229, 171, 0.9);
+  outline: 3px solid #f3e5ab;
+  outline-offset: -1px;
+  z-index: 10;
 }
 
 .film-frame img {
@@ -123,9 +168,9 @@ html, body {
 
 .film-frame .frame-stamp {
   position: absolute;
-  bottom: 2px; right: 4px;
+  bottom: 3px; right: 6px;
   font-family: var(--font-en);
-  font-size: 0.58rem;
+  font-size: 0.65rem;
   color: #8c6a2d;
   font-weight: 600;
   pointer-events: none;
