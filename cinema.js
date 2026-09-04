@@ -1,4 +1,3 @@
-// === 結南さん考案のエピソードデータ ===
 const cinemaMemories = [
   { src: 'images/prologue.png', date: "'26.07.03", title: "Prologue", desc: "すべての始まりの夜. 見えなくなるまで手を振ってくれた笑顔は一生の宝物." },
   { src: 'images/page01.png', date: "'26.07.03", title: "付き合った日", desc: "もんじゃ焼き食べて、カラオケで初キスして、公園で告白。緊張したなぁ." },
@@ -18,7 +17,7 @@ const cinemaMemories = [
   { src: 'images/page15.png', date: "'26.08.16", title: "ダンス公演", desc: "踊るみなみさんは世界一カッコいいです。何回見ても飽きないダンスでこれからも虜にしてください。" },
   { src: 'images/page16.png', date: "'26.08.22", title: "九十九里浜ドライブ", desc: "二人で全身びしょぬれになってお絵描きもして最高の海だったね。道中に食べたハンバーグおいしかった、見つけてくれてありがとう" },
   { src: 'images/page17.png', date: "'26.08.21", title: "5日間連続お泊り", desc: "こんなに長いこといても何一つ嫌な思いをしないのが本当にすごいなって感じます。ピアノもギターもがんばります。いつか協奏しよう。" },
-  { src: 'images/page18.png', date: "'26.09.01", title: "ディズニーシー", desc: "幸せすぎたなぁ。トイマニもタワテラも叫びすぎたし、最高な一日でした。待ち時間とはッて感じだったね" },
+  { src: 'images/page18.png', date: "'26.09.01", title: "ディズニーシー", desc: "幸せすぎたなぁ。トイマニ叫びすぎ笑 地球儀の前で膝抱えるポーズも最高だった！" },
   { src: 'images/extra11.png', date: "'26 MEMORIES", title: "Special Moment", desc: "ふたりの笑顔が弾けた最高に愛おしい一枚." },
   { src: 'images/extra12.png', date: "'26 MEMORIES", title: "Happy Time", desc: "いつでも隣で笑い合える幸せを感じた日." },
   { src: 'images/extra13.png', date: "'26 MEMORIES", title: "Sweet Memory", desc: "何気ない日常が、みなみさんといると特別な日になる." },
@@ -27,149 +26,119 @@ const cinemaMemories = [
   { src: 'images/extra16.png', date: "'26 MEMORIES", title: "Forever & Always", desc: "これからもずっと、二人でたくさんの景色を見に行こうね." }
 ];
 
-const filmTrack = document.getElementById('filmTrack');
-
-function buildFilmTrack() {
-  if (!filmTrack) return;
-  filmTrack.innerHTML = '';
-  const fullList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
+function createFrame(item) {
+  const frame = document.createElement('div');
+  frame.className = 'film-frame';
   
-  fullList.forEach((item) => {
-    const frame = document.createElement('div');
-    frame.className = 'film-frame';
-    
-    const img = document.createElement('img');
-    img.src = item.src;
-    img.alt = item.title;
-    
-    const stamp = document.createElement('div');
-    stamp.className = 'frame-stamp';
-    stamp.textContent = item.date;
-    
-    frame.appendChild(img);
-    frame.appendChild(stamp);
-    
-    frame.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openModal(item);
-    });
-    
-    filmTrack.appendChild(frame);
+  const img = document.createElement('img');
+  img.src = item.src;
+  img.alt = item.title;
+  
+  const stamp = document.createElement('div');
+  stamp.className = 'frame-stamp';
+  stamp.textContent = item.date;
+  
+  frame.appendChild(img);
+  frame.appendChild(stamp);
+  
+  frame.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openModal(item);
   });
+  
+  return frame;
 }
 
-// アニメーション ＆ スポットライト計算
-let currentX = 0;
-let isDragging = false;
-let startX = 0;
-let speed = -0.8;
+function initFilmTracks() {
+  const topEl = document.getElementById('filmTrackTop');
+  const bottomEl = document.getElementById('filmTrackBottom');
+
+  if (topEl && bottomEl) {
+    const fullList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
+
+    topEl.innerHTML = '';
+    fullList.forEach(item => topEl.appendChild(createFrame(item)));
+
+    bottomEl.innerHTML = '';
+    [...fullList].reverse().forEach(item => bottomEl.appendChild(createFrame(item)));
+  }
+}
+
+// ♾️ 永遠ループアニメーション
+let topX = 0;
+let bottomX = -1500;
 
 function animateFilm() {
-  if (!isDragging) {
-    currentX += speed;
-    if (currentX < -2500) currentX = 0;
-    else if (currentX > 0) currentX = -2500;
-  }
+  topX -= 0.8;
+  if (topX < -3000) topX = 0;
   
-  if (filmTrack) {
-    filmTrack.style.transform = `translateX(${currentX}px)`;
+  const topEl = document.getElementById('filmTrackTop');
+  if (topEl) topEl.style.transform = `translateX(${topX}px)`;
 
-    const screenCenter = window.innerWidth / 2;
-    const frames = filmTrack.querySelectorAll('.film-frame');
-    
-    frames.forEach(frame => {
-      const rect = frame.getBoundingClientRect();
-      const frameCenter = rect.left + rect.width / 2;
-      
-      if (Math.abs(frameCenter - screenCenter) < 70) {
-        frame.classList.add('is-center');
-      } else {
-        frame.classList.remove('is-center');
-      }
-    });
-  }
+  bottomX += 0.8;
+  if (bottomX > 0) bottomX = -3000;
+  
+  const bottomEl = document.getElementById('filmTrackBottom');
+  if (bottomEl) bottomEl.style.transform = `translateX(${bottomX}px)`;
 
   requestAnimationFrame(animateFilm);
 }
 
-// タッチ＆ドラッグ操作
-const viewport = document.querySelector('.film-viewport');
-
-if (viewport) {
-  viewport.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX - currentX; });
-  window.addEventListener('mousemove', (e) => { if (isDragging) currentX = e.clientX - startX; });
-  window.addEventListener('mouseup', () => { isDragging = false; });
-
-  viewport.addEventListener('touchstart', (e) => { 
-    isDragging = true; 
-    startX = e.touches[0].clientX - currentX; 
-  }, { passive: true });
-
-  window.addEventListener('touchmove', (e) => { 
-    if (isDragging) currentX = e.touches[0].clientX - startX; 
-  }, { passive: true });
-
-  window.addEventListener('touchend', () => { isDragging = false; });
-}
-
 // モーダル ＆ フリップ処理
-const modal = document.getElementById('photoModal');
-const popCardInner = document.getElementById('popCardInner');
-const modalImg = document.getElementById('modalImg');
-const modalStamp = document.getElementById('modalStamp');
-const modalTitle = document.getElementById('modalTitle');
-const modalBackTitle = document.getElementById('modalBackTitle');
-const modalDesc = document.getElementById('modalDesc');
-
-const flipToBackBtn = document.getElementById('flipToBackBtn');
-const flipToFrontBtn = document.getElementById('flipToFrontBtn');
-const modalCloseFront = document.getElementById('modalCloseFront');
-const modalCloseBack = document.getElementById('modalCloseBack');
-
 function openModal(item) {
-  if (!modal) return;
-  modalImg.src = item.src;
-  modalStamp.textContent = item.date;
-  modalTitle.textContent = item.title;
-  modalBackTitle.textContent = item.title;
-  modalDesc.textContent = item.desc;
+  const modal = document.getElementById('photoModal');
+  const inner = document.getElementById('popCardInner');
   
-  if (popCardInner) popCardInner.classList.remove('is-flipped');
-  modal.classList.add('show');
+  if (modal) {
+    document.getElementById('modalImg').src = item.src;
+    document.getElementById('modalStamp').textContent = item.date;
+    document.getElementById('modalTitle').textContent = item.title;
+    document.getElementById('modalBackTitle').textContent = item.title;
+    document.getElementById('modalDesc').textContent = item.desc;
+    
+    if (inner) inner.classList.remove('is-flipped');
+    modal.classList.add('show');
+  }
 }
 
 function toggleFlip(e) {
   if (e) e.stopPropagation();
-  if (popCardInner) {
-    popCardInner.classList.toggle('is-flipped');
+  const inner = document.getElementById('popCardInner');
+  if (inner) inner.classList.toggle('is-flipped');
+}
+
+function setupEvents() {
+  const flipToBackBtn = document.getElementById('flipToBackBtn');
+  const flipToFrontBtn = document.getElementById('flipToFrontBtn');
+  const modalCloseFront = document.getElementById('modalCloseFront');
+  const modalCloseBack = document.getElementById('modalCloseBack');
+  const modal = document.getElementById('photoModal');
+  const inner = document.getElementById('popCardInner');
+
+  if (flipToBackBtn) flipToBackBtn.onclick = toggleFlip;
+  if (flipToFrontBtn) flipToFrontBtn.onclick = toggleFlip;
+  
+  if (inner) {
+    inner.onclick = (e) => {
+      if (e.target.tagName !== 'BUTTON') toggleFlip(e);
+    };
+  }
+
+  const closeModal = () => { if (modal) modal.classList.remove('show'); };
+  if (modalCloseFront) modalCloseFront.onclick = closeModal;
+  if (modalCloseBack) modalCloseBack.onclick = closeModal;
+  if (modal) {
+    modal.onclick = (e) => { if (e.target === modal) closeModal(); };
   }
 }
 
-if (flipToBackBtn) flipToBackBtn.addEventListener('click', toggleFlip);
-if (flipToFrontBtn) flipToFrontBtn.addEventListener('click', toggleFlip);
+// 即時初期化
+initFilmTracks();
+setupEvents();
+animateFilm();
 
-if (popCardInner) {
-  popCardInner.addEventListener('click', (e) => {
-    if (e.target.tagName !== 'BUTTON') {
-      toggleFlip(e);
-    }
-  });
-}
-
-function closeModal() {
-  if (modal) modal.classList.remove('show');
-}
-
-if (modalCloseFront) modalCloseFront.addEventListener('click', closeModal);
-if (modalCloseBack) modalCloseBack.addEventListener('click', closeModal);
-
-if (modal) {
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  buildFilmTrack();
-  animateFilm();
+// 念のためロード完了時にも初期化
+window.addEventListener('DOMContentLoaded', () => {
+  initFilmTracks();
+  setupEvents();
 });

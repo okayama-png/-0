@@ -34,7 +34,7 @@ html, body {
 /* ヘッダー */
 .cinema-header {
   position: fixed;
-  top: 20px; left: 0; width: 100%;
+  top: 15px; left: 0; width: 100%;
   text-align: center;
   z-index: 10;
   pointer-events: none;
@@ -43,7 +43,7 @@ html, body {
 
 .cinema-header .brand {
   font-family: var(--font-en);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   letter-spacing: 0.35em;
   color: var(--gold-primary);
   text-transform: uppercase;
@@ -51,41 +51,47 @@ html, body {
 
 .cinema-header h1 {
   font-family: var(--font-en);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   letter-spacing: 0.12em;
   font-weight: 600;
-  margin-top: 2px;
+  margin-top: 1px;
   color: #ffffff;
 }
 
 .cinema-header .sub {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #a89f91;
   letter-spacing: 0.1em;
-  margin-top: 2px;
 }
 
-/* 🎞️ 画面中央のフィルム枠 */
-.film-viewport {
+/* 🎞️ 画面全体に広がる2段フィルムビューポート */
+.film-viewport-double {
   position: fixed;
-  top: 50%; left: 0;
+  top: 52%; left: 0;
   width: 100vw;
-  height: 200px;
+  height: 380px;
   transform: translateY(-50%);
   z-index: 5;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.film-track-row {
+  position: relative;
+  width: 100%;
+  height: 175px;
   overflow: hidden;
 }
 
 .film-track {
   display: flex;
-  gap: 15px;
-  padding: 20px 10px;
+  gap: 12px;
+  padding: 12px 10px;
   background: #12100e;
-  border-top: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
-  border-bottom: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 55, 0.25);
+  border-top: 6px repeating-linear-gradient(90deg, #000 0px, #000 8px, #d4af37 8px, #d4af37 15px);
+  border-bottom: 6px repeating-linear-gradient(90deg, #000 0px, #000 8px, #d4af37 8px, #d4af37 15px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2);
   position: absolute;
   left: 0;
   white-space: nowrap;
@@ -95,25 +101,15 @@ html, body {
 /* 写真コマ */
 .film-frame {
   flex: none;
-  width: 120px;
-  height: 150px;
+  width: 110px;
+  height: 140px;
   background: #ffffff;
-  padding: 5px 5px 18px 5px;
+  padding: 4px 4px 16px 4px;
   border-radius: 3px;
   position: relative;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.6);
   cursor: pointer;
-  transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
-  filter: brightness(0.7) grayscale(0.1);
-}
-
-/* 中央のスポットライト輝き */
-.film-frame.is-center {
-  filter: brightness(1.2) grayscale(0);
-  transform: scale(1.12) translateY(-2px);
-  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.7), 0 0 25px rgba(243, 229, 171, 0.9);
-  outline: 2px solid #f3e5ab;
-  z-index: 10;
+  filter: brightness(0.9);
 }
 
 .film-frame img {
@@ -127,9 +123,9 @@ html, body {
 
 .film-frame .frame-stamp {
   position: absolute;
-  bottom: 3px; right: 5px;
+  bottom: 2px; right: 4px;
   font-family: var(--font-en);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   color: #8c6a2d;
   font-weight: 600;
   pointer-events: none;
@@ -138,24 +134,23 @@ html, body {
 /* ガイド表示 */
 .cinema-guide {
   position: fixed;
-  bottom: 30px; left: 0; width: 100%;
+  bottom: 20px; left: 0; width: 100%;
   text-align: center;
   z-index: 10;
   pointer-events: none;
 }
 
 .cinema-guide p {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--gold-glow);
   background: rgba(20, 16, 12, 0.85);
   display: inline-block;
-  padding: 8px 18px;
+  padding: 6px 16px;
   border-radius: 25px;
   border: 1px solid rgba(212, 175, 55, 0.4);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-/* 💥 3Dモーダル ＆ 裏返しフリップ */
+/* 💥 モーダル ＆ 裏返し */
 .photo-pop-modal {
   display: none;
   position: fixed;
@@ -285,7 +280,6 @@ html, body {
   font-family: var(--font-en);
   font-size: 0.78rem;
   cursor: pointer;
-  letter-spacing: 0.05em;
 }
 
 .pop-btn.flip-btn {
