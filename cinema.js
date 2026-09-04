@@ -64,11 +64,13 @@ function initFilmTracks() {
   }
 }
 
-// ♾️ 永遠ループアニメーション ＆ ★ 中央スポットライト金枠計算 ★
+// ♾️ 永遠ループアニメーション ＆ スピード調整
 let topX = 0;
 let bottomX = -1500;
-let speedTop = -0.35;
-let speedBottom = 0.35;
+
+// ★ 0.35 から 0.55 にスピードをアップ（数値を変えるとお好みの速度にできます）
+let speedTop = -0.55;
+let speedBottom = 0.55;
 
 function animateFilm() {
   topX += speedTop;
@@ -91,7 +93,6 @@ function animateFilm() {
     const rect = frame.getBoundingClientRect();
     const frameCenter = rect.left + rect.width / 2;
     
-    // 画面中央（±75px以内）にいる写真にゴールドフレーム付与
     if (Math.abs(frameCenter - screenCenter) < 75) {
       frame.classList.add('is-center');
     } else {
