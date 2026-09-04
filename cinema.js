@@ -64,28 +64,35 @@ function initFilmTracks() {
   }
 }
 
-// ♾️ 永遠ループアニメーション ＆ スピード調整
+// ♾️ 永遠ループ ＆ 👆 ドラッグ・スワイプ操作
 let topX = 0;
 let bottomX = -1500;
-
-// ★ 0.35 から 0.55 にスピードをアップ（数値を変えるとお好みの速度にできます）
 let speedTop = -0.55;
 let speedBottom = 0.55;
 
+let isDragging = false;
+let startX = 0;
+let dragTopStartX = 0;
+let dragBottomStartX = 0;
+
 function animateFilm() {
-  topX += speedTop;
-  if (topX < -3500) topX = 0;
+  if (!isDragging) {
+    topX += speedTop;
+    if (topX < -3500) topX = 0;
+    else if (topX > 0) topX = -3500;
+
+    bottomX += speedBottom;
+    if (bottomX > 0) bottomX = -3500;
+    else if (bottomX < -3500) bottomX = 0;
+  }
   
   const topEl = document.getElementById('filmTrackTop');
   if (topEl) topEl.style.transform = `translateX(${topX}px)`;
-
-  bottomX += speedBottom;
-  if (bottomX > 0) bottomX = -3500;
   
   const bottomEl = document.getElementById('filmTrackBottom');
   if (bottomEl) bottomEl.style.transform = `translateX(${bottomX}px)`;
 
-  // 画面真ん中を通過するコマを計算して輝かせる
+  // 中央スポットライト計算
   const screenCenter = window.innerWidth / 2;
   const allFrames = document.querySelectorAll('.film-frame');
   
@@ -101,6 +108,40 @@ function animateFilm() {
   });
 
   requestAnimationFrame(animateFilm);
+}
+
+// 👆 タッチ・スワイプ＆マウスドラッグ処理
+function setupDragEvents() {
+  const viewport = document.querySelector('.film-viewport-double');
+  if (!viewport) return;
+
+  const onStart = (clientX) => {
+    isDragging = true;
+    startX = clientX;
+    dragTopStartX = topX;
+    dragBottomStartX = bottomX;
+  };
+
+  const onMove = (clientX) => {
+    if (!isDragging) return;
+    const diffX = clientX - startX;
+    topX = dragTopStartX + diffX;
+    bottomX = dragBottomStartX - diffX; // 下段は逆方向に連動させてダイナミックに
+  };
+
+  const onEnd = () => {
+    isDragging = false;
+  };
+
+  // マウスイベント
+  viewport.addEventListener('mousedown', (e) => onStart(e.clientX));
+  window.addEventListener('mousemove', (e) => onMove(e.clientX));
+  window.addEventListener('mouseup', onEnd);
+
+  // タッチイベント（スマホ）
+  viewport.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX), { passive: true });
+  window.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: true });
+  window.addEventListener('touchend', onEnd);
 }
 
 // モーダル ＆ フリップ処理
@@ -154,5 +195,6 @@ function setupEvents() {
 window.addEventListener('DOMContentLoaded', () => {
   initFilmTracks();
   setupEvents();
+  setupDragEvents();
   animateFilm();
 });
