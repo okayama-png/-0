@@ -175,7 +175,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 🎬 カーテンの中で写真がランダムに浮遊・飛び出していく演出
+// 🎬 写真がランダムに浮遊・飛び出していく演出
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -185,7 +185,7 @@ function launchPhotoPageTransition(onComplete) {
   let lastTime = performance.now();
 
   function spawnStep(now) {
-    if (now - lastTime >= 280 && count < burstCount) {
+    if (now - lastTime >= 260 && count < burstCount) {
       lastTime = now;
 
       const photoContainer = document.createElement('div');
@@ -218,14 +218,14 @@ function launchPhotoPageTransition(onComplete) {
     if (count < burstCount) {
       requestAnimationFrame(spawnStep);
     } else {
-      setTimeout(() => showFinalHeroPhoto(onComplete), 250);
+      setTimeout(() => showFinalHeroPhoto(onComplete), 200);
     }
   }
 
   requestAnimationFrame(spawnStep);
 }
 
-// 運命の1枚が中央で静止 ➔ アルバムへ着地
+// 運命の1枚が中央で静止 ➔ アルバムへ吸い込まれて着地
 function showFinalHeroPhoto(onComplete) {
   const heroDiv = document.createElement('div');
   heroDiv.className = 'final-hero-photo';
@@ -248,7 +248,7 @@ function showFinalHeroPhoto(onComplete) {
     heroDiv.classList.add('absorb-into-album');
 
     setTimeout(() => heroDiv.remove(), 850);
-  }, 1100);
+  }, 1000);
 }
 
 function launchPhotoFireworkBurst() {
@@ -289,36 +289,33 @@ function launchPhotoFireworkBurst() {
   }
 }
 
-// ★ 🎬 カーテン（2.4秒スロー）と同期する新オープニング動作 ★
+// ★ 🎬 洗練されたシームレス・オープニング（カーテン閉鎖 ➔ 写真浮遊 ➔ アルバム遷移） ★
 const startBtn = document.getElementById('startBtn');
 
 if (startBtn) {
   startBtn.addEventListener('click', () => {
-    // 1. ボタンを消し、左右のシネマカーテンが「くの字」にしなりながら閉じ始める
+    // 1. ボタン消去＆カーテンが滑らかに閉じる
     startBtn.style.display = 'none';
     document.body.classList.add('curtain-closed');
-    playHeartbeatSound();
 
-    // 2. カーテンが閉まり切る直前（1.5秒後）に金の光（ダスト）を優雅に放出
+    // 2. カーテンが閉じている間に背景で金の粒子が優しく浮遊
     setTimeout(() => {
       launchGoldenDust();
-    }, 1500);
+    }, 1200);
 
-    // 3. カーテンが中央でピタッと閉まった後（2.2秒後）、写真のランダム浮遊を開始
+    // 3. カーテンが閉じたところから、思い出写真が次々と浮かび上がる
     setTimeout(() => {
       launchPhotoPageTransition(() => {
-        // 4. カバーを外して本編アルバムをセット
+        // 4. カバーを外し、本編アルバムをセット
         document.body.classList.remove('cover-active');
         openingCover.classList.add('open-book');
-        launchExplosion();
-        triggerCameraFlash();
 
-        // 5. 最後にカーテンが静かに開いてアルバムがお披露目される！
+        // 5. カーテンがスーッと開いて本編アルバムへシームレスに到着
         setTimeout(() => {
           document.body.classList.remove('curtain-closed');
-        }, 400);
+        }, 100);
       });
-    }, 2200);
+    }, 2000);
   });
 }
 
@@ -444,7 +441,7 @@ function launchConfettiBurst() {
 
     setTimeout(() => {
       conf.style.opacity = '0';
-      conf.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${Math.random() * 720}deg) scale(1.4)`;
+      conf.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.4)`;
     }, 20);
 
     setTimeout(() => conf.remove(), 2300);
@@ -545,8 +542,6 @@ nextBtn.addEventListener('click', () => {
     currentPage++;
     updateActivePage();
     updateUI();
-    launchExplosion();
-    triggerCameraFlash();
   }
 });
 
@@ -556,8 +551,6 @@ prevBtn.addEventListener('click', () => {
     pages[currentPage].classList.remove('flipped');
     updateActivePage();
     updateUI();
-    launchExplosion();
-    triggerCameraFlash();
   }
 });
 
@@ -579,7 +572,6 @@ function initQuiz() {
         if (isCorrect) {
           resultDiv.style.color = '#2d8a4e';
           resultDiv.textContent = '正解です！';
-          launchExplosion();
         } else {
           resultDiv.style.color = '#c0392b';
           resultDiv.textContent = '残念、もう一度確認してみてください。';
@@ -619,82 +611,5 @@ function initOmikuji() {
   omikujiBtn.addEventListener('click', () => {
     const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
     alert(`🎲 今日のふたりの運勢 🎲\n\n${randomFortune}`);
-    launchExplosion();
   });
-}
-
-function launchExplosion() {
-  if (document.body.classList.contains('cover-active')) return;
-  const colors = ['#f1c40f', '#e74c3c', '#e91e63', '#9b59b6', '#2ecc71', '#3498db', '#d4af37', '#ffffff'];
-  for (let i = 0; i < 35; i++) {
-    const p = document.createElement('div');
-    p.style.position = 'fixed';
-    p.style.width = Math.random() * 8 + 5 + 'px';
-    p.style.height = p.style.width;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    p.style.backgroundColor = color;
-    p.style.left = '50vw';
-    p.style.top = '50vh';
-    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-    p.style.zIndex = '9999';
-    p.style.pointerEvents = 'none';
-    p.style.transition = 'transform 1.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.8s ease-out';
-
-    document.body.appendChild(p);
-
-    const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * 300 + 70;
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
-
-    setTimeout(() => {
-      p.style.opacity = '0';
-      p.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${Math.random() * 360}deg)`;
-    }, 20);
-
-    setTimeout(() => p.remove(), 1900);
-  }
-}
-
-function launchStampEffect(icon, originX, originY) {
-  for (let i = 0; i < 12; i++) {
-    const h = document.createElement('div');
-    h.textContent = icon;
-    h.style.position = 'fixed';
-    h.style.fontSize = Math.random() * 1.3 + 1.0 + 'rem';
-    h.style.left = (originX || window.innerWidth / 2) + (Math.random() * 40 - 20) + 'px';
-    h.style.top = (originY || window.innerHeight / 2) + 'px';
-    h.style.zIndex = '9999';
-    h.style.pointerEvents = 'none';
-    h.style.transition = 'transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.3s ease-out';
-
-    document.body.appendChild(h);
-
-    const moveX = (Math.random() - 0.5) * 160;
-    const moveY = -(Math.random() * 180 + 70);
-
-    setTimeout(() => {
-      h.style.opacity = '0';
-      h.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.2)`;
-    }, 20);
-
-    setTimeout(() => h.remove(), 1350);
-  }
-}
-
-function triggerCameraFlash() {
-  if (document.body.classList.contains('cover-active')) return;
-  const flash = document.createElement('div');
-  flash.style.position = 'fixed';
-  flash.style.top = '0'; flash.style.left = '0';
-  flash.style.width = '100vw'; flash.style.height = '100vh';
-  flash.style.backgroundColor = 'rgba(255, 255, 255, 0.35)';
-  flash.style.zIndex = '9998';
-  flash.style.pointerEvents = 'none';
-  flash.style.transition = 'opacity 0.45s ease-out';
-  flash.style.opacity = '1';
-
-  document.body.appendChild(flash);
-  setTimeout(() => flash.style.opacity = '0', 40);
-  setTimeout(() => flash.remove(), 500);
 }
