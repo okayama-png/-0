@@ -104,35 +104,13 @@ const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
 openingCover.prepend(randomContainer);
 
-const butterflySVG = `
-  <svg class="butterfly-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g class="wing-left">
-      <path d="M50 50 C15 5, 0 25, 8 52 C18 68, 45 58, 50 50 Z" fill="url(#goldWing)"/>
-      <path d="M50 52 C22 62, 12 82, 28 88 C42 90, 47 68, 50 52 Z" fill="url(#goldWing)"/>
-    </g>
-    <g class="wing-right">
-      <path d="M50 50 C85 5, 100 25, 92 52 C82 68, 55 58, 50 50 Z" fill="url(#goldWing)"/>
-      <path d="M50 52 C78 62, 88 82, 72 88 C58 90, 53 68, 50 52 Z" fill="url(#goldWing)"/>
-    </g>
-    <defs>
-      <linearGradient id="goldWing" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#ffffff"/>
-        <stop offset="40%" stop-color="#f3e5ab"/>
-        <stop offset="100%" stop-color="#b88e3d"/>
-      </linearGradient>
-    </defs>
-  </svg>
-`;
-
-const ribbonContainer = document.createElement('div');
-ribbonContainer.className = 'ribbon-container';
-ribbonContainer.innerHTML = `
-  <div class="ribbon-line-left"></div>
-  <div class="ribbon-line-right"></div>
-  <div class="butterfly-left">${butterflySVG}</div>
-  <div class="butterfly-right">${butterflySVG}</div>
-`;
-document.body.prepend(ribbonContainer);
+// 🎬 左右シネマカーテンパネルの自動生成
+const curtainLeft = document.createElement('div');
+curtainLeft.className = 'curtain-panel-left';
+const curtainRight = document.createElement('div');
+curtainRight.className = 'curtain-panel-right';
+document.body.prepend(curtainLeft);
+document.body.prepend(curtainRight);
 
 document.body.classList.add('cover-active');
 
@@ -197,6 +175,7 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
+// 🎬 カーテンの中で写真がランダムに浮遊・飛び出していく演出
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const burstCount = 10;
@@ -206,7 +185,7 @@ function launchPhotoPageTransition(onComplete) {
   let lastTime = performance.now();
 
   function spawnStep(now) {
-    if (now - lastTime >= 300 && count < burstCount) {
+    if (now - lastTime >= 280 && count < burstCount) {
       lastTime = now;
 
       const photoContainer = document.createElement('div');
@@ -217,9 +196,9 @@ function launchPhotoPageTransition(onComplete) {
       photoContainer.style.left = posX + 'vw';
       photoContainer.style.top = posY + 'vh';
 
-      const cardW = isMobile ? (Math.random() * 25 + 75) : (Math.random() * 35 + 110);
+      const cardW = isMobile ? (Math.random() * 25 + 85) : (Math.random() * 35 + 120);
       photoContainer.style.width = cardW + 'px';
-      photoContainer.style.height = (cardW * 1.15) + 'px';
+      photoContainer.style.height = (cardW * 1.18) + 'px';
 
       const img = document.createElement('img');
       img.src = shuffledPhotos[count];
@@ -246,6 +225,7 @@ function launchPhotoPageTransition(onComplete) {
   requestAnimationFrame(spawnStep);
 }
 
+// 運命の1枚が中央で静止 ➔ アルバムへ着地
 function showFinalHeroPhoto(onComplete) {
   const heroDiv = document.createElement('div');
   heroDiv.className = 'final-hero-photo';
@@ -309,58 +289,38 @@ function launchPhotoFireworkBurst() {
   }
 }
 
+// ★ 🎬 カーテン（2.4秒スロー）と同期する新オープニング動作 ★
 const startBtn = document.getElementById('startBtn');
-const countOverlay = document.createElement('div');
-countOverlay.id = 'countdown-overlay';
-document.body.appendChild(countOverlay);
 
-startBtn.addEventListener('click', () => {
-  startBtn.style.display = 'none';
+if (startBtn) {
+  startBtn.addEventListener('click', () => {
+    // 1. ボタンを消し、左右のシネマカーテンが「くの字」にしなりながら閉じ始める
+    startBtn.style.display = 'none';
+    document.body.classList.add('curtain-closed');
+    playHeartbeatSound();
 
-  countOverlay.classList.add('show');
-  setTimeout(() => document.body.classList.add('draw-ribbon'), 80);
-
-  const countSequence = [3, 2, 1];
-  let step = 0;
-
-  function runCountStep() {
-    if (step < countSequence.length) {
-      countOverlay.innerHTML = `
-        <div class="count-wrapper">
-          <div class="count-num">${countSequence[step]}</div>
-        </div>
-      `;
-      playHeartbeatSound();
-      step++;
-      setTimeout(runCountStep, 1200);
-    } else {
-      document.body.classList.remove('draw-ribbon');
-      document.body.classList.add('untie-ribbon');
-      document.body.classList.add('fly-heart');
-      document.body.classList.add('burst-photos');
-
-      document.querySelectorAll('.random-polaroid').forEach((p, i) => {
-        const moveX = (i % 2 === 0 ? -1 : 1) * (Math.random() * 250 + 350);
-        const moveY = (i < 4 ? -1 : 1) * (Math.random() * 250 + 350);
-        p.style.transform = `translate3d(${moveX}px, ${moveY}px, 600px) rotate(${Math.random() * 120 - 60}deg) scale(1.8)`;
-      });
-
-      countOverlay.innerHTML = `<div class="start-text">START</div>`;
-      playHeartbeatSound();
+    // 2. カーテンが閉まり切る直前（1.5秒後）に金の光（ダスト）を優雅に放出
+    setTimeout(() => {
       launchGoldenDust();
+    }, 1500);
 
+    // 3. カーテンが中央でピタッと閉まった後（2.2秒後）、写真のランダム浮遊を開始
+    setTimeout(() => {
       launchPhotoPageTransition(() => {
-        countOverlay.classList.remove('show');
+        // 4. カバーを外して本編アルバムをセット
         document.body.classList.remove('cover-active');
         openingCover.classList.add('open-book');
         launchExplosion();
         triggerCameraFlash();
-      });
-    }
-  }
 
-  runCountStep();
-});
+        // 5. 最後にカーテンが静かに開いてアルバムがお披露目される！
+        setTimeout(() => {
+          document.body.classList.remove('curtain-closed');
+        }, 400);
+      });
+    }, 2200);
+  });
+}
 
 function launchGoldenDust() {
   const particleCount = 75;
@@ -567,14 +527,12 @@ function initPages() {
   updateUI();
 }
 
-// ページ切り替え時にアクティブクラスを確実に設定
 function updateActivePage() {
   pages.forEach((page, index) => {
     if (index === currentPage) {
       page.classList.add('active');
     } else {
       page.classList.remove('active');
-      // めくられた（過ぎた）ページや未表示ページの反転状態をリセット
       const frame = page.querySelector('.photo-frame');
       if (frame) frame.classList.remove('flipped-photo');
     }
@@ -639,7 +597,7 @@ function initOmikuji() {
     '【超大吉】今日はお泊まり決定。朝までゆっくり過ごせます',
     '【大吉】みなみさんのおねだりが何でも通る特別な日',
     '【おでかけ吉】今日はふたりで寄り道する日。見たことのない景色に会いに行こう',
-    '【あ〜n吉】美味しいものを「あ〜ん」し合う日。甘い時間と笑顔が溢れます',
+    '【あ〜ん吉】美味しいものを「あ〜ん」し合う日。甘い時間と笑顔が溢れます',
     '【甘やかし吉】今日はみなみさんを全力で甘やかす日。おねだりもワガママも全部OK！',
     '【おうちデート吉】どこにも出かけずお部屋でごろごろする日。手をつないで映画でも観よう',
     '【電話吉】今日はふたりでゆっくり電話する日。声を聞くだけで幸せです',

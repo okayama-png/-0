@@ -588,7 +588,7 @@ h1 {
   gap: 8px;
 }
 
-/* ★ 1. パララックス・立体深度（奥から手前へズーム） ★ */
+/* ★ パララックス・立体ズーム（手前への浮き出し） ★ */
 .photo-frame {
   width: 100%;
   height: 180px;
@@ -596,12 +596,12 @@ h1 {
   perspective: 1200px;
   cursor: pointer;
   position: relative;
-  transform: scale(0.92) translateZ(-30px);
+  transform: scale(0.95) translateZ(-20px);
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page.active .photo-frame {
-  transform: scale(1.03) translateZ(20px);
+  transform: scale(1.03) translateZ(15px);
 }
 
 .photo-btn-group {
@@ -678,22 +678,19 @@ h1 {
   transform: translateY(0);
 }
 
-/* ★ 2. モノクロ ➔ 鮮やかなカラーへのドラマチック発色 ★ */
+/* ★ 純粋なカラー写真表示（モノクロコード完全排除） ★ */
 .photo-front img {
   width: 100%; height: 100%;
   object-fit: cover;
   border-radius: 4px;
-  opacity: 1 !important; /* 表示漏れを防ぐため常時表示 */
-  transform: scale(0.96);
-  /* 待機時はモノクロ */
-  filter: grayscale(100%) brightness(0.8) contrast(1.1);
-  transition: transform 0.7s var(--ease-3d), filter 1.0s cubic-bezier(0.25, 1, 0.5, 1);
+  opacity: 1 !important;
+  transform: scale(0.98);
+  filter: contrast(1.04) saturate(1.05);
+  transition: transform 0.6s var(--ease-3d);
 }
 
-/* メインページ（アクティブ）になった瞬間に色づく */
 .page.active .photo-front img {
   transform: scale(1);
-  filter: grayscale(0%) brightness(1.05) contrast(1.02);
 }
 
 .photo-front::before {
@@ -838,4 +835,103 @@ button { background: var(--text-dark); border: 1px solid var(--gold-primary); pa
   .polaroid-6 { top: 38%; right: 1%; }
   .polaroid-7 { top: 1%; left: 34%; }
   .polaroid-8 { bottom: 1%; left: 34%; }
+}
+/* =========================================================
+   🎭 リアルなドレープ＆「くの字」シネマカーテン（本物風）
+   ========================================================= */
+.curtain-panel-left,
+.curtain-panel-right {
+  position: fixed;
+  top: 0;
+  width: 55vw; /* 中央で重なるように少し大きめ */
+  height: 100vh;
+  z-index: 100000;
+  pointer-events: none;
+  /* 本物の布のヒダ（ひらひら）を表現する重厚な影と光のグラデーション */
+  background: repeating-linear-gradient(
+    90deg,
+    #0d0a08 0px,
+    #1c1612 12px,
+    #2b221b 25px,
+    #130e0b 38px,
+    #050403 50px
+  );
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+/* =========================================================
+   🎭 リアルなドレープ＆「くの字」シネマカーテン（中央位置補正＆スロー化）
+   ========================================================= */
+.curtain-panel-left,
+.curtain-panel-right {
+  position: fixed;
+  top: 0;
+  width: 52vw; /* 中央でわずかにオーバーラップさせて隙間・ズレを完全に防ぐ */
+  height: 100vh;
+  z-index: 100000;
+  pointer-events: none;
+  /* 本物の高級ベルベットカーテンのような重厚な縦ヒダ（ドレープ）影グラデーション */
+  background: repeating-linear-gradient(
+    90deg,
+    #0a0806 0px,
+    #18130e 15px,
+    #2a2019 30px,
+    #120e0a 45px,
+    #050403 60px
+  );
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
+  will-change: transform;
+}
+
+/* 👈 左カーテン：左上を軸にして上部が先行 */
+.curtain-panel-left {
+  left: 0;
+  border-right: 2px solid var(--gold-primary);
+  transform-origin: top left;
+  transform: translateX(-105%) skewY(0deg);
+}
+
+/* 👉 右カーテン：右上を軸にして上部が先行 */
+.curtain-panel-right {
+  right: 0;
+  border-left: 2px solid var(--gold-primary);
+  transform-origin: top right;
+  transform: translateX(105%) skewY(0deg);
+}
+
+/* 🎬 閉まる動作：2.4秒かけてゆったり重厚に「くの字」を描いて中央へ */
+body.curtain-closed .curtain-panel-left {
+  animation: curtainCloseLeft 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+body.curtain-closed .curtain-panel-right {
+  animation: curtainCloseRight 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes curtainCloseLeft {
+  0% {
+    transform: translateX(-105%) skewY(0deg);
+  }
+  55% {
+    /* 上部がぐっと引っ張られて美しい「くの字」にしなりながら優雅に迫る */
+    transform: translateX(-3%) skewY(-4deg);
+  }
+  100% {
+    /* 中央でぴったりと噛み合い真っ直ぐな布に戻る */
+    transform: translateX(0%) skewY(0deg);
+  }
+}
+
+@keyframes curtainCloseRight {
+  0% {
+    transform: translateX(105%) skewY(0deg);
+  }
+  55% {
+    /* 上部がぐっと引っ張られて美しい「くの字」にしなりながら優雅に迫る */
+    transform: translateX(3%) skewY(4deg);
+  }
+  100% {
+    /* 中央でぴったりと噛み合い真っ直ぐな布に戻る */
+    transform: translateX(0%) skewY(0deg);
+  }
 }
