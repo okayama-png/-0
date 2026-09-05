@@ -63,16 +63,16 @@ function initFilmTracks() {
   }
 }
 
-// ♾️ 永遠ループ ＆ 👆 ドラッグ・スワイプ操作
+// ♾️ 永遠ループ ＆ 👆 上下独立ドラッグ処理
 let topX = 0;
 let bottomX = -1500;
 let speedTop = -0.55;
 let speedBottom = 0.55;
 
 let isDragging = false;
+let dragTarget = null; // 'top' か 'bottom'
 let startX = 0;
-let dragTopStartX = 0;
-let dragBottomStartX = 0;
+let dragStartX = 0;
 
 function animateFilm() {
   if (!isDragging) {
@@ -109,36 +109,54 @@ function animateFilm() {
   requestAnimationFrame(animateFilm);
 }
 
-// 👆 タッチ・スワイプ＆マウスドラッグ処理
+// 👆 上下段それぞれを独立して判定するスワイプ・ドラッグ処理
 function setupDragEvents() {
-  const viewport = document.querySelector('.film-viewport-double');
-  if (!viewport) return;
+  const topTrack = document.getElementById('filmTrackTop');
+  const bottomTrack = document.getElementById('filmTrackBottom');
 
-  const onStart = (clientX) => {
+  const handleStart = (clientX, target) => {
     isDragging = true;
+    dragTarget = target;
     startX = clientX;
-    dragTopStartX = topX;
-    dragBottomStartX = bottomX;
+    dragStartX = (target === 'top') ? topX : bottomX;
   };
 
-  const onMove = (clientX) => {
+  const handleMove = (clientX) => {
     if (!isDragging) return;
     const diffX = clientX - startX;
-    topX = dragTopStartX + diffX;
-    bottomX = dragBottomStartX - diffX;
+
+    if (dragTarget === 'top') {
+      // 上段を触った時：そのまま追従
+      topX = dragStartX + diffX;
+    } else if (dragTarget === 'bottom') {
+      // 下段を触った時：指の方向（逆動）に合わせて追従
+      bottomX = dragStartX - diffX;
+    }
   };
 
-  const onEnd = () => {
+  const handleEnd = () => {
     isDragging = false;
+    dragTarget = null;
   };
 
-  viewport.addEventListener('mousedown', (e) => onStart(e.clientX));
-  window.addEventListener('mousemove', (e) => onMove(e.clientX));
-  window.addEventListener('mouseup', onEnd);
+  // 上段トラックのイベント
+  if (topTrack) {
+    topTrack.addEventListener('mousedown', (e) => handleStart(e.clientX, 'top'));
+    topTrack.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, 'top'), { passive: true });
+  }
 
-  viewport.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX), { passive: true });
-  window.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: true });
-  window.addEventListener('touchend', onEnd);
+  // 下段トラックのイベント
+  if (bottomTrack) {
+    bottomTrack.addEventListener('mousedown', (e) => handleStart(e.clientX, 'bottom'));
+    bottomTrack.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, 'bottom'), { passive: true });
+  }
+
+  // 画面全体での移動＆離すイベント
+  window.addEventListener('mousemove', (e) => handleMove(e.clientX));
+  window.addEventListener('mouseup', handleEnd);
+
+  window.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX), { passive: true });
+  window.addEventListener('touchend', handleEnd);
 }
 
 // モーダル ＆ フリップ処理
