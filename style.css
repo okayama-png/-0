@@ -924,3 +924,30 @@ body.curtain-closed .curtain-panel-right {
   0% { transform: translateX(105%); }
   100% { transform: translateX(0%); }
 }
+/* =========================================================
+   📜 アルバム本編コメント枠のスクロール操作性大幅改善
+   ========================================================= */
+.diary-entry {
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain !important;
+}
+
+.diary-entry .text {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  touch-action: pan-y !important;
+}
+
+/* スクロールバーを見やすく洗練されたゴールド仕様に */
+.diary-entry::-webkit-scrollbar {
+  width: 4px;
+}
+.diary-entry::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 4px;
+}
+.diary-entry::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}

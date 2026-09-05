@@ -48,42 +48,48 @@ function createFrame(item) {
   return frame;
 }
 
+// ♾️ 無限ループのために5セット分連続で生成
 function initFilmTracks() {
   const topEl = document.getElementById('filmTrackTop');
   const bottomEl = document.getElementById('filmTrackBottom');
 
   if (topEl && bottomEl) {
-    const fullList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
+    const multiList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
 
     topEl.innerHTML = '';
-    fullList.forEach(item => topEl.appendChild(createFrame(item)));
+    multiList.forEach(item => topEl.appendChild(createFrame(item)));
 
     bottomEl.innerHTML = '';
-    [...fullList].reverse().forEach(item => bottomEl.appendChild(createFrame(item)));
+    [...multiList].reverse().forEach(item => bottomEl.appendChild(createFrame(item)));
   }
 }
 
-// ♾️ 永遠ループ ＆ 👆 上下独立ドラッグ処理
-let topX = 0;
-let bottomX = -1500;
+// ♾️ 完全シームレスループ ＆ 方向個別のスワイプ制御
+let topX = -2000;
+let bottomX = -2000;
 let speedTop = -0.55;
 let speedBottom = 0.55;
 
 let isDragging = false;
-let dragTarget = null; // 'top' か 'bottom'
+let dragTarget = null;
 let startX = 0;
 let dragStartX = 0;
+
+const LOOP_RESET_WIDTH = 4180; // 19枚分の合計横幅（リセット基準）
 
 function animateFilm() {
   if (!isDragging) {
     topX += speedTop;
-    if (topX < -3500) topX = 0;
-    else if (topX > 0) topX = -3500;
-
     bottomX += speedBottom;
-    if (bottomX > 0) bottomX = -3500;
-    else if (bottomX < -3500) bottomX = 0;
   }
+
+  // ★ 上段ループ境界判定
+  if (topX < -LOOP_RESET_WIDTH * 2) topX += LOOP_RESET_WIDTH;
+  if (topX > 0) topX -= LOOP_RESET_WIDTH;
+
+  // ★ 下段ループ境界判定
+  if (bottomX > 0) bottomX -= LOOP_RESET_WIDTH;
+  if (bottomX < -LOOP_RESET_WIDTH * 2) bottomX += LOOP_RESET_WIDTH;
   
   const topEl = document.getElementById('filmTrackTop');
   if (topEl) topEl.style.transform = `translateX(${topX}px)`;
@@ -91,7 +97,7 @@ function animateFilm() {
   const bottomEl = document.getElementById('filmTrackBottom');
   if (bottomEl) bottomEl.style.transform = `translateX(${bottomX}px)`;
 
-  // 中央スポットライト計算
+  // 中央スポットライト適用
   const screenCenter = window.innerWidth / 2;
   const allFrames = document.querySelectorAll('.film-frame');
   
@@ -109,7 +115,6 @@ function animateFilm() {
   requestAnimationFrame(animateFilm);
 }
 
-// 👆 上下段それぞれを独立して判定するスワイプ・ドラッグ処理
 function setupDragEvents() {
   const topTrack = document.getElementById('filmTrackTop');
   const bottomTrack = document.getElementById('filmTrackBottom');
@@ -126,11 +131,10 @@ function setupDragEvents() {
     const diffX = clientX - startX;
 
     if (dragTarget === 'top') {
-      // 上段を触った時：そのまま追従
       topX = dragStartX + diffX;
     } else if (dragTarget === 'bottom') {
-      // 下段を触った時：指の方向（逆動）に合わせて追従
-      bottomX = dragStartX - diffX;
+      // ★ 下段のみスライド方向を現在と逆に反転設定
+      bottomX = dragStartX + diffX;
     }
   };
 
@@ -139,19 +143,16 @@ function setupDragEvents() {
     dragTarget = null;
   };
 
-  // 上段トラックのイベント
   if (topTrack) {
     topTrack.addEventListener('mousedown', (e) => handleStart(e.clientX, 'top'));
     topTrack.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, 'top'), { passive: true });
   }
 
-  // 下段トラックのイベント
   if (bottomTrack) {
     bottomTrack.addEventListener('mousedown', (e) => handleStart(e.clientX, 'bottom'));
     bottomTrack.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, 'bottom'), { passive: true });
   }
 
-  // 画面全体での移動＆離すイベント
   window.addEventListener('mousemove', (e) => handleMove(e.clientX));
   window.addEventListener('mouseup', handleEnd);
 
