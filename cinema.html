@@ -11,24 +11,26 @@
   <link rel="stylesheet" href="style.css?v=9999999">
   
   <style>
-    /* 🎬 CINEMA FILM 専用シネマティック・レイアウト */
+    /* 🎬 2段交差ループ・シネマフィルム専用スタイル */
     body {
-      background-color: #050403 !important;
+      background-color: #060504 !important;
       color: #f5f0eb !important;
       overflow-x: hidden;
-      padding-bottom: 120px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .cinema-header {
       text-align: center;
-      padding: 40px 20px 20px 20px;
+      padding: 25px 15px 10px 15px;
       z-index: 10;
-      position: relative;
     }
 
     .cinema-header .brand {
       font-family: var(--font-en);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       letter-spacing: 0.35em;
       color: var(--gold-primary);
       text-transform: uppercase;
@@ -36,125 +38,195 @@
 
     .cinema-header h1 {
       font-family: var(--font-en);
-      font-size: 2.2rem;
-      letter-spacing: 0.15em;
+      font-size: 1.8rem;
+      letter-spacing: 0.12em;
       font-weight: 600;
       color: #ffffff;
-      margin-top: 6px;
-    }
-
-    .cinema-header .sub {
-      font-size: 0.85rem;
-      color: #a89f91;
-      letter-spacing: 0.12em;
       margin-top: 4px;
     }
 
     .back-to-album-btn {
       display: inline-block;
-      margin-top: 15px;
-      padding: 8px 22px;
+      margin-top: 10px;
+      padding: 6px 18px;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--gold-primary);
       color: var(--gold-glow) !important;
-      border-radius: 25px;
+      border-radius: 20px;
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       letter-spacing: 0.1em;
       transition: all 0.3s ease;
     }
 
-    .back-to-album-btn:hover {
-      background: var(--gold-primary);
-      color: #000000 !important;
-    }
-
-    /* シネマフィルム ストリーミング・タイムライン */
-    .cinema-container {
-      max-width: 680px;
-      margin: 30px auto;
-      padding: 0 20px;
+    /* 🎞️ 2段フィルム構造 */
+    .film-viewport-double {
+      width: 100vw;
+      padding: 20px 0;
       display: flex;
       flex-direction: column;
-      gap: 60px;
-    }
-
-    .cinema-scene {
-      background: rgba(20, 16, 13, 0.85);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-      position: relative;
+      gap: 30px;
       overflow: hidden;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      perspective: 1000px;
     }
 
-    .cinema-scene::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 3px;
-      background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+    .film-viewport-double:active {
+      cursor: grabbing;
     }
 
-    .scene-meta {
+    .film-track {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      border-bottom: 1px dashed rgba(212, 175, 55, 0.25);
-      padding-bottom: 8px;
+      gap: 20px;
+      width: max-content;
+      will-change: transform;
     }
 
-    .scene-tag {
+    /* フィルムフレーム */
+    .film-frame {
+      width: 200px;
+      height: 250px;
+      background: #14100d;
+      border: 1.5px solid rgba(212, 175, 55, 0.4);
+      border-radius: 12px;
+      padding: 10px;
+      position: relative;
+      flex-shrink: 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .film-frame.is-center {
+      border-color: var(--gold-glow);
+      transform: scale(1.08) translateZ(20px);
+      box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3), 0 0 20px rgba(243, 229, 171, 0.4);
+    }
+
+    .film-frame img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+      pointer-events: none;
+    }
+
+    .frame-stamp {
+      position: absolute;
+      bottom: 12px;
+      right: 14px;
       font-family: var(--font-en);
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      color: var(--gold-primary);
+      font-size: 0.75rem;
+      color: var(--gold-glow);
       font-weight: 600;
     }
 
-    .scene-date {
-      font-family: var(--font-en);
+    .frame-title {
       font-size: 0.85rem;
-      color: #b8a898;
-      letter-spacing: 0.1em;
-    }
-
-    .cinema-photo-box {
-      position: relative;
-      width: 100%;
-      height: 320px;
-      border-radius: 10px;
+      color: #ffffff;
+      margin-top: 8px;
+      white-space: nowrap;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      margin-bottom: 18px;
+      text-overflow: ellipsis;
+      font-weight: 500;
     }
 
-    .cinema-photo-box img {
+    /* モーダルポップアップ */
+    .photo-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(5, 4, 3, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .photo-modal.show {
+      display: flex;
+    }
+
+    .pop-card-inner {
+      width: 90vw;
+      max-width: 380px;
+      height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .pop-card-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+
+    .pop-card-front, .pop-card-back {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 20px;
+      background: #fdfbf7;
+      color: #1a1a1a;
+      border: 1.5px solid var(--gold-primary);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pop-card-front img {
       width: 100%;
-      height: 100%;
+      height: 290px;
       object-fit: cover;
-      display: block;
-      transition: transform 0.8s ease;
+      border-radius: 10px;
     }
 
-    .cinema-scene:hover .cinema-photo-box img {
-      transform: scale(1.03);
+    .pop-card-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(135deg, #fefcf9, #f4ede2);
+      text-align: left;
     }
 
-    .cinema-caption-box h3 {
-      font-size: 1.25rem;
-      color: var(--gold-glow);
-      margin-bottom: 10px;
-      letter-spacing: 0.08em;
+    .pop-card-back h3 {
+      font-size: 1.2rem;
+      border-bottom: 1.5px dashed var(--gold-primary);
+      padding-bottom: 8px;
+      color: #2b231d;
     }
 
-    .cinema-caption {
-      font-family: var(--font-ja);
-      font-size: 0.95rem;
-      line-height: 1.9;
-      color: #e3dad1;
+    .pop-card-back p {
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: #3d352e;
       white-space: pre-wrap;
+      overflow-y: auto;
+      flex: 1;
+      margin-top: 12px;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #1a1a1a;
+      z-index: 5;
+    }
+
+    .cinema-footer-guide {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.75rem;
+      color: var(--gold-glow);
+      letter-spacing: 0.1em;
     }
   </style>
 </head>
@@ -164,299 +236,42 @@
   <header class="cinema-header">
     <div class="brand">CINEMATIC ARCHIVE</div>
     <h1>Minami & Yuna's Film</h1>
-    <p class="sub">〜 紡がれた19の言葉と、一生の記憶 〜</p>
     <a href="index.html" class="back-to-album-btn">📖 MEMORIAL ALBUM へ戻る</a>
   </header>
 
-  <!-- シネマフィルム メインタイムライン -->
-  <main class="cinema-container">
-
-    <!-- Scene 1 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 01 — PROLOGUE</span>
-        <span class="scene-date">2026.07.03</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/prologue.png" alt="Prologue">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>000 - Prologue</h3>
-        <p class="cinema-caption">あの日、偶然入ったあのバーでみなみさんと出会えたこと。もしどちらかが少しでも違う選択をしていたらと思うと、奇跡としか思えない夜でした。見えなくなるまで改札でずっと手を振り続けてくれたあの笑顔は、今も私の胸の中でずっと輝いています。すべての始まりの、愛おしいプロローグ。</p>
-      </div>
-    </article>
-
-    <!-- Scene 2 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 02</span>
-        <span class="scene-date">2026.07.03</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page01.png" alt="付き合った日">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>001 - 付き合った日</h3>
-        <p class="cinema-caption">仕事終わりにお迎えに行って食べたもんじゃ焼き。張り切って焼いてくれた姿が可愛くて、それだけで幸せだった。その後のカラオケでまだ付き合ってもないのにしちゃった、心臓が破裂しそうな初キス。公園で声を震わせながら渡した花束と告白。距離がぐっと縮まった、コーヒー味の思い出。</p>
-      </div>
-    </article>
-
-    <!-- Scene 3 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 03</span>
-        <span class="scene-date">2026.07.05</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page02.png" alt="初めてダンスを見た日">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>002 - 初めてダンスを見た日</h3>
-        <p class="cinema-caption">『Be Creators』のステージの上で踊るみなみさんは、息をのむほど格好良くて圧倒されっぱなしだった。終演後に花束を渡した時の無邪気な笑顔も、そのあと公園でスムージーを飲みながら過ごしたやわらかな時間も全部宝物。大好きな人の一番近くで輝きを見つめられる幸せを噛みしめた日。</p>
-      </div>
-    </article>
-
-    <!-- Scene 4 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 04</span>
-        <span class="scene-date">2026.07.07</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page03.png" alt="七夕">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>003 - 七夕</h3>
-        <p class="cinema-caption">七夕の夜に送り合った短冊。「ずっと隣で笑い合えますように」と願いを込めたけれど、みなみさんが書いてくれた美しい字と直筆の「大好き」の文字を見た瞬間、胸がぎゅっとなるくらい惚れ直してしまった。どんな壁があってもこの人となら乗り越えていける、そう強く確信した特別な夜。</p>
-      </div>
-    </article>
-
-    <!-- Scene 5 ★修正反映！ -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 05</span>
-        <span class="scene-date">2026.07.10</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page04.png" alt="初めてのお弁当">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>004 - 初めてのお弁当</h3>
-        <p class="cinema-caption">朝のやわらかな光の中で初めて作っていったお弁当。寝ぼけて炊き込みご飯の水の量を間違えちゃったけれど、「味はすごく美味しいよ」って優しく微笑んで食べてくれたその温もりが嬉しかった。いつか同じ家でお弁当を作ってそれを渡して「いってらっしゃい」と言いたいなと思い描いた日。</p>
-      </div>
-    </article>
-
-    <!-- Scene 6 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 06</span>
-        <span class="scene-date">2026.07.11</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page05.png" alt="水族館と初お泊り">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>005 - 水族館と初お泊り</h3>
-        <p class="cinema-caption">一日中ダンスで疲れているはずなのに、嫌な顔ひとつせずお迎えに来てくれた深すぎる優しさ。すみだ水族館の青く静かな光の中に浮かび上がるみなみさんは、まるで女神みたいに綺麗だった。そして我が家での初めてのお泊り。目覚めた朝、隣で穏やかに眠る姿がある奇跡に心から感謝した日。</p>
-      </div>
-    </article>
-
-    <!-- Scene 7 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 07</span>
-        <span class="scene-date">2026.07.12</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page06.png" alt="お泊り">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>006 - お泊り</h3>
-        <p class="cinema-caption">「会いたい」という私のわがままを優しく受け止めてくれて実現した、みなみさん家でのお泊り。カメラを向けると照れてそっぽを向いちゃったり、アイスを食べながら目が合うだけで恥ずかしそうに笑う顔が愛おしすぎてメロメロ。少しずつ縮まっていくふたりの距離がたまらなく愛おしい。</p>
-      </div>
-    </article>
-
-    <!-- Scene 8 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 08</span>
-        <span class="scene-date">2026.07.14</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page07.png" alt="映画とお泊り">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>007 - 映画とお泊り</h3>
-        <p class="cinema-caption">『トイ・ストーリー4』を見に行った日。映画館の一番後ろの席を取ろうとしてチケットを1枚しか取っていなかった私の大ポカも笑い飛ばしてくれてありがとう。映画館の暗闇の中で重ねたキス写真はずっと私のお気に入り。翌朝作ってくれたお弁当の美味しさと優しさに、胸がいっぱいになりました。</p>
-      </div>
-    </article>
-
-    <!-- Scene 9 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 09</span>
-        <span class="scene-date">2026.07.16</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page08.png" alt="お泊り">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>008 - お泊り</h3>
-        <p class="cinema-caption">「明日お弁当持っていきたい」と言ったら、まさかのみなみさんからお泊りの誘い！お互いに「今日は疲れたから即寝る」って意気込んでいたはずなのに、気づいたら始まっちゃうふたり。双方そろって忍耐力ゼロなところも愛おしい。ちょっぴりSっ気満載なみなみさんに、今日もメロメロです。</p>
-      </div>
-    </article>
-
-    <!-- Scene 10 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 10</span>
-        <span class="scene-date">2026.07.18</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page09.png" alt="飲みとお泊り">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>009 - 飲みとお泊り</h3>
-        <p class="cinema-caption">友達と一緒に馬場飲みからのみなみさん家にお泊り！「チンチロしたい！」って大はしゃぎして案の定メガジョッキを引き当てるお茶目な姿に爆笑。結局半分くらい私が飲んでた気もするけれど（笑）、飾らないありのままのみなみさんと過ごす時間は、私にとって世界で一番心地いい居場所です。</p>
-      </div>
-    </article>
-
-    <!-- Scene 11 ★修正反映！ -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 11</span>
-        <span class="scene-date">2026.07.19</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page10.png" alt="ダンスの送迎">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>010 - ダンスの送迎</h3>
-        <p class="cinema-caption">ダンス公演に行けない寂しさを埋めたくて、埼玉会館まで送迎した日。内緒でお揃いのスマホケースを買おうとコソコソいじっていたら怪しまれて、焦って自爆したサプライズ大失敗（笑）。でも、あんなに嬉しそうな笑顔が見られたから大成功。みなみさんと出会えた奇跡に感謝する毎日です。</p>
-      </div>
-    </article>
-
-    <!-- Scene 12 ★修正反映！ -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 12</span>
-        <span class="scene-date">2026.07.23</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page11.png" alt="お泊り">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>011 - お泊り</h3>
-        <p class="cinema-caption">仕事終わりに直行して一緒に作った豚の角煮。私の帰りを待ちながら作ってくれてた姿を想像するとたまらないです。ご飯も炊きたてを食べさせようとしてくれてて愛感じたよ。全部とってもおいしかったよありがとう。「プレゼントがあります！」ってにっこにこ顔で渡された袋を開けると、サウナハット。私のポロッと言った言葉を覚えていてくれたその優しさに、心から愛が溢れました。</p>
-      </div>
-    </article>
-
-    <!-- Scene 13 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 13</span>
-        <span class="scene-date">2026.07.26</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page12.png" alt="お泊まり">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>012 - お泊まり</h3>
-        <p class="cinema-caption">馬場でお寿司を食べてゲーセンへ直行！太鼓の達人にマリカー、モグラ叩きまで本気で大はしゃぎ。お泊りした翌朝のキスマ攻防戦も、じゃれ合いすぎて出かけるギリギリになっちゃうのもふたりのお約束。「会えない時間や距離に僕らは試されている」——離れている時間さえも愛を深めてくれる宝物です。</p>
-      </div>
-    </article>
-
-    <!-- Scene 14 ★修正反映！ -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 14</span>
-        <span class="scene-date">2026.07.28</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page13.png" alt="花火大会">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>013 - 花火大会</h3>
-        <p class="cinema-caption">告白する予定だった日に、恋人同士として見れた花火大会。夜空を見上げる横顔が咲き誇るどの花火よりも綺麗で、途中の小雨のおかげで傘という二人だけの小さな死角のなかで重ねた唇。BGMで流れていた『愛は勝つ』は、一生忘れられないふたりだけの特別なテーマソング。来年もこの先もずっと隣で見ようね。来年はどこに見に行こうか。</p>
-      </div>
-    </article>
-
-    <!-- Scene 15 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 15</span>
-        <span class="scene-date">2026.08.09</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page14.png" alt="葛西臨海公園">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>014 - 葛西臨海公園</h3>
-        <p class="cinema-caption">ダンス送迎のあとに向かった夜の葛西臨海公園。美味しいものを頬張ったあと、海辺へ移動してふたりでずーーっとキス。空が深い闇に包まれるまで時間を忘れて重ね合った唇。夜のひまわりのライトアップに照らされたみなみさんは、今日も飛び切りの綺麗さで私の心を奪っていきました。</p>
-      </div>
-    </article>
-
-    <!-- Scene 16 ★修正反映！ -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 16</span>
-        <span class="scene-date">2026.08.16</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page15.png" alt="ダンス公演">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>015 - ダンス公演</h3>
-        <p class="cinema-caption">ダンス公演で見せる圧巻のパフォーマンス。ステージの上で踊る姿は一瞬で目を奪われるほど格好良くて、何回見ても胸が熱くなる。たくさん練習して努力してるんだろうなと思わされるほど、伝わってくる圧倒的な表現力。これからもたくさんの公演を見に行けたら嬉しいです。</p>
-      </div>
-    </article>
-
-    <!-- Scene 17 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 17</span>
-        <span class="scene-date">2026.08.22</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page16.png" alt="九十九里浜ドライブ">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>016 - 九十九里浜ドライブ</h3>
-        <p class="cinema-caption">九十九里浜へのドライブ！到着してすぐに海へ飛び込んで、ずぶ濡れになりながら笑い合った青春みたいな一日。美味しいハンバーグを食べて、夜は韓国料理屋さんで夢中になってゲームを語る無邪気な姿が愛おしかった。時間がいくらあっても足りないくらい楽しい日々。今年中に手持ち花火も絶対やろうね！</p>
-      </div>
-    </article>
-
-    <!-- Scene 18 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 18</span>
-        <span class="scene-date">2026.08.21</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page17.png" alt="5日間のお泊り">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>017 - 5日間のお泊り</h3>
-        <p class="cinema-caption">気づけばなんと5日連続のお泊り！お洗濯をしてお料理を作って、大好きな人の帰りをワクワクしながら待つ時間は言葉にできないほど幸せだった。同棲への夢がもっと膨らんだ日々。練習したピアノも優しく褒めてくれてありがとう。ギターも頑張るから、いつか絶対にふたりで合奏しようね。</p>
-      </div>
-    </article>
-
-    <!-- Scene 19 -->
-    <article class="cinema-scene">
-      <div class="scene-meta">
-        <span class="scene-tag">SCENE 19</span>
-        <span class="scene-date">2026.09.01</span>
-      </div>
-      <div class="cinema-photo-box">
-        <img src="images/page18.png" alt="ディズニーシー">
-      </div>
-      <div class="cinema-caption-box">
-        <h3>018 - ディズニーシー</h3>
-        <p class="cinema-caption">ふたりで初めて行った夢のディズニーシー！アトラクションで叫びすぎて喉がやられたのも、ポップコーンを6個も食べて帰りにお腹すいたって言うみなみさんも最高に愛おしい（笑）。地球儀の前で膝を抱えて撮った写真も宝物。みなみさんといると何気ない瞬間もすべてが幸せに変わるよ。ずっと愛しています。</p>
-      </div>
-    </article>
-
+  <!-- 🎞️ 2段自動交差 ＆ スワイプ連動 フィルムビューポート -->
+  <main class="film-viewport-double">
+    <div class="film-track" id="filmTrackTop"></div>
+    <div class="film-track" id="filmTrackBottom"></div>
   </main>
 
+  <div class="cinema-footer-guide">
+    👆 左右スワイプで手動早送り / 写真タップで字幕お手紙が反転
+  </div>
+
+  <!-- タップ時のポップアップカード（反転対応） -->
+  <div class="photo-modal" id="photoModal">
+    <div class="pop-card-inner" id="popCardInner">
+      <!-- 表面 -->
+      <div class="pop-card-front">
+        <span class="modal-close-btn" id="modalCloseFront">&times;</span>
+        <img id="modalImg" src="" alt="拡大写真">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+          <h3 id="modalTitle" style="font-size:1.1rem;"></h3>
+          <span id="modalStamp" style="font-family:var(--font-en); font-size:0.85rem; color:var(--gold-dark); font-weight:600;"></span>
+        </div>
+        <button id="flipToBackBtn" style="margin-top:8px; padding:6px; background:var(--text-dark); color:#fff; border:1px solid var(--gold-primary); border-radius:20px; font-size:0.75rem; cursor:pointer;">🔄 字幕メッセージを読む</button>
+      </div>
+      <!-- 裏面（長文コメント） -->
+      <div class="pop-card-back">
+        <span class="modal-close-btn" id="modalCloseBack">&times;</span>
+        <h3 id="modalBackTitle"></h3>
+        <p id="modalDesc"></p>
+        <button id="flipToFrontBtn" style="margin-top:8px; padding:6px; background:var(--text-dark); color:#fff; border:1px solid var(--gold-primary); border-radius:20px; font-size:0.75rem; cursor:pointer; align-self:center; width:100%;">🔄 写真に戻る</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="cinema.js?v=9999999"></script>
 </body>
 </html>
