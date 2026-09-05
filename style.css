@@ -871,13 +871,48 @@ button { background: var(--text-dark); border: 1px solid var(--gold-primary); pa
   transform: translateX(105%);
 }
 
-/* 🎬 3.2秒かけてゆったり閉まる設定 */
+/* =========================================================
+   🎭 シネマカーテン（まっすぐ・2.5秒スローで中央合体）
+   ========================================================= */
+.curtain-panel-left,
+.curtain-panel-right {
+  position: fixed;
+  top: 0;
+  width: 51vw; /* 中央の隙間防止 */
+  height: 100vh;
+  z-index: 100000;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    #0a0806 0px,
+    #18130e 15px,
+    #2a2019 30px,
+    #120e0a 45px,
+    #050403 60px
+  );
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
+  will-change: transform;
+}
+
+.curtain-panel-left {
+  left: 0;
+  border-right: 2px solid var(--gold-primary);
+  transform: translateX(-105%);
+}
+
+.curtain-panel-right {
+  right: 0;
+  border-left: 2px solid var(--gold-primary);
+  transform: translateX(105%);
+}
+
+/* 🎬 2.5秒かけて閉まる設定 */
 body.curtain-closed .curtain-panel-left {
-  animation: curtainCloseLeft 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: curtainCloseLeft 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 body.curtain-closed .curtain-panel-right {
-  animation: curtainCloseRight 3.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: curtainCloseRight 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 @keyframes curtainCloseLeft {

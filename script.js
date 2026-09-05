@@ -102,7 +102,7 @@ const masterPhotoList = [
 const openingCover = document.getElementById('opening-cover');
 const randomContainer = document.createElement('div');
 randomContainer.id = 'random-photos-container';
-openingCover.prepend(randomContainer);
+if (openingCover) openingCover.prepend(randomContainer);
 
 // 🎬 左右シネマカーテンパネルの自動生成
 const curtainLeft = document.createElement('div');
@@ -111,8 +111,6 @@ const curtainRight = document.createElement('div');
 curtainRight.className = 'curtain-panel-right';
 document.body.prepend(curtainLeft);
 document.body.prepend(curtainRight);
-
-document.body.classList.add('cover-active');
 
 function setupRandomEpiloguePhoto() {
   const epilogueImg = document.getElementById('epilogueRandomImg');
@@ -149,6 +147,14 @@ function applyFilmTimestamps() {
 }
 
 window.addEventListener('load', () => {
+  // シネマページから戻ってきた場合はカバーを飛ばして直接アルバムを表示
+  if (window.location.hash === '#album') {
+    document.body.classList.remove('cover-active');
+    if (openingCover) openingCover.classList.add('open-book');
+  } else {
+    document.body.classList.add('cover-active');
+  }
+
   const shuffled = masterPhotoList.sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 8);
 
@@ -159,7 +165,7 @@ window.addEventListener('load', () => {
     pImg.src = src;
     pImg.onerror = () => pDiv.remove();
     pDiv.appendChild(pImg);
-    randomContainer.appendChild(pDiv);
+    if (randomContainer) randomContainer.appendChild(pDiv);
     setTimeout(() => { pDiv.style.opacity = '0.96'; }, 100 + idx * 70);
   });
 
@@ -251,28 +257,25 @@ function showFinalHeroPhoto(onComplete) {
   }, 1000);
 }
 
-// ★ 🎬 まっすぐ3.2秒カーテンに同期したオープニング動作 ★
+// ★ 🎬 2.5秒カーテン同期オープニング動作 ★
 const startBtn = document.getElementById('startBtn');
 
 if (startBtn) {
   startBtn.addEventListener('click', () => {
-    // 1. ボタン消去＆まっすぐなカーテンがゆっくり閉じ始める
     startBtn.style.display = 'none';
     document.body.classList.add('curtain-closed');
 
-    // 2. カーテンがしっかり閉じ切ったところ（3.0秒後）で写真の浮遊をスタート
+    // カーテンがちょうど閉じ切る2.3秒後に写真浮遊スタート
     setTimeout(() => {
       launchPhotoPageTransition(() => {
-        // 3. アルバム本編をセット
         document.body.classList.remove('cover-active');
-        openingCover.classList.add('open-book');
+        if (openingCover) openingCover.classList.add('open-book');
 
-        // 4. カーテンが開いてアルバムへシームレスに到着
         setTimeout(() => {
           document.body.classList.remove('curtain-closed');
         }, 100);
       });
-    }, 3000); // 👈 カーテンの減速（3.2s）に合わせて調整
+    }, 2300);
   });
 }
 
@@ -281,6 +284,7 @@ function startAnniversaryTimer() {
   const timerEl = document.getElementById('loveTimer');
 
   function update() {
+    if (!timerEl) return;
     const now = new Date();
     const diff = now - startDate;
 
@@ -421,23 +425,28 @@ function updateActivePage() {
   });
 }
 
-nextBtn.addEventListener('click', () => {
-  if (currentPage < pages.length - 1) {
-    pages[currentPage].classList.add('flipped');
-    currentPage++;
-    updateActivePage();
-    updateUI();
-  }
-});
+if (nextBtn) {
+  nextBtn.addEventListener('click', () => {
+    if (currentPage < pages.length - 1) {
+      pages[currentPage].classList.add('flipped');
+      currentPage++;
+      updateActivePage();
+      updateUI();
+    }
+  });
+}
 
-prevBtn.addEventListener('click', () => {
-  if (currentPage > 0) {
-    currentPage--;
-    pages[currentPage].classList.remove('flipped');
-    updateActivePage();
-    updateUI();
-  }
-});
+if (prevBtn) {
+  prevBtn.disabled = true;
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 0) {
+      currentPage--;
+      pages[currentPage].classList.remove('flipped');
+      updateActivePage();
+      updateUI();
+    }
+  });
+}
 
 function updateUI() {
   if (prevBtn) prevBtn.disabled = currentPage === 0;
