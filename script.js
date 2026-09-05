@@ -251,110 +251,29 @@ function showFinalHeroPhoto(onComplete) {
   }, 1000);
 }
 
-function launchPhotoFireworkBurst() {
-  const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
-  const fireworkCount = Math.min(16, shuffledPhotos.length);
-  const isMobile = window.innerWidth <= 768;
-
-  for (let i = 0; i < fireworkCount; i++) {
-    const photoCard = document.createElement('div');
-    photoCard.className = 'photo-firework-card';
-
-    photoCard.style.left = '50vw';
-
-    const img = document.createElement('img');
-    img.src = shuffledPhotos[i];
-    photoCard.appendChild(img);
-
-    const angle = (i / fireworkCount) * Math.PI * 2 + (Math.random() * 0.3 - 0.15);
-    const distance = Math.random() * (isMobile ? 180 : 320) + 90;
-    const targetX = Math.cos(angle) * distance;
-    const targetY = Math.sin(angle) * distance;
-
-    const explodeY = (Math.random() - 0.5) * 20 - 15;
-    const rot = (Math.random() - 0.5) * 30;
-    const endRot = rot + (Math.random() - 0.5) * 80;
-
-    photoCard.style.setProperty('--explode-y', `${explodeY}vh`);
-    photoCard.style.setProperty('--target-x', `${targetX}px`);
-    photoCard.style.setProperty('--target-y', `${targetY}px`);
-    photoCard.style.setProperty('--rot', `${rot}deg`);
-    photoCard.style.setProperty('--end-rot', `${endRot}deg`);
-
-    photoCard.style.animationDelay = `${(i % 3) * 0.08}s`;
-
-    document.body.appendChild(photoCard);
-
-    setTimeout(() => photoCard.remove(), 2300);
-  }
-}
-
-// ★ 🎬 洗練されたシームレス・オープニング（カーテン閉鎖 ➔ 写真浮遊 ➔ アルバム遷移） ★
+// ★ 🎬 まっすぐ3.2秒カーテンに同期したオープニング動作 ★
 const startBtn = document.getElementById('startBtn');
 
 if (startBtn) {
   startBtn.addEventListener('click', () => {
-    // 1. ボタン消去＆カーテンが滑らかに閉じる
+    // 1. ボタン消去＆まっすぐなカーテンがゆっくり閉じ始める
     startBtn.style.display = 'none';
     document.body.classList.add('curtain-closed');
 
-    // 2. カーテンが閉じている間に背景で金の粒子が優しく浮遊
-    setTimeout(() => {
-      launchGoldenDust();
-    }, 1200);
-
-    // 3. カーテンが閉じたところから、思い出写真が次々と浮かび上がる
+    // 2. カーテンがしっかり閉じ切ったところ（3.0秒後）で写真の浮遊をスタート
     setTimeout(() => {
       launchPhotoPageTransition(() => {
-        // 4. カバーを外し、本編アルバムをセット
+        // 3. アルバム本編をセット
         document.body.classList.remove('cover-active');
         openingCover.classList.add('open-book');
 
-        // 5. カーテンがスーッと開いて本編アルバムへシームレスに到着
+        // 4. カーテンが開いてアルバムへシームレスに到着
         setTimeout(() => {
           document.body.classList.remove('curtain-closed');
         }, 100);
       });
-    }, 2000);
+    }, 3000); // 👈 カーテンの減速（3.2s）に合わせて調整
   });
-}
-
-function launchGoldenDust() {
-  const particleCount = 75;
-  const screenW = window.innerWidth;
-  const screenH = window.innerHeight;
-  
-  for (let i = 0; i < particleCount; i++) {
-    const p = document.createElement('div');
-    p.style.position = 'fixed';
-    
-    const size = Math.random() * 10 + 5;
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
-    p.style.background = 'radial-gradient(circle, #ffffff 0%, #ffd54f 50%, #d4af37 100%)';
-    p.style.boxShadow = '0 0 12px #f3e5ab, 0 0 25px #d4af37';
-    p.style.borderRadius = '50%';
-    p.style.left = '50vw';
-    p.style.top = '50vh';
-    p.style.zIndex = '999999';
-    p.style.pointerEvents = 'none';
-    p.style.transition = 'transform 1.3s cubic-bezier(0.12, 1, 0.2, 1), opacity 1.3s ease-out, filter 1.3s ease-out';
-
-    document.body.appendChild(p);
-
-    const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * (Math.max(screenW, screenH) * 0.8) + 100;
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
-
-    setTimeout(() => {
-      p.style.opacity = '0';
-      p.style.filter = 'blur(6px)';
-      p.style.transform = `translate(${moveX}px, ${moveY}px) scale(${Math.random() * 2.5 + 1})`;
-    }, 20);
-
-    setTimeout(() => p.remove(), 1400);
-  }
 }
 
 function startAnniversaryTimer() {
@@ -416,38 +335,6 @@ function initPhotoFlipAndZoom() {
   }
 }
 
-function launchConfettiBurst() {
-  const colors = ['#f1c40f', '#e74c3c', '#ffb7c5', '#f3e5ab', '#ffffff', '#d4af37'];
-  for (let i = 0; i < 90; i++) {
-    const conf = document.createElement('div');
-    conf.style.position = 'fixed';
-    const size = Math.random() * 9 + 6;
-    conf.style.width = size + 'px';
-    conf.style.height = (Math.random() > 0.4 ? size : size * 1.6) + 'px';
-    conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    conf.style.left = '50vw';
-    conf.style.top = '50vh';
-    conf.style.borderRadius = Math.random() > 0.6 ? '50%' : '2px';
-    conf.style.zIndex = '999999';
-    conf.style.pointerEvents = 'none';
-    conf.style.transition = 'transform 2.2s cubic-bezier(0.1, 1, 0.2, 1), opacity 2.2s ease-out';
-
-    document.body.appendChild(conf);
-
-    const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * 450 + 100;
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
-
-    setTimeout(() => {
-      conf.style.opacity = '0';
-      conf.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.4)`;
-    }, 20);
-
-    setTimeout(() => conf.remove(), 2300);
-  }
-}
-
 function initPassUnlock() {
   const unlockBtn = document.getElementById('unlockBtn');
   const passInput = document.getElementById('passInput');
@@ -460,8 +347,6 @@ function initPassUnlock() {
         passMessage.style.color = '#2d8a4e';
         passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
-        launchConfettiBurst();
-        launchPhotoFireworkBurst();
         playHeartbeatSound();
       } else {
         passMessage.style.color = '#c0392b';
