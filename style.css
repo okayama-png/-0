@@ -576,52 +576,97 @@ body.curtain-closed .curtain-panel-right { animation: curtainCloseRight 2.5s cub
    🎭 究極のダイナミック・マルチタスクオープニング演出
    ========================================================= */
 
-/* 写真飛び出し：視認性アップ＆立体感強化 */
+/* =========================================================
+   🎞️ 儚い回想シーン風：ダイナミック写真浮遊（フレーム除去・ソフトエッジ）
+   ========================================================= */
 .burst-photo-fly {
   position: fixed;
-  z-index: 100002; /* カーテンの手前でくっきり浮き出る */
+  z-index: 100002; /* カーテンの手前に優しく浮かび上がる */
   pointer-events: none;
-  background: #ffffff;
-  padding: 8px 8px 24px 8px;
-  /* 輝くゴールドと重厚な影で、カーテンの前でも100%見えやすく強調 */
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.7), 
-    0 0 30px rgba(212, 175, 55, 0.6),
-    0 0 10px rgba(255, 255, 255, 0.8);
-  border-radius: 6px;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important; /* 白枠やクッキリした影を排除 */
+  border-radius: 0 !important;
   opacity: 0;
-  will-change: transform, opacity;
-  transform: translate(-50%, -50%) scale(0.1) rotate(0deg);
-  animation: photoFlyBurstDynamic 1.8s cubic-bezier(0.15, 0.85, 0.35, 1.2) forwards;
+  will-change: transform, opacity, filter;
+  transform: translate(-50%, -50%) scale(0.85);
+  animation: photoMemoryFade 2.2s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
 }
 
 .burst-photo-fly img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 3px;
   display: block;
+  /* 画像の縁をフワッと背景に溶け込ませるソフトエッジ効果 */
+  border-radius: 12px;
+  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(circle, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+  filter: sepia(0.15) contrast(1.05) brightness(1.1);
 }
 
-/* 🎬 画面いっぱいに迫り来るマルチタスク飛翔アニメーション */
-@keyframes photoFlyBurstDynamic {
+/* 🎬 画面いっぱいに儚く浮かび上がり、静かに消える回想キーフレーム */
+@keyframes photoMemoryFade {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.1) rotate(var(--start-rot, -15deg)) translateZ(-100px);
+    filter: blur(8px);
+    transform: translate(-50%, -50%) scale(0.7) rotate(var(--start-rot, -5deg));
   }
-  25% {
-    opacity: 1;
-    /* 画面いっぱいにダイナミックに広がる */
-    transform: translate(-50%, -50%) scale(1.15) rotate(var(--end-rot, 15deg)) translateZ(50px);
+  35% {
+    opacity: 0.88;
+    filter: blur(0px);
+    transform: translate(-50%, -50%) scale(1.05) rotate(var(--end-rot, 5deg));
   }
-  75% {
-    opacity: 0.95;
-    transform: translate(-50%, -50%) scale(1.05) rotate(var(--end-rot, 15deg)) translateZ(20px);
+  70% {
+    opacity: 0.80;
+    filter: blur(1px);
+    transform: translate(-50%, -50%) scale(1.1) rotate(var(--end-rot, 5deg));
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(1.3) rotate(var(--end-rot, 15deg)) translateZ(100px);
+    filter: blur(12px);
+    transform: translate(-50%, -50%) scale(1.25) rotate(var(--end-rot, 5deg));
   }
+}
+
+/* 🌟 最後にアルバムへ吸い込まれる中央の1枚（こちらも枠なし・ダイナミック化） */
+.final-hero-photo {
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 85vw;
+  max-width: 420px;
+  height: 60vh;
+  max-height: 480px;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: 0 0 80px rgba(212, 175, 55, 0.5);
+  border-radius: 16px;
+  z-index: 100003;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  transform: translate(-50%, -50%) scale(0.6);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease, filter 0.6s ease;
+}
+
+.final-hero-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  filter: contrast(1.08) brightness(1.05);
+}
+
+.final-hero-photo.active-show {
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1.0) rotate(0deg);
+}
+
+.final-hero-photo.absorb-into-album {
+  opacity: 0;
+  filter: blur(15px);
+  transform: translate(-50%, -50%) scale(0.1) rotate(10deg);
+  transition: transform 0.9s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.8s ease, filter 0.8s ease;
 }
 
 /* 🌟 運命の1枚：中央での圧倒的プレゼンス */

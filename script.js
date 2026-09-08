@@ -184,42 +184,46 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 🎬 写真がランダムに浮遊・飛び出していく演出
+// 🎬 画面いっぱいに大きく・儚く回想写真が浮遊する演出（フレームなし）
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
-  const burstCount = 10;
+  const burstCount = 6; // 出現枚数を精選して1枚ごとの存在感を強調
   const isMobile = window.innerWidth <= 768;
 
   let count = 0;
   let lastTime = performance.now();
+  // 1枚ごとの時間間隔を380ms〜450msとゆったりめに設定
+  const interval = 400;
 
   function spawnStep(now) {
-    if (now - lastTime >= 260 && count < burstCount) {
+    if (now - lastTime >= interval && count < burstCount) {
       lastTime = now;
 
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      const posX = Math.random() * 58 + 12;
-      const posY = Math.random() * 58 + 12;
+      // 画面中央寄りにゆったりとダイナミック配置
+      const posX = Math.random() * 40 + 30; // 30vw 〜 70vw
+      const posY = Math.random() * 40 + 30; // 30vh 〜 70vh
       photoContainer.style.left = posX + 'vw';
       photoContainer.style.top = posY + 'vh';
 
-      const cardW = isMobile ? (Math.random() * 25 + 85) : (Math.random() * 35 + 120);
+      // 枠なし写真を大きく表示（画面幅の70〜85%級）
+      const cardW = isMobile ? (Math.random() * 100 + 260) : (Math.random() * 150 + 380);
       photoContainer.style.width = cardW + 'px';
-      photoContainer.style.height = (cardW * 1.18) + 'px';
+      photoContainer.style.height = (cardW * 0.72) + 'px'; // 横長シネマ画角
 
       const img = document.createElement('img');
       img.src = shuffledPhotos[count];
       photoContainer.appendChild(img);
 
-      const startRot = (Math.random() - 0.5) * 30;
-      const endRot = startRot + (Math.random() - 0.5) * 40;
+      const startRot = (Math.random() - 0.5) * 14;
+      const endRot = startRot + (Math.random() - 0.5) * 12;
       photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
       photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
 
       document.body.appendChild(photoContainer);
-      setTimeout(() => photoContainer.remove(), 1500);
+      setTimeout(() => photoContainer.remove(), 2200);
 
       count++;
     }
@@ -227,7 +231,7 @@ function launchPhotoPageTransition(onComplete) {
     if (count < burstCount) {
       requestAnimationFrame(spawnStep);
     } else {
-      setTimeout(() => showFinalHeroPhoto(onComplete), 200);
+      setTimeout(() => showFinalHeroPhoto(onComplete), 600);
     }
   }
 
