@@ -11,16 +11,23 @@
   <link rel="stylesheet" href="style.css?v=9999999">
   
   <style>
-    /* 🎬 シネマ専用スタイル：完全な漆黒背景 */
-    body {
+    /* 🎬 シネマ専用スタイル：完全な漆黒背景＆タッチ誤作動防止 */
+    html, body {
       background-color: #000000 !important;
       background: #000000 !important;
       color: #f5f0eb !important;
-      overflow-x: hidden;
+      overflow: hidden !important; /* スワイプ時の余計な画面揺れを防止 */
       min-height: 100vh;
+      width: 100vw;
+      margin: 0; padding: 0;
+      overscroll-behavior: none !important;
+    }
+
+    body {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      touch-action: none; /* スマホ特有のジェスチャーバグを完全防止 */
     }
 
     .cinema-header {
@@ -77,6 +84,7 @@
       user-select: none;
       -webkit-user-select: none;
       perspective: 1000px;
+      touch-action: none;
     }
 
     .film-viewport-double:active {
@@ -88,6 +96,7 @@
       gap: 20px;
       width: max-content;
       will-change: transform;
+      pointer-events: auto;
     }
 
     /* フィルムフレーム */
@@ -216,6 +225,7 @@
       overflow-y: auto;
       flex: 1;
       margin-top: 12px;
+      touch-action: pan-y; /* メッセージ内だけは縦スクロール許可 */
     }
 
     .modal-close-btn {
@@ -242,11 +252,10 @@
   <header class="cinema-header">
     <div class="brand">CINEMATIC ARCHIVE</div>
     <h1>Minami & Yuna's Film</h1>
-    <!-- 👈 カバーをスキップしてアルバム本体へ直接戻るハッシュ付きリンク -->
     <a href="index.html#album" class="back-to-album-btn">📖 MEMORIAL ALBUM へ戻る</a>
   </header>
 
-  <!-- 🎞️ 2段自動交差 ＆ スワイプ連動 フィルムビューポート -->
+  <!-- 🎞️ 2段自動交差 ＆ 慣性スライド連動 フィルムビューポート -->
   <main class="film-viewport-double">
     <div class="film-track" id="filmTrackTop"></div>
     <div class="film-track" id="filmTrackBottom"></div>

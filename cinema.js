@@ -48,13 +48,12 @@ function createFrame(item) {
   return frame;
 }
 
-// ♾️ 無限ループのために5セット分連続で生成
 function initFilmTracks() {
   const topEl = document.getElementById('filmTrackTop');
   const bottomEl = document.getElementById('filmTrackBottom');
 
   if (topEl && bottomEl) {
-    const multiList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
+    const multiList = [...cinemaMemories, ...cinemaMemories, ...cinemaMemories, ...cinemaMemories];
 
     topEl.innerHTML = '';
     multiList.forEach(item => topEl.appendChild(createFrame(item)));
@@ -64,40 +63,48 @@ function initFilmTracks() {
   }
 }
 
-// ♾️ 完全シームレスループ ＆ 方向個別のスワイプ制御
+// 🎞️ スムーズ慣性物理パラメータ
 let topX = -2000;
 let bottomX = -2000;
-let speedTop = -0.55;
-let speedBottom = 0.55;
+
+let baseSpeedTop = -0.6;
+let baseSpeedBottom = 0.6;
+
+let velocityTop = 0;
+let velocityBottom = 0;
 
 let isDragging = false;
 let dragTarget = null;
-let startX = 0;
-let dragStartX = 0;
 
-const LOOP_RESET_WIDTH = 4180; // 19枚分の合計横幅（リセット基準）
+let lastClientX = 0;
+let lastTime = 0;
+
+const LOOP_WIDTH = 4180; // 19枚ループ幅
 
 function animateFilm() {
+  // ドラッグしていない時は自動流行＋慣性減速
   if (!isDragging) {
-    topX += speedTop;
-    bottomX += speedBottom;
+    velocityTop *= 0.94; // 慣性の滑らかな減速
+    velocityBottom *= 0.94;
+
+    topX += baseSpeedTop + velocityTop;
+    bottomX += baseSpeedBottom + velocityBottom;
   }
 
-  // ★ 上段ループ境界判定
-  if (topX < -LOOP_RESET_WIDTH * 2) topX += LOOP_RESET_WIDTH;
-  if (topX > 0) topX -= LOOP_RESET_WIDTH;
+  // ★ シームレス無限ループ計算（かくつき完全排除）
+  while (topX < -LOOP_WIDTH * 2) topX += LOOP_WIDTH;
+  while (topX > -LOOP_WIDTH) topX -= LOOP_WIDTH;
 
-  // ★ 下段ループ境界判定
-  if (bottomX > 0) bottomX -= LOOP_RESET_WIDTH;
-  if (bottomX < -LOOP_RESET_WIDTH * 2) bottomX += LOOP_RESET_WIDTH;
-  
+  while (bottomX > -LOOP_WIDTH) bottomX -= LOOP_WIDTH;
+  while (bottomX < -LOOP_WIDTH * 2) bottomX += LOOP_WIDTH;
+
   const topEl = document.getElementById('filmTrackTop');
-  if (topEl) topEl.style.transform = `translateX(${topX}px)`;
+  if (topEl) topEl.style.transform = `translate3d(${topX}px, 0, 0)`;
   
   const bottomEl = document.getElementById('filmTrackBottom');
-  if (bottomEl) bottomEl.style.transform = `translateX(${bottomX}px)`;
+  if (bottomEl) bottomEl.style.transform = `translate3d(${bottomX}px, 0, 0)`;
 
-  // 中央スポットライト適用
+  // 中央スポットライト
   const screenCenter = window.innerWidth / 2;
   const allFrames = document.querySelectorAll('.film-frame');
   
@@ -122,20 +129,29 @@ function setupDragEvents() {
   const handleStart = (clientX, target) => {
     isDragging = true;
     dragTarget = target;
-    startX = clientX;
-    dragStartX = (target === 'top') ? topX : bottomX;
+    lastClientX = clientX;
+    lastTime = performance.now();
+    
+    if (target === 'top') velocityTop = 0;
+    if (target === 'bottom') velocityBottom = 0;
   };
 
   const handleMove = (clientX) => {
     if (!isDragging) return;
-    const diffX = clientX - startX;
+    const now = performance.now();
+    const dt = Math.max(1, now - lastTime);
+    const diffX = clientX - lastClientX;
 
     if (dragTarget === 'top') {
-      topX = dragStartX + diffX;
+      topX += diffX;
+      velocityTop = (diffX / dt) * 14; // スワイプの速さを慣性に変換
     } else if (dragTarget === 'bottom') {
-      // ★ 下段のみスライド方向を現在と逆に反転設定
-      bottomX = dragStartX + diffX;
+      bottomX += diffX;
+      velocityBottom = (diffX / dt) * 14; // 下段の反転慣性
     }
+
+    lastClientX = clientX;
+    lastTime = now;
   };
 
   const handleEnd = () => {
@@ -156,7 +172,9 @@ function setupDragEvents() {
   window.addEventListener('mousemove', (e) => handleMove(e.clientX));
   window.addEventListener('mouseup', handleEnd);
 
-  window.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX), { passive: true });
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX);
+  }, { passive: true });
   window.addEventListener('touchend', handleEnd);
 }
 
