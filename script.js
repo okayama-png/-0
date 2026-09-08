@@ -259,27 +259,31 @@ function showFinalHeroPhoto(onComplete) {
   }, 1000);
 }
 
-// ★ 🎬 2.5秒カーテン同期オープニング動作 ★
+// ★ 🎬 カーテンと写真飛び出しが「同時」にダイナミック交差する最高演出 ★
 const startBtn = document.getElementById('startBtn');
 
 if (startBtn) {
   startBtn.addEventListener('click', () => {
+    // 1. ボタンを隠す
     startBtn.style.display = 'none';
+
+    // 2. ⚡【マルチタスク同時トリガー】カーテン移動と写真飛び出しを完全同時に即時スタート！
     document.body.classList.add('curtain-closed');
+    
+    // 写真の飛び出しを「待たずに」その瞬間に同時スタート
+    launchPhotoPageTransition(() => {
+      // 3. 全演出が融合した最高潮（約2.2秒後）でアルバム本編をオープン
+      document.body.classList.remove('cover-active');
+      if (openingCover) {
+        openingCover.classList.add('open-book');
+        openingCover.style.display = 'none';
+      }
 
-    setTimeout(() => {
-      launchPhotoPageTransition(() => {
-        document.body.classList.remove('cover-active');
-        if (openingCover) {
-          openingCover.classList.add('open-book');
-          openingCover.style.display = 'none';
-        }
-
-        setTimeout(() => {
-          document.body.classList.remove('curtain-closed');
-        }, 100);
-      });
-    }, 2300);
+      // 4. そのままシームレスにカーテンが開いてアルバム本体へ
+      setTimeout(() => {
+        document.body.classList.remove('curtain-closed');
+      }, 100);
+    });
   });
 }
 
