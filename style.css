@@ -25,6 +25,11 @@
   margin: 0; padding: 0;
 }
 
+html, body {
+  /* ★ バグ対策1：引っ張ってリロード（誤ってトップに戻る動作）を完全防止 ★ */
+  overscroll-behavior-y: none !important;
+}
+
 body {
   background: var(--bg-gradient);
   font-family: var(--font-ja);
@@ -174,261 +179,8 @@ h1 {
 #opening-cover.open-book {
   transform: scale(0.9) translateY(-30px);
   opacity: 0;
-  pointer-events: none;
-}
-
-#countdown-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(5, 4, 3, 0.95);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-}
-
-#countdown-overlay.show { opacity: 1; }
-
-.ribbon-container {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 10002;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ribbon-line-left, .ribbon-line-right {
-  position: absolute;
-  top: 50%;
-  width: 50vw;
-  height: 2px;
-  background: linear-gradient(90deg, transparent 0%, #f3e5ab 50%, #d4af37 100%);
-  box-shadow: 0 0 10px rgba(243, 229, 171, 0.9);
-  transition: transform 3.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
-}
-
-.ribbon-line-left { left: 0; transform-origin: left center; transform: scaleX(0); }
-.ribbon-line-right { right: 0; transform-origin: right center; transform: scaleX(0); background: linear-gradient(-90deg, transparent 0%, #f3e5ab 50%, #d4af37 100%); }
-
-.draw-ribbon .ribbon-line-left,
-.draw-ribbon .ribbon-line-right { transform: scaleX(1); }
-
-.butterfly-svg {
-  width: 36px; height: 36px;
-  background: transparent !important;
-  border: 0 !important;
-  filter: drop-shadow(0 0 10px #f3e5ab) drop-shadow(0 0 20px #d4af37);
-  display: block;
-}
-
-.wing-left { transform-origin: right center; animation: flapLeft 0.14s infinite alternate ease-in-out; }
-.wing-right { transform-origin: left center; animation: flapRight 0.14s infinite alternate ease-in-out; }
-
-@keyframes flapLeft { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.15); } }
-@keyframes flapRight { 0% { transform: scaleX(1); } 100% { transform: scaleX(0.15); } }
-
-.butterfly-left, .butterfly-right {
-  position: absolute;
-  top: calc(50% - 18px);
-  opacity: 0;
-  z-index: 10004;
-  transition: opacity 0.3s ease;
-}
-
-.butterfly-left { left: 0; }
-.butterfly-right { right: 0; }
-
-.draw-ribbon .butterfly-left { opacity: 1; animation: waveFlyLeft 3.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-.draw-ribbon .butterfly-right { opacity: 1; animation: waveFlyRight 3.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-
-@keyframes waveFlyLeft {
-  0% { transform: translate(0vw, 0) rotate(5deg); }
-  25% { transform: translate(12vw, -15px) rotate(-8deg); }
-  50% { transform: translate(25vw, 15px) rotate(10deg); }
-  75% { transform: translate(37vw, -8px) rotate(-6deg); }
-  100% { transform: translate(calc(50vw - 18px), 0) rotate(0deg); }
-}
-
-@keyframes waveFlyRight {
-  0% { transform: translate(0vw, 0) rotate(-5deg); }
-  25% { transform: translate(-12vw, -15px) rotate(8deg); }
-  50% { transform: translate(-25vw, 15px) rotate(-10deg); }
-  75% { transform: translate(-37vw, -8px) rotate(6deg); }
-  100% { transform: translate(calc(-50vw + 18px), 0) rotate(0deg); }
-}
-
-.untie-ribbon .ribbon-line-left,
-.untie-ribbon .ribbon-line-right { transform: scaleX(0); opacity: 0; }
-
-.fly-heart .butterfly-left { animation: flyHeartLeft 1.4s ease-in-out forwards !important; }
-.fly-heart .butterfly-right { animation: flyHeartRight 1.4s ease-in-out forwards !important; }
-
-@keyframes flyHeartLeft {
-  0% { transform: translate(calc(50vw - 18px), 0); opacity: 1; }
-  100% { transform: translate(-200px, -300px) rotate(-40deg); opacity: 0; }
-}
-
-@keyframes flyHeartRight {
-  0% { transform: translate(calc(-50vw + 18px), 0); opacity: 1; }
-  100% { transform: translate(200px, -300px) rotate(40deg); opacity: 0; }
-}
-
-.count-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 180px; height: 180px;
-}
-
-.count-wrapper::before {
-  content: '';
-  position: absolute;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
-  animation: ringPulse 0.65s infinite alternate ease-in-out;
-}
-
-@keyframes ringPulse {
-  0% { transform: scale(0.9); opacity: 0.4; }
-  100% { transform: scale(1.08); opacity: 0.95; }
-}
-
-.count-num {
-  font-family: var(--font-en);
-  font-size: 5.5rem;
-  font-weight: 300;
-  color: #ffffff;
-  text-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--gold-primary);
-  animation: gatherInSharp 0.5s ease-out forwards;
-  z-index: 999999 !important;
-  line-height: 1;
-}
-
-@keyframes gatherInSharp {
-  0% { opacity: 0; transform: scale(2); filter: blur(10px); }
-  100% { opacity: 1; transform: scale(1); filter: blur(0px); }
-}
-
-.start-text {
-  font-family: var(--font-en);
-  font-size: 3.2rem !important;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  text-shadow: 0 0 25px #ffffff, 0 0 50px var(--gold-glow);
-  position: fixed !important;
-  top: 50% !important; left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 100008 !important;
-  white-space: nowrap;
-  line-height: 1;
-  animation: startLightBurst 1.2s cubic-bezier(0.12, 0.8, 0.2, 1) forwards !important;
-}
-
-@keyframes startLightBurst {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); filter: blur(8px); }
-  25% { opacity: 1; transform: translate(-50%, -50%) scale(1.0); filter: blur(0px); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); filter: blur(16px); }
-}
-
-.burst-photo-fly {
-  position: fixed !important;
-  border-radius: 6px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(212, 175, 55, 0.35);
-  border: 1.5px solid #ffffff;
-  pointer-events: none;
-  z-index: 100005 !important;
-  animation: photoSeamlessStream 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
-  background: #ffffff;
-  padding: 3px;
-  transform-origin: center center;
-}
-
-.burst-photo-fly img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 3px;
-  display: block;
-}
-
-@keyframes photoSeamlessStream {
-  0% { opacity: 0; transform: scale(0.15) rotate(var(--start-rot, 0deg)); filter: blur(5px); }
-  20% { opacity: 1; filter: blur(0px); }
-  80% { opacity: 0.95; }
-  100% { opacity: 0; transform: scale(1.55) rotate(var(--end-rot, 15deg)); filter: blur(8px); }
-}
-
-.photo-firework-card {
-  position: fixed !important;
-  width: 85px !important;
-  height: 100px !important;
-  background: #ffffff !important;
-  padding: 3px 3px 12px 3px !important;
-  border-radius: 4px !important;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 20px rgba(243, 229, 171, 0.8) !important;
-  border: 1.5px solid #ffffff !important;
-  z-index: 100015 !important;
-  pointer-events: none;
-  animation: fireworkBurst 2.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards !important;
-}
-
-.photo-firework-card img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 2px;
-}
-
-@keyframes fireworkBurst {
-  0% { opacity: 0; transform: translate(-50%, 80vh) scale(0.15) rotate(0deg); filter: blur(4px); }
-  30% { opacity: 1; transform: translate(-50%, var(--explode-y, -20vh)) scale(0.4) rotate(var(--rot, 0deg)); filter: blur(0px); }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--target-x, 0px)), calc(var(--explode-y, -20vh) + var(--target-y, 0px))) scale(1.3) rotate(var(--end-rot, 40deg)); filter: blur(10px); }
-}
-
-.final-hero-photo {
-  position: fixed !important;
-  top: 50% !important; left: 50% !important;
-  width: 175px !important; height: 210px !important;
-  background: #ffffff !important;
-  padding: 6px 6px 20px 6px !important;
-  border-radius: 5px !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(212, 175, 55, 0.7) !important;
-  border: 2px solid var(--gold-glow) !important;
-  z-index: 100010 !important;
-  pointer-events: none;
-  transform: translate(-50%, -50%) scale(0.2) rotate(-5deg);
-  opacity: 0;
-  transition: transform 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
-}
-
-.final-hero-photo.active-show {
-  opacity: 1 !important;
-  transform: translate(-50%, -50%) scale(1.05) rotate(-1deg) !important;
-}
-
-.final-hero-photo.absorb-into-album {
-  transition: all 0.85s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
-  opacity: 0 !important;
-  transform: translate(-50%, -85%) scale(0.65) rotate(0deg) !important;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
-}
-
-.final-hero-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 2px;
+  pointer-events: none !important;
+  display: none !important; /* ★ 完全に消去して誤作動防止 ★ */
 }
 
 .cover-content {
@@ -517,25 +269,14 @@ h1 {
   display: block;
 }
 
-.polaroid-1 { top: 2.5%; left: 1vw; transform: rotate(-5deg); z-index: 2; animation: floatAnim1 6.0s infinite alternate ease-in-out; }
-.polaroid-7 { top: 2.5%; left: 25.5vw; transform: rotate(4deg); z-index: 3; animation: floatAnim2 6.5s infinite alternate ease-in-out 0.4s; }
-.polaroid-5 { top: 2.5%; left: 50vw; transform: rotate(-6deg); z-index: 2; animation: floatAnim3 6.2s infinite alternate ease-in-out 0.8s; }
-.polaroid-2 { top: 2.5%; left: 74.5vw; transform: rotate(5deg); z-index: 3; animation: floatAnim1 7.0s infinite alternate ease-in-out 0.2s; }
-
-.polaroid-6 { bottom: 2.5%; left: 1vw; transform: rotate(-4deg); z-index: 2; animation: floatAnim2 6.4s infinite alternate ease-in-out 0.6s; }
-.polaroid-8 { bottom: 2.5%; left: 25.5vw; transform: rotate(6deg); z-index: 3; animation: floatAnim3 6.8s infinite alternate ease-in-out 0.3s; }
-.polaroid-3 { bottom: 2.5%; left: 50vw; transform: rotate(-5deg); z-index: 2; animation: floatAnim1 6.3s infinite alternate ease-in-out 0.9s; }
-.polaroid-4 { bottom: 2.5%; left: 74.5vw; transform: rotate(4deg); z-index: 3; animation: floatAnim2 6.7s infinite alternate ease-in-out 0.5s; }
-
-@keyframes floatAnim1 { 0% { transform: translateY(0px) rotate(-5deg); } 50% { transform: translateY(-8px) rotate(-2deg); } 100% { transform: translateY(6px) rotate(-7deg); } }
-@keyframes floatAnim2 { 0% { transform: translateY(0px) rotate(6deg); } 50% { transform: translateY(8px) rotate(8deg); } 100% { transform: translateY(-10px) rotate(3deg); } }
-@keyframes floatAnim3 { 0% { transform: translateY(0px) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(1deg); } 100% { transform: translateY(6px) rotate(-5deg); } }
-
-.burst-photos .random-polaroid {
-  animation: none !important;
-  transition: transform 1.1s ease-out, opacity 1.1s ease-out !important;
-  opacity: 0 !important;
-}
+.polaroid-1 { top: 2.5%; left: 1vw; transform: rotate(-5deg); z-index: 2; }
+.polaroid-7 { top: 2.5%; left: 25.5vw; transform: rotate(4deg); z-index: 3; }
+.polaroid-5 { top: 2.5%; left: 50vw; transform: rotate(-6deg); z-index: 2; }
+.polaroid-2 { top: 2.5%; left: 74.5vw; transform: rotate(5deg); z-index: 3; }
+.polaroid-6 { bottom: 2.5%; left: 1vw; transform: rotate(-4deg); z-index: 2; }
+.polaroid-8 { bottom: 2.5%; left: 25.5vw; transform: rotate(6deg); z-index: 3; }
+.polaroid-3 { bottom: 2.5%; left: 50vw; transform: rotate(-5deg); z-index: 2; }
+.polaroid-4 { bottom: 2.5%; left: 74.5vw; transform: rotate(4deg); z-index: 3; }
 
 /* === 📱 アルバム本体 === */
 .album-container {
@@ -552,6 +293,7 @@ h1 {
 
 .book-spine { display: none; }
 
+/* ★ バグ対策2：ページめくりの安定制御（断続表示防止） ★ */
 .page {
   width: 100%; height: 100%;
   position: absolute;
@@ -568,14 +310,25 @@ h1 {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   overflow: hidden;
-  transition: transform 0.8s var(--ease-3d), opacity 0.6s ease;
+  transition: transform 0.6s var(--ease-3d), opacity 0.4s ease, visibility 0.4s ease;
   border: 1px solid rgba(220, 210, 195, 0.8) !important;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page.active {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: rotateY(0deg) !important;
 }
 
 .page.flipped {
-  transform: rotateY(-180deg);
-  pointer-events: none;
-  opacity: 0;
+  transform: rotateY(-180deg) !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
 }
 
 .photo-column {
@@ -588,7 +341,6 @@ h1 {
   gap: 8px;
 }
 
-/* ★ パララックス・立体ズーム（手前への浮き出し） ★ */
 .photo-frame {
   width: 100%;
   height: 180px;
@@ -678,7 +430,6 @@ h1 {
   transform: translateY(0);
 }
 
-/* ★ 純粋なカラー写真表示（モノクロコード完全排除） ★ */
 .photo-front img {
   width: 100%; height: 100%;
   object-fit: cover;
@@ -691,16 +442,6 @@ h1 {
 
 .page.active .photo-front img {
   transform: scale(1);
-}
-
-.photo-front::before {
-  content: '';
-  position: absolute;
-  top: -20%; left: -20%;
-  width: 80%; height: 80%;
-  background: radial-gradient(circle, rgba(255, 225, 160, 0.28) 0%, rgba(255, 180, 120, 0.12) 50%, transparent 80%);
-  pointer-events: none;
-  z-index: 2;
 }
 
 .photo-back {
@@ -718,6 +459,7 @@ h1 {
   line-height: 1.6;
 }
 
+/* ★ バグ対策3：本文スクロールの完璧な快適化 ★ */
 .diary-entry {
   flex: 1;
   padding-top: 10px;
@@ -725,17 +467,22 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow-y: auto;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
 }
 
-.page-tag, .date-title, .text, .author {
+.page-tag, .date-title, .author {
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.4s ease 0.1s, transform 0.4s var(--ease-3d) 0.1s;
 }
 
-.page.active .page-tag { opacity: 1; transform: translateY(0); }
-.page.active .date-title { opacity: 1; transform: translateY(0); }
+.page.active .page-tag, .page.active .date-title {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 .text {
   font-family: var(--font-ja) !important;
@@ -744,14 +491,17 @@ h1 {
   margin-top: 10px;
   white-space: pre-wrap;
   color: var(--text-body) !important;
+  touch-action: pan-y !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  opacity: 0;
   filter: blur(2px);
-  transition: filter 0.4s ease 0.1s, opacity 0.4s ease 0.1s, transform 0.4s var(--ease-3d) 0.1s !important;
+  transition: filter 0.4s ease 0.1s, opacity 0.4s ease 0.1s !important;
 }
 
 .page.active .text {
   opacity: 1;
   filter: blur(0px);
-  transform: translateY(0);
 }
 
 .author { text-align: right; font-size: 0.8rem; color: var(--text-muted) !important; margin-top: 10px; }
@@ -774,41 +524,6 @@ h1 {
 .secret-letter p { font-family: var(--font-ja) !important; font-size: 0.88rem; color: #1a1a1a !important; line-height: 1.85; white-space: pre-wrap; }
 
 /* モーダル */
-.custom-modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(10, 8, 6, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 10000;
-  justify-content: center;
-  align-items: center;
-}
-
-.custom-modal.active { display: flex; }
-
-.modal-content {
-  background: #fdfbf7;
-  border: 1px solid var(--gold-primary);
-  border-radius: 16px;
-  padding: 20px;
-  width: 88vw;
-  max-width: 360px;
-  position: relative;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  text-align: center;
-}
-
-.modal-close {
-  position: absolute;
-  top: 10px; right: 15px;
-  font-size: 2rem;
-  color: var(--text-dark);
-  cursor: pointer;
-}
-
 .lightbox { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; }
 .lightbox.active { display: flex; }
 .lightbox img { max-width: 92vw; max-height: 82vh; border-radius: 6px; }
@@ -819,6 +534,36 @@ h1 {
 
 button { background: var(--text-dark); border: 1px solid var(--gold-primary); padding: 10px 26px; font-size: 0.85rem; color: #ffffff; border-radius: 25px; }
 
+/* === 🎭 シネマカーテン（2.5秒スロー） === */
+.curtain-panel-left,
+.curtain-panel-right {
+  position: fixed;
+  top: 0;
+  width: 51vw;
+  height: 100vh;
+  z-index: 100000;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    #0a0806 0px,
+    #18130e 15px,
+    #2a2019 30px,
+    #120e0a 45px,
+    #050403 60px
+  );
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
+  will-change: transform;
+}
+
+.curtain-panel-left { left: 0; border-right: 2px solid var(--gold-primary); transform: translateX(-105%); }
+.curtain-panel-right { right: 0; border-left: 2px solid var(--gold-primary); transform: translateX(105%); }
+
+body.curtain-closed .curtain-panel-left { animation: curtainCloseLeft 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+body.curtain-closed .curtain-panel-right { animation: curtainCloseRight 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+
+@keyframes curtainCloseLeft { 0% { transform: translateX(-105%); } 100% { transform: translateX(0%); } }
+@keyframes curtainCloseRight { 0% { transform: translateX(105%); } 100% { transform: translateX(0%); } }
+
 @media (min-width: 769px) {
   .album-container { width: 880px; max-width: 92vw; height: 560px; }
   .book-spine { display: block; }
@@ -826,128 +571,4 @@ button { background: var(--text-dark); border: 1px solid var(--gold-primary); pa
   .photo-column { flex: 1; height: 100%; }
   .photo-frame { height: 100%; }
   .diary-entry { border-top: none; border-left: 1px dashed #e5dcd0; padding-top: 0; padding-left: 20px; }
-  .random-polaroid { width: 170px; height: 170px; padding: 8px 8px 26px 8px; }
-  .polaroid-1 { top: 2%; left: 2%; }
-  .polaroid-2 { top: 2%; right: 2%; }
-  .polaroid-3 { bottom: 2%; left: 2%; }
-  .polaroid-4 { bottom: 2%; right: 2%; }
-  .polaroid-5 { top: 38%; left: 1%; }
-  .polaroid-6 { top: 38%; right: 1%; }
-  .polaroid-7 { top: 1%; left: 34%; }
-  .polaroid-8 { bottom: 1%; left: 34%; }
-}
-/* =========================================================
-   🎭 シネマカーテン（まっすぐ・3.2秒スローで中央合体）
-   ========================================================= */
-.curtain-panel-left,
-.curtain-panel-right {
-  position: fixed;
-  top: 0;
-  width: 51vw; /* 中央の隙間防止 */
-  height: 100vh;
-  z-index: 100000;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    90deg,
-    #0a0806 0px,
-    #18130e 15px,
-    #2a2019 30px,
-    #120e0a 45px,
-    #050403 60px
-  );
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
-  will-change: transform;
-}
-
-.curtain-panel-left {
-  left: 0;
-  border-right: 2px solid var(--gold-primary);
-  transform: translateX(-105%);
-}
-
-.curtain-panel-right {
-  right: 0;
-  border-left: 2px solid var(--gold-primary);
-  transform: translateX(105%);
-}
-
-/* =========================================================
-   🎭 シネマカーテン（まっすぐ・2.5秒スローで中央合体）
-   ========================================================= */
-.curtain-panel-left,
-.curtain-panel-right {
-  position: fixed;
-  top: 0;
-  width: 51vw; /* 中央の隙間防止 */
-  height: 100vh;
-  z-index: 100000;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    90deg,
-    #0a0806 0px,
-    #18130e 15px,
-    #2a2019 30px,
-    #120e0a 45px,
-    #050403 60px
-  );
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.95);
-  will-change: transform;
-}
-
-.curtain-panel-left {
-  left: 0;
-  border-right: 2px solid var(--gold-primary);
-  transform: translateX(-105%);
-}
-
-.curtain-panel-right {
-  right: 0;
-  border-left: 2px solid var(--gold-primary);
-  transform: translateX(105%);
-}
-
-/* 🎬 2.5秒かけて閉まる設定 */
-body.curtain-closed .curtain-panel-left {
-  animation: curtainCloseLeft 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-body.curtain-closed .curtain-panel-right {
-  animation: curtainCloseRight 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes curtainCloseLeft {
-  0% { transform: translateX(-105%); }
-  100% { transform: translateX(0%); }
-}
-
-@keyframes curtainCloseRight {
-  0% { transform: translateX(105%); }
-  100% { transform: translateX(0%); }
-}
-/* =========================================================
-   📜 アルバム本編コメント枠のスクロール操作性大幅改善
-   ========================================================= */
-.diary-entry {
-  -webkit-overflow-scrolling: touch !important;
-  touch-action: pan-y !important;
-  overflow-y: auto !important;
-  overscroll-behavior-y: contain !important;
-}
-
-.diary-entry .text {
-  user-select: text !important;
-  -webkit-user-select: text !important;
-  touch-action: pan-y !important;
-}
-
-/* スクロールバーを見やすく洗練されたゴールド仕様に */
-.diary-entry::-webkit-scrollbar {
-  width: 4px;
-}
-.diary-entry::-webkit-scrollbar-thumb {
-  background: var(--gold-primary);
-  border-radius: 4px;
-}
-.diary-entry::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.05);
 }

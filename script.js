@@ -150,7 +150,10 @@ window.addEventListener('load', () => {
   // シネマページから戻ってきた場合はカバーを飛ばして直接アルバムを表示
   if (window.location.hash === '#album') {
     document.body.classList.remove('cover-active');
-    if (openingCover) openingCover.classList.add('open-book');
+    if (openingCover) {
+      openingCover.classList.add('open-book');
+      openingCover.style.display = 'none';
+    }
   } else {
     document.body.classList.add('cover-active');
   }
@@ -231,7 +234,6 @@ function launchPhotoPageTransition(onComplete) {
   requestAnimationFrame(spawnStep);
 }
 
-// 運命の1枚が中央で静止 ➔ アルバムへ吸い込まれて着地
 function showFinalHeroPhoto(onComplete) {
   const heroDiv = document.createElement('div');
   heroDiv.className = 'final-hero-photo';
@@ -265,11 +267,13 @@ if (startBtn) {
     startBtn.style.display = 'none';
     document.body.classList.add('curtain-closed');
 
-    // カーテンがちょうど閉じ切る2.3秒後に写真浮遊スタート
     setTimeout(() => {
       launchPhotoPageTransition(() => {
         document.body.classList.remove('cover-active');
-        if (openingCover) openingCover.classList.add('open-book');
+        if (openingCover) {
+          openingCover.classList.add('open-book');
+          openingCover.style.display = 'none';
+        }
 
         setTimeout(() => {
           document.body.classList.remove('curtain-closed');
@@ -391,6 +395,7 @@ function initInteractiveTouch() {
   });
 }
 
+// ★ バグ対策：めくり状態の完璧な同期制御 ★
 let pages = [];
 let currentPage = 0;
 
@@ -403,11 +408,6 @@ function initPages() {
   pages = Array.from(document.querySelectorAll('.page'));
   if (totalPages) totalPages.textContent = pages.length;
 
-  pages.forEach((page, index) => {
-    page.style.zIndex = pages.length - index;
-    page.classList.remove('flipped', 'active');
-  });
-
   currentPage = 0;
   updateActivePage();
   updateUI();
@@ -415,12 +415,14 @@ function initPages() {
 
 function updateActivePage() {
   pages.forEach((page, index) => {
-    if (index === currentPage) {
+    if (index < currentPage) {
+      page.classList.add('flipped');
+      page.classList.remove('active');
+    } else if (index === currentPage) {
+      page.classList.remove('flipped');
       page.classList.add('active');
     } else {
-      page.classList.remove('active');
-      const frame = page.querySelector('.photo-frame');
-      if (frame) frame.classList.remove('flipped-photo');
+      page.classList.remove('flipped', 'active');
     }
   });
 }
@@ -428,7 +430,6 @@ function updateActivePage() {
 if (nextBtn) {
   nextBtn.addEventListener('click', () => {
     if (currentPage < pages.length - 1) {
-      pages[currentPage].classList.add('flipped');
       currentPage++;
       updateActivePage();
       updateUI();
@@ -437,11 +438,9 @@ if (nextBtn) {
 }
 
 if (prevBtn) {
-  prevBtn.disabled = true;
   prevBtn.addEventListener('click', () => {
     if (currentPage > 0) {
       currentPage--;
-      pages[currentPage].classList.remove('flipped');
       updateActivePage();
       updateUI();
     }
