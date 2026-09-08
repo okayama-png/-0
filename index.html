@@ -3,649 +3,674 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MEMORIAL ALBUM — Minami & Yuna</title>
-
+  <title>みなみと結南の思い出アルバム — Memorial Archive</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Shippori+Mincho:wght@400;500;600;700&family=Yuji+Syuku&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=9999999">
 </head>
 <body class="cover-active">
 
-  <!-- 🎭 画面オープニングカバー -->
-  <div id="opening-cover">
+  <!-- オープニングカバー -->
+  <div id="opening-cover" aria-hidden="false">
     <div class="cover-content">
-      <div class="luxury-badge">ANNIVERSARY COLLECTION</div>
-      <h2 class="cover-title">Minami & Yuna</h2>
-      <p class="cover-sub">〜 ふたりの歩みと、未来への約束 〜</p>
-      <button class="open-btn" id="startBtn">OPEN ALBUM</button>
+      <div class="luxury-badge">EXCLUSIVE MEMORIES</div>
+      <div class="cover-title-group">
+        <div class="cover-title">Minami & Yuna's Story</div>
+        <div class="cover-sub">〜 ふたりの思い出アルバム 〜</div>
+      </div>
+      <button class="open-btn" id="startBtn">
+        <span>OPEN ALBUM</span>
+      </button>
     </div>
   </div>
 
-  <!-- 📖 メインヘッダー -->
   <header>
-    <div class="header-brand">MEMORIAL ALBUM</div>
-    <h1>Minami & Yuna</h1>
-    <div class="subtitle">1st Anniversary Story</div>
-    
+    <div class="header-brand">MEMORIAL COLLECTION</div>
+    <h1>みなみと結南の思い出アルバム</h1>
+    <div class="subtitle">Minami & Yuna's Story</div>
+
     <div class="anniversary-timer">
-      愛が始まってから: <span id="loveTimer">計算中...</span>
+      <span class="timer-label">付き合ってから：</span>
+      <span id="loveTimer">計算中...</span>
     </div>
 
     <div class="header-btn-group">
-      <button class="omikuji-btn" id="omikujiBtn">🎲 今日のふたりの運勢</button>
+      <button id="omikujiBtn" class="omikuji-btn">🎲 今日のふたりの運勢を占う</button>
       <a href="cinema.html" class="cinema-nav-btn">🎬 CINEMA FILM を見る</a>
     </div>
   </header>
 
-  <!-- 📖 アルバム本編（19 Scenes + 特殊ページ） -->
+  <!-- アルバム本体 -->
   <main class="album-container">
     <div class="book-spine"></div>
 
-    <!-- Scene 1 -->
-    <article class="page active">
+    <!-- PROLOGUE -->
+    <article class="page active layout-magazine" id="page1">
       <div class="photo-column">
-        <div class="photo-frame">
+        <div class="photo-frame" title="タップで裏面を見る">
           <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/prologue.png" alt="Prologue">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">出会ったあのバーの空気感と、改札で振ってくれた笑顔。すべての奇跡の始まり。</div>
-            </div>
+            <div class="photo-front"><img src="images/prologue.png" alt="ふたりの始まり"></div>
+            <div class="photo-back"><p class="back-text">💌 この日から全てが始まったね.運命に感謝</p></div>
           </div>
         </div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">000 - PROLOGUE</div>
-          <div class="date-title">出会いと始まりの夜</div>
-          <p class="text">2026.07.03
-あの日、偶然入ったあのバーでみなみさんと出会えたこと。もしどちらかが少しでも違う選択をしていたらと思うと、奇跡としか思えない夜でした。見えなくなるまで改札でずっと手を振り続けてくれたあの笑顔は、今も私の胸の中でずっと輝いています。すべての始まりの、愛おしいプロローグ。</p>
+        <div class="entry-content">
+          <span class="page-tag">PROLOGUE</span>
+          <h2 class="date-title">000 - Prologue</h2>
+          <p class="text">きっかけはあの日入ったバー。あの時私がそのまま帰っていたら、みなみさんが別の予定のままだったら……そう思うと本当に奇跡や運命ってあるんだと感じます。見えなくなるまで改札で手を振り続けてくれた姿は、今も脳裏に焼き付いています。
+
+会話が驚くほど楽しくて「この人のためなら」と思えたこと。公務員として働きつつ大好きなダンスを楽しむ真っ直ぐさや、緊張する私を「楽しい」と優しく包み込んでくれる笑顔に惹かれていきました。両思いだと分かっていても、「好きです。付き合ってください」と手を震わせて告白したあの夜の緊張は、大切な宝物です。
+
+どの思い出も一つだって忘れたくないから。普段上手く伝えられない「大好き」を込めて、このアルバムを作りました。喜んでくれるといいな。
+
+これからもたくさん思い出増やしていこう。その度更新するから、時々は見に来てね。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 2 -->
-    <article class="page">
+    <!-- 001 -->
+    <article class="page layout-scrapbook" id="page2">
       <div class="photo-column">
-        <div class="photo-frame">
+        <div class="photo-frame" title="タップで裏面を見る">
+          <div class="tape-decor"></div>
           <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page01.png" alt="付き合った日">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">緊張で声が震えた公園での告白。一生忘れない特別な夜。</div>
-            </div>
+            <div class="photo-front"><img src="images/page01.png" alt="付き合った日"></div>
+            <div class="photo-back"><p class="back-text">☕ コーヒー味の初キス、一生忘れない宝物</p></div>
           </div>
         </div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">001 - DAY 01</div>
-          <div class="date-title">付き合った日</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 01</span>
+          <h2 class="date-title">001 - 付き合った日</h2>
           <p class="text">2026.07.03
-仕事終わりにお迎えに行って食べたもんじゃ焼き。張り切って焼いてくれた姿が可愛くて、それだけで幸せだった。その後のカラオケでまだ付き合ってもないのにしちゃった、心臓が破裂しそうな初キス。公園で声を震わせながら渡した花束と告白。距離がぐっと縮まった、コーヒー味の思い出。</p>
+みなみさんの仕事終わりに職場までお迎えに行って、近くでもんじゃ焼きを食べた日。昔バイトしてたみたいで、張り切って焼いてくれたのがめちゃくちゃ可愛かったな。
+
+そのあとカラオケに行って、まだ付き合ってもないのにキスしちゃって……もう心臓バクバクで破裂するかと思った（笑）。
+
+みなみさんの最寄り駅に着いてからは、公園までゆっくりお散歩。
+実は私、告白するために花束と手紙をこっそり用意してて。そしたらみなみさんも、私の誕生日プレゼントにマグカップ用意してくれてたんだよね。
+
+公園で花束を取り出して、緊張で声を震わせながら告白。無事にお付き合いスタート！
+最初は隣を歩くだけで照れくさいのに、みなみさんが無意識にぐいぐい寄ってくるから私の歩く道なくなっちゃうのも愛おしかった（笑）。
+
+公園でずっとキスしてたのも今じゃ最高の思い出。
+ふたりの距離がぐんと縮まった、人生でいっちばん最高の夜！</p>
+
+          <div class="quiz-box">
+            <div class="quiz-title">❓ みなみさんクイズ #1</div>
+            <p class="quiz-q">この夜、公園でずっとキスした時の思い出の味は？</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">① いちご味 🍓</button>
+              <button class="quiz-btn" data-correct="true">② コーヒー味 ☕</button>
+              <button class="quiz-btn" data-correct="false">③ もんじゃ味 🥢</button>
+            </div>
+            <div class="quiz-result"></div>
+          </div>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 3 -->
-    <article class="page">
+    <!-- 002 -->
+    <article class="page" id="page3">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page02.png" alt="初めてダンスを見た日">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">ステージで輝く姿に一目惚れ。一番近くで応援できて幸せです。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page02.png" alt="初めてダンスを見た日"></div><div class="photo-back"><p class="back-text">💃 ステージの上のみなみさん、格好良すぎて鳥肌立った</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">002 - DANCE</div>
-          <div class="date-title">初めてダンスを見た日</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 02</span>
+          <h2 class="date-title">002 - 初めてダンスを見た日</h2>
           <p class="text">2026.07.05
-『Be Creators』のステージの上で踊るみなみさんは、息をのむほど格好良くて圧倒されっぱなしだった。終演後に花束を渡した時の無邪気な笑顔も、そのあと公園でスムージーを飲みながら過ごしたやわらかな時間も全部宝物。大好きな人の一番近くで輝きを見つめられる幸せを噛みしめた日。</p>
+みなみさんが招待してくれて「Be Creators」という公演を見に行った日！
+
+ステージの上のみなみさんは、とにかく格好良くて……！目に映るグループみんなのパフォーマンスが圧巻で、ずっと圧倒されっぱなしだった。こんなに素晴らしい景色を見せてもらえたのも、みなみさんと付き合えたからこそだな〜っと心から感謝。
+
+公演が終わったあとに花束を渡したら、めちゃくちゃ喜んでくれて嬉しかったな。
+
+そのあとは、みなみさんの打ち上げが始まる時間まで二人で公園に行ったりお散歩したり。アイスを食べたりスムージーを飲んだりしながらのんびり過ごす時間が、本当に幸せで愛おしかったです</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 4 -->
-    <article class="page">
+    <!-- 003 -->
+    <article class="page" id="page4">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page03.png" alt="七夕">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">短冊に込められた直筆の「大好き」。一生大事にする宝物。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page03.png" alt="七夕"></div><div class="photo-back"><p class="back-text">🎋 美しい字で「大好き」って書いてくれてキュン死</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">003 - TANABATA</div>
-          <div class="date-title">七夕の願い</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 03</span>
+          <h2 class="date-title">003 - 七夕</h2>
           <p class="text">2026.07.07
-七夕の夜に送り合った短冊。「ずっと隣で笑い合えますように」と願いを込めたけれど、みなみさんが書いてくれた美しい字と直筆の「大好き」の文字を見た瞬間、胸がぎゅっとなるくらい惚れ直してしまった。どんな壁があってもこの人となら乗り越えていける、そう強く確信した特別な夜。</p>
+お互いに短冊を書き合って送り合った七夕の夜。
+
+「ずっと隣で笑い合える関係でいられますように」って願いを込めて書いたんだけど、みなみさんの書いた字が美しすぎて……またさらに惚れ直してしまったな。しかも「大好き」なんて言葉まで短冊に書いてくれて、たまらなく幸せだった
+
+笑顔でいられることが一番大切だと思うけれど、みなみさんとならどんな壁があっても乗り越えていける気がした。
+これからも一生をかけて、みなみさんのことをもっと知っていきたいなと願った特別な夜でした。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 5 -->
-    <article class="page">
+    <!-- 004 -->
+    <article class="page" id="page5">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page04.png" alt="初めてのお弁当">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">失敗しちゃったご飯も「美味しい」って微笑んで食べてくれた優しさ。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page04.png" alt="初めてのお弁当"></div><div class="photo-back"><p class="back-text">🍱 失敗したご飯もおいしいって食べてくれた優しさに感動。</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">004 - LUNCH BOX</div>
-          <div class="date-title">初めてのお弁当</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 04</span>
+          <h2 class="date-title">004 - 初めてのお弁当</h2>
           <p class="text">2026.07.10
-朝のやわらかな光の中で初めて作っていったお弁当。寝ぼけて炊き込みご飯の水の量を間違えちゃったけれど、「味はすごく美味しいよ」って優しく微笑んで食べてくれたその温もりが嬉しかった。いつか同じ家でお弁当を作ってそれを渡して「いってらっしゃい」と言いたいなと思い描いた日。</p>
+初めて手作りのお弁当を食べてもらった日。
+
+朝少し寝ぼけながら炊いた炊き込みご飯は、水の量を間違えて失敗しちゃったけれど、「味はすごく美味しいよ」って優しく微笑んで食べてくれたみなみさん。その温もりに触れるたび、私の中の「好き」の芽がまた深く根を張っていくのを感じていました。
+
+すごく緊張していたけれど、朝のやわらかな光の中で大好きな人と会えて本当に幸せだったな。
+いつか同じ家で「いってらっしゃい」を言う日が来たら、毎日私のお弁当を食べてほしいな。そんな愛おしい未来を、静かに思い描いた朝でした。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 6 -->
-    <article class="page">
+    <!-- 005 -->
+    <article class="page layout-photocard" id="page6">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page05.png" alt="水族館と初お泊り">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">青い水槽の前のみなみさんは女神様みたいに幻想的で綺麗な人でした。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page05.png" alt="水族館と初お泊り"></div><div class="photo-back"><p class="back-text">🐠 青い光の中のみなみさん、女神みたいに綺麗だった</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">005 - AQUARIUM</div>
-          <div class="date-title">水族館と初お泊り</div>
-          <p class="text">2026.07.11
-一日中ダンスで疲れているはずなのに、嫌な顔ひとつせずお迎えに来てくれた深すぎる優しさ。すみだ水族館の青く静かな光の中に浮かび上がるみなみさんは、まるで女神みたいに綺麗だった。そして我が家での初めてのお泊り。目覚めた朝、隣で穏やかに眠る姿がある奇跡に心から感謝した日。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 05</span>
+          <h2 class="date-title">005 - 水族館と初お泊り</h2>
+          <p class="text">2026.07.11 - 07.12
+ダンスで一日中踊って疲れてるはずなのに、嫌な顔ひとつせず仕事終わりに迎えに来てくれたみなみさん。その深い優しさに包まれながら、ふたりですみだ水族館へ。
+
+正直、展示の内容はあんまり覚えていないけど、青い光の中に浮かび上がるみなみさんがただただ綺麗で。水族館っていう幻想的な空間で隣に並んで話すだけで、世界でいちばん幸せな時間が流れてたなぁ。
+
+そのあとは、私の家で初めてのお泊り。
+ふたりで過ごした静かな一夜は、これまでのどんな夜よりも愛おしくて、心まで温かくなるような時間でした。
+
+ふと目を覚ました朝、隣で穏やかに眠るみなみさんの姿がある——そのかけがえのない景色に、胸がぎゅっとなるくらいの幸せを感じていたよ。何にも代えられない愛しい朝を、本当にありがとう。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 7 -->
-    <article class="page">
+    <!-- 006 -->
+    <article class="page" id="page7">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page06.png" alt="お泊り">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">アイスを食べながら照れる顔。どこを切り取っても愛おしいです。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page06.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">🍨 アイス食べて照れる顔、可愛すぎてメロメロだぜぇ</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">006 - SWEET NIGHT</div>
-          <div class="date-title">みなみさん家でのお泊り</div>
-          <p class="text">2026.07.12
-「会いたい」という私のわがままを優しく受け止めてくれて実現した、みなみさん家でのお泊り。カメラを向けると照れてそっぽを向いちゃったり、アイスを食べながら目が合うだけで恥ずかしそうに笑う顔が愛おしすぎてメロメロ。少しずつ縮まっていくふたりの距離がたまらなく愛おしい。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 06</span>
+          <h2 class="date-title">006 - お泊り</h2>
+          <p class="text">2026.07.12 - 07.13
+私の「会いたい」っていうわがままを受け止めてくれて、そのままみなみさんの家にお泊り。
+最初は少し戸惑っていたけれど、最後は「いいよ、おいで」って微笑んでくれたのが本当に嬉しかったなぁ。
+
+カメラを向けたら少し照れながらそっぽを向いちゃうところも、アイスを食べている時に目が合うだけで恥ずかしそうにする顔も、見るもの全部が愛おしくて。
+
+まだまだぎこちない、ふたりの距離感。
+でも、その少しずつ縮まっていく距離さえも宝物のように感じています。
+
+ずっとずっと、こんな優しい幸せをふたりで作っていこうね。心から、愛してるよ。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 8 -->
-    <article class="page">
+    <!-- 007 -->
+    <article class="page" id="page8">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page07.png" alt="映画とお泊り">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">映画館での秘密のキス。失敗も笑顔で許してくれる大好きな人。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page07.png" alt="映画とお泊り"></div><div class="photo-back"><p class="back-text">🎬 1枚ポカ事件（笑）映画館でのキス写真は私の宝物</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">007 - MOVIE</div>
-          <div class="date-title">映画館デートとお弁当</div>
-          <p class="text">2026.07.14
-『トイ・ストーリー4』を見に行った日。映画館の一番後ろの席を取ろうとしてチケットを1枚しか取っていなかった私の大ポカも笑い飛ばしてくれてありがとう。映画館の暗闇の中で重ねたキス写真はずっと私のお気に入り。翌朝作ってくれたお弁当の美味しさと優しさに、胸がいっぱいになりました。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 07</span>
+          <h2 class="date-title">007 - 映画とお泊り</h2>
+          <p class="text">2026.07.14 - 07.15
+ふたりで『トイ・ストーリー4』を見に行った日
+
+結局、映画の内容をあんまり覚えていないくらいにはイチャイチャしちゃったし、ポップコーンは美味しすぎたし、何より映画館でキスした時の写真がずっとお気に入り。
+
+そのあとはカラオケに行って、みなみさんの家でお泊り。
+翌朝、みなみさんがお弁当を作ってくれて……一口食べた瞬間「好きな人が作ってくれたお弁当って、こんなに美味しいんだ」って胸がいっぱいになりました。優しさと美味しくて愛おしい味を、ありがとう。
+
+毎日が幸せすぎて、もう滅！</p>
+
+          <div class="quiz-box">
+            <div class="quiz-title">❓ みなみさんクイズ #2</div>
+            <p class="quiz-q">一番後ろの席を取ろうとして、結南がやらかした大ポカは？</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">① 映画館を間違えた 🎬</button>
+              <button class="quiz-btn" data-correct="true">② チケットを1枚しか取ってなかった 🎟️</button>
+              <button class="quiz-btn" data-correct="false">③ ポップコーンをこぼした 🍿</button>
+            </div>
+            <div class="quiz-result"></div>
+          </div>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 9 -->
-    <article class="page">
+    <!-- 008 -->
+    <article class="page layout-scrapbook" id="page9">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page08.png" alt="お泊り">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">「即寝る」はずが我慢できない二人。そんなところも大好き。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="tape-decor"></div><div class="photo-inner"><div class="photo-front"><img src="images/page08.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">😏 ちょっぴりSっ気みなみさん、本当にメロすぎ！</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">008 - NIGHT IN</div>
-          <div class="date-title">忍耐力ゼロの愛おしい夜</div>
-          <p class="text">2026.07.16
-「明日お弁当持っていきたい」と言ったら、まさかのみなみさんからお泊りの誘い！お互いに「今日は疲れたから即寝る」って意気込んでいたはずなのに、気づいたら始まっちゃうふたり。双方そろって忍耐力ゼロなところも愛おしい。ちょっぴりSっ気満載なみなみさんに、今日もメロメロです。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 08</span>
+          <h2 class="date-title">008 - お泊り</h2>
+          <p class="text">2026.07.16 - 07.17
+「明日お弁当持っていきたい」って言ったら、なぜかそのままお泊りすることになった日
+まさかみなみさんのほうからお泊りに誘ってくれるなんて思ってもなかったなぁ。あ、でも出会った頃に「酔わせて持ち帰る」なんて言ってたから、密かに変態疑惑はあったんだけどね（笑）。
+
+二人とも「今日は疲れたから即寝るっ！」って意気込んでたはずなのに、気づいたら始まっちゃう不思議。双方そろって忍耐力がなさすぎるのも愛おしい。
+ちょっぴりSっ気満載なみなみさん、本当にメロすぎます。
+
+毎日「またお泊りだね、会いすぎだよね」って笑い合ってるけれど、お互いに「会いたい」が爆発してるんだからしょうがない！
+
+会うたびに好きが深まっていく、愛おしい日々。いつも本当にありがとう。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 10 -->
-    <article class="page">
+    <!-- 009 -->
+    <article class="page" id="page10">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page09.png" alt="飲みとお泊り">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">メガジョッキを引き当てるお茶目な姿。ありのままの君が大好き。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page09.png" alt="飲みとお泊り"></div><div class="photo-back"><p class="back-text">🍻 チンチロメガジョッキ笑った！ありのままの君が好き</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">009 - BABA DRINK</div>
-          <div class="date-title">馬場飲みとメガジョッキ</div>
-          <p class="text">2026.07.18
-友達と一緒に馬場飲みからのみなみさん家にお泊り！「チンチロしたい！」って大はしゃぎして案の定メガジョッキを引き当てるお茶目な姿に爆笑。結局半分くらい私が飲んでた気もするけれど（笑）、飾らないありのままのみなみさんと過ごす時間は、私にとって世界で一番心地いい居場所です。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 09</span>
+          <h2 class="date-title">009 - 飲みとお泊り</h2>
+          <p class="text">2026.07.18 - 07.19
+馬場で私の友達と一緒に飲んで、そのままみなみさんの家にお泊りした日
+みなみさんが「チンチロしたい！」って言い出して、案の定メガジョッキを引き当てるお茶目な姿に爆笑。結局半分くらい私が飲んでた気もするけれど（笑）、飾らないありのままのみなみさんと過ごす時間は、私にとって世界で一番心地いい居場所です。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 11 -->
-    <article class="page">
+    <!-- 010 -->
+    <article class="page" id="page11">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page10.png" alt="ダンスの送迎">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">自爆したサプライズ（笑）。喜んでくれた笑顔で全部報われました。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page10.png" alt="ダンスの送迎"></div><div class="photo-back"><p class="back-text">📱 サプライズ大失敗したけど喜んでくれて嬉しかった！</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">010 - DRIVE</div>
-          <div class="date-title">埼玉会館送迎とサプライズ失敗</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 10</span>
+          <h2 class="date-title">010 - ダンスの送迎</h2>
           <p class="text">2026.07.19
-ダンス公演に行けない寂しさを埋めたくて、埼玉会館まで送迎した日。内緒でお揃いのスマホケースを買おうとコソコソいじっていたら怪しまれて、焦って自爆したサプライズ大失敗（笑）。でも、あんなに嬉しそうな笑顔が見られたから大成功。みなみさんと出会えた奇跡に感謝する毎日です。</p>
+明日のダンス公演に行けないから、少しわがままを言って埼玉会館まで送迎した日
+最初は送るだけのつもりだったけれど、やっぱり我慢できなくて「お迎えも行く！」って言っちゃった（笑）。待ち時間のスタバでの勉強がすごく捗ったからよしとしよう。
+
+明日の公演に行けない代わりに、帰ってから手間を取らせないで形に残るものを……と考えて、お揃いのコップをプレゼント。
+さらに内緒でお揃いのスマホケースも買いたくて、帰りの電車でみなみさんからスマホを借りて設定画面をコソコソいじっていたら、「なにしたの？」ってずっと気にしていてめちゃくちゃ可愛かったな。
+
+そしたら「スマホケース買おうかな」とか言い出して大焦り！思わずその場で「あ, 買っちゃった……」って白状してサプライズは大失敗（笑）。でも、嬉しそうな笑顔が見られたから前もって言っちゃうのもアリだなって思えたよ。
+
+明日、みなみさんが全力でダンスを楽しめるように、私のパワーは届いたかな。
+みなみさんと出会えた奇跡に、感謝する毎日です。</p>
+
+          <div class="quiz-box">
+            <div class="quiz-title">❓ みなみさんクイズ #3</div>
+            <p class="quiz-q">結南がガラスコップの前に買おうとしてたプレゼントは？</p>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-correct="false">① リンドール 🍫</button>
+              <button class="quiz-btn" data-correct="true">② 花束 🌸</button>
+              <button class="quiz-btn" data-correct="false">③ 服 👖</button>
+            </div>
+            <div class="quiz-result"></div>
+          </div>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 12 -->
-    <article class="page">
+    <!-- 011 -->
+    <article class="page" id="page12">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page11.png" alt="お泊り">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">角煮と炊きたてご飯、サウナハット。愛に溢れた最高のご馳走。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page11.png" alt="お泊り"></div><div class="photo-back"><p class="back-text">♨️ サウナハットサプライズ、最高に嬉しかった！</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">011 - GIFT & COOK</div>
-          <div class="date-title">手作り角煮とサウナハット</div>
-          <p class="text">2026.07.23
-仕事終わりに直行して一緒に作った豚の角煮。私の帰りを待ちながら作ってくれてた姿を想像するとたまらないです。ご飯も炊きたてを食べさせようとしてくれてて愛感じたよ。全部とってもおいしかったよありがとう。「プレゼントがあります！」ってにっこにこ顔で渡された袋を開けると、サウナハット。私のポロッと言った言葉を覚えていてくれたその優しさに、心から愛が溢れました。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 11</span>
+          <h2 class="date-title">011 - お泊り</h2>
+          <p class="text">2026.07.23 - 07.24
+仕事終わりにみなみさんの家へ直行して、一緒に豚の角煮を作った日
+手際よく料理を作ってくれる姿も格好良かったし、何より全部本当に美味しかったな。普段はあんまり野菜が好きじゃないのに、みなみさんが作ってくれたきゅうりや焼き浸しがあまりにも美味しすぎて、胸がいっぱいになりました。また作ってほしいな。
+
+そのあと「プレゼントがあります！」って、にっこにこ顔で渡された袋を開けると……なんとサウナハット！
+前に私が「今は実家にあるんだよね」ってポロッと言ったのを覚えていてくれたみたいで、その気持ちが本当に嬉しかったよ。ありがとう。
+
+早く一緒にサウナに行ったり、温泉旅行に行きたいな。
+今日も心から、愛しています。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 13 -->
-    <article class="page">
+    <!-- 012 -->
+    <article class="page" id="page13">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page12.png" alt="お泊まり">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">ゲーセンでの大はしゃぎとキスマ攻防戦。離れていても愛してる。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page12.png" alt="お泊まり"></div><div class="photo-back"><p class="back-text">🎮 ゲーセンではしゃぐ二人最高！私にはみなみさんだけ。</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">012 - GAMING</div>
-          <div class="date-title">ゲーセンデートとキスマ攻防戦</div>
-          <p class="text">2026.07.26
-馬場でお寿司を食べてゲーセンへ直行！太鼓の達人にマリカー、モグラ叩きまで本気で大はしゃぎ。お泊りした翌朝のキスマ攻防戦も、じゃれ合いすぎて出かけるギリギリになっちゃうのもふたりのお約束。「会えない時間や距離に僕らは試されている」——離れている時間さえも愛を深めてくれる宝物です。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 12</span>
+          <h2 class="date-title">012 - お泊まり</h2>
+          <p class="text">2026.07.26 - 07.27
+前日に急遽会うことが決まって、馬場でお寿司を食べた日
+そのあとはゲーセンへ行って、太鼓の達人にマリカー、モグラ叩きまで大はしゃぎ（笑）ゲーセンでこんなに夢中になって最高の時間を過ごせるのも、みなみさんとだからこそだな〜っと感謝の気持ちでいっぱいでした。
+
+そのままみなみさんの家にお泊りして、翌朝はキスマをつけるかつけさせないかの真剣勝負（笑）。じゃれ合っていたら、いつも出かけるギリギリの時間になっちゃうのもお約束だね。
+
+会ったら会った分だけ、次に会えない日が寂しくなっちゃうけれど。
+一緒に過ごす時間も離れている時間も、全部ふたりを成長させてくれているんだなって感じています。
+
+「会えない時間や距離に僕らは試されている」
+この歌詞みたいに、会えない時間でさえお互いを成長できるような関係になりたいと思っています。
+
+やっぱり私には、みなみさんじゃなきゃダメです。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 14 -->
-    <article class="page">
+    <!-- 013 -->
+    <article class="page layout-cinematic" id="page14">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page13.png" alt="花火大会">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">小雨の傘の中、二人だけの小さな死角。『愛は勝つ』が流れた夜。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page13.png" alt="花火大会"></div><div class="photo-back"><p class="back-text">🎆 傘の中の二人だけの死角。『愛は勝つ』永遠の曲！</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">013 - FIREWORKS</div>
-          <div class="date-title">雨の花火大会と傘の中のキス</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 13</span>
+          <h2 class="date-title">013 - 花火大会</h2>
           <p class="text">2026.07.28
-告白する予定だった日に、恋人同士として見れた花火大会。夜空を見上げる横顔が咲き誇るどの花火よりも綺麗で、途中の小雨のおかげで傘という二人だけの小さな死角のなかで重ねた唇。BGMで流れていた『愛は勝つ』は、一生忘れられないふたりだけの特別なテーマソング。来年もこの先もずっと隣で見ようね。来年はどこに見に行こうか。</p>
+本当はこの日に告白しようと思って予定をもらっていた日。
+まさか恋人同士として、手をつないで花火を見に行けるなんて思ってもなかったなぁ。
+
+夜空を見上げて「きれいだね」ってつぶやくみなみさんの横顔が、咲き誇るどの花火よりも一番きれいでした。これから先、どんな花火を見たとしても、今日ふたりで見上げたこの景色をずっと思い出すんだろうな。
+
+途中で少し雨が降ってきて、傘という二人だけの小さな死角の中でいちゃいちゃしたのも鮮明な宝物。
+そして、あの時流れていた『愛は勝つ』。この曲はきっと、一生忘れられない特別なソングになりました（笑）。
+
+素敵な思い出を、本当にありがとう。
+来年も、再来年も、この先もずーっと、みなみさんの隣で花火を見続けられますように。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 15 -->
-    <article class="page">
+    <!-- 014 -->
+    <article class="page layout-cinematic" id="page15">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page14.png" alt="葛西臨海公園">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">海辺で時間を忘れて重ねた唇。ひまわりに照らされた君。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page14.png" alt="葛西臨海公園"></div><div class="photo-back"><p class="back-text">🌊 海辺でずっとキスした夜。ひまわりも綺麗だった！</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">014 - NIGHT PARK</div>
-          <div class="date-title">葛西臨海公園と夜の海辺</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 14</span>
+          <h2 class="date-title">014 - 葛西臨海公園</h2>
           <p class="text">2026.08.09
-ダンス送迎のあとに向かった夜の葛西臨海公園。美味しいものを頬張ったあと、海辺へ移動してふたりでずーーっとキス。空が深い闇に包まれるまで時間を忘れて重ね合った唇。夜のひまわりのライトアップに照らされたみなみさんは、今日も飛び切りの綺麗さで私の心を奪っていきました。</p>
+みなみさんのダンスの送迎をした日
+ダンスが終わったあと「お散歩したいね」って話になって、ふたりで葛西臨海公園へ向かった。
+
+ドーナツを食べて、焼きそばを食べて、かき氷まで頬張って。美味しいものを一緒に食べる時間はやっぱり最高！
+
+そのあとは海辺へ移動して、ふたりでずーーっとキス。
+ほんのり明るかった空が深い闇に包まれるまで、どれくらいの時間重ね合っていたのか分からないくらい夢中だったなぁ。心から幸せだと感じた時間でした。
+
+夜のひまわりのライトアップに照らされたみなみさん。今日も本当に綺麗で、可愛かったな。
+
+これから先も、ふたりでたくさんの景色を見に行こうね。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 16 -->
-    <article class="page">
+    <!-- 015 -->
+    <article class="page layout-magazine" id="page16">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page15.png" alt="ダンス公演">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">ステージで圧巻の存在感。いつまでも君のいちばんのファンです。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page15.png" alt="ダンス公演"></div><div class="photo-back"><p class="back-text">✨ 踊るみなみさんは世界一かっこいい！一番のファンだよ</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">015 - STAGE</div>
-          <div class="date-title">ダンス公演と圧倒的な輝き</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 15</span>
+          <h2 class="date-title">015 - ダンス公演</h2>
           <p class="text">2026.08.16
-ダンス公演で見せる圧巻のパフォーマンス。ステージの上で踊る姿は一瞬で目を奪われるほど格好良くて、何回見ても胸が熱くなる。たくさん練習して努力してるんだろうなと思わされるほど、伝わってくる圧倒的な表現力。これからもたくさんの公演を見に行けたら嬉しいです。</p>
+みなみさんのダンス公演を見に行った日
+ステージで踊る姿はいつ見ても本当にかっこよくて、一瞬で目を奪われてしまいます。
+すぐにみなみさんを見つけられるのも私の才能かも
+
+たくさん練習して頑張ってきた姿を知っているからこそ、普段は見られない表情や圧倒的な表現力に胸が熱くなったよ。
+
+きっとこれからもずっとダンスを続けていくんだろうな。
+「公演を全制覇したい！」って思うくらい、見るたびに最高の刺激と感動をもらっています。
+
+いちばん近くで、これからもずっと応援し続けさせてね。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 17 -->
-    <article class="page">
+    <!-- 016 -->
+    <article class="page" id="page17">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page16.png" alt="九十九里浜ドライブ">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">ずぶ濡れで飛び込んだ海！青春みたいなキラキラした一日。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page16.png" alt="九十九里浜ドライブ"></div><div class="photo-back"><p class="back-text">🏖️ ずぶ濡れ青春最高！手持ち花火も絶対やろう！</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">016 - BEACH DRIVE</div>
-          <div class="date-title">九十九里浜ドライブとずぶ濡れ青春</div>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 16</span>
+          <h2 class="date-title">016 - 九十九里浜ドライブ</h2>
           <p class="text">2026.08.22
-九十九里浜へのドライブ！到着してすぐに海へ飛び込んで、ずぶ濡れになりながら笑い合った青春みたいな一日。美味しいハンバーグを食べて、夜は韓国料理屋さんで夢中になってゲームを語る無邪気な姿が愛おしかった。時間がいくらあっても足りないくらい楽しい日々。今年中に手持ち花火も絶対やろうね！</p>
+ふたりで九十九里浜までドライブに行った日
+到着してすぐに海へ飛び込んで、二人してずぶ濡れになりながら泳んだり、海辺をお散歩したり、砂浜にお絵描きしたり……なんだか「青春だなぁ」って笑い合えて、本当に楽しかった！
+
+お昼に食べたハンバーグもすごく美味しかったな。素敵な場所を見つけてくれてありがとう。計画性ないのにどのお店言ってもあたりだよね。愛の力ってやつ？
+
+夜は韓国料理を食べに行って、そこでもずーっと二人でゲーム。夢中になってゲームのことを語っているみなみさんの姿が、可愛くて愛おしかったよ。
+
+みなみさんと過ごす時間はいつも一瞬で過ぎちゃって、どこへ行っても時間が足りなく感じてしまうけれど。
+これから先も、もっといろんな景色を二人で見に行こうね。
+
+早く手持ち花火もやりたいな。今年中に！</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 18 -->
-    <article class="page">
+    <!-- 017 -->
+    <article class="page layout-photocard" id="page18">
       <div class="photo-column">
-        <div class="photo-frame">
-          <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page17.png" alt="5日間のお泊り">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">夢の同棲に近づいた5日間。大好きな人の帰りを待つしあわせ。</div>
-            </div>
-          </div>
-        </div>
+        <div class="photo-frame"><div class="photo-inner"><div class="photo-front"><img src="images/page17.png" alt="5日間のお泊り"></div><div class="photo-back"><p class="back-text">🎹 夢の同棲に一歩前進！チェリー弾いてあげるね</p></div></div></div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">017 - HOMETOWN</div>
-          <div class="date-title">5日間のお泊りと同棲への夢</div>
-          <p class="text">2026.08.21
-気づけばなんと5日連続のお泊り！お洗濯をしてお料理を作って、大好きな人の帰りをワクワクしながら待つ時間は言葉にできないほど幸せだった。同棲への夢がもっと膨らんだ日々。練習したピアノも優しく褒めてくれてありがとう。ギターも頑張るから、いつか絶対にふたりで合奏しようね。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 17</span>
+          <h2 class="date-title">017 - 5日間のお泊り</h2>
+          <p class="text">2026.08.21 - 08.25
+気づいたらなんと5日間も一緒に過ごしていてびっくり。
+前半の2日は私の家で, 後半の3日はみなみさんの家で。あんなにずっと一緒にいられたなんて、自分でもびっくりしちゃうくらい嬉しかったな。早く一緒に住みたいなって、ますます思いが強くなりました。
+
+みなみさんの家でお洗濯をしたりお料理を作ったり、家事をしているだけで心から幸せだったのに、大好きな人の帰りをワクワクしながら待つ時間は、さらに愛おしい時間です。
+
+こっそり練習したピアノも、まだまだ下手くそなのに優しく褒めてくれてありがとう。
+ギターも頑張るから、いつか絶対に二人でデュエットしようね。『Let It Be』だけじゃなくて『チェリー』も弾けるようになったから、早くみなみさんに聴いてほしいな。
+
+本当に幸せな5日間をありがとう。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- Scene 19 -->
-    <article class="page">
+    <!-- 018 -->
+    <article class="page layout-cinematic" id="page19">
       <div class="photo-column">
-        <div class="photo-frame">
+        <div class="photo-frame" title="タップで裏面を見る">
           <div class="photo-inner">
-            <div class="photo-front">
-              <img src="images/page18.png" alt="ディズニーシー">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">ポップコーン6個食べたね（笑）。ずっとずっと愛しています。</div>
-            </div>
+            <div class="photo-front"><img src="images/page18.png" alt="ディズニーシー"></div>
+            <div class="photo-back"><p class="back-text">チューチューランドにチューチュー公園に京葉線は大変だね笑</p></div>
           </div>
         </div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">018 - DISNEY SEA</div>
-          <div class="date-title">夢のディズニーシーと最高のしあわせ</div>
-          <p class="text">2026.09.01
-ふたりで初めて行った夢のディズニーシー！アトラクションで叫びすぎて喉がやられたのも、ポップコーンを6個も食べて帰りにお腹すいたって言うみなみさんも最高に愛おしい（笑）。地球儀の前で膝を抱えて撮った写真も宝物。みなみさんといると何気ない瞬間もすべてが幸せに変わるよ。ずっと愛しています。</p>
+        <div class="entry-content">
+          <span class="page-tag">MEMORY 18</span>
+          <h2 class="date-title">018 - ディズニーシー</h2>
+          <p class="text">2026.9.1
+二人で初めてのディズニーシー 幸せな時間をありがとう。
+
+一緒に乗ったアトラクションが全部楽しすぎたなぁ。ファンスプもレイジングも上下運動のやつもすべてが最高すぎたよ。カレーもおいしかったしポップコーンも二人で6個食べたしアイスも食べたし。ん？食べ過ぎ？こんなに食べといて帰りにお腹すいたとかいうみなみさんが恐ろしいわ笑
+
+最後にタワテラとトイマニ乗ったけど二人とも叫びすぎてのどやられたね笑タワテラで叫ぶのはわかるけど、トイマニで叫ぶって何？いい加減にして？笑まさか最後にトイマニできると思ってなかったなぁ。
+
+最後に地球儀の前で膝抱えるやつしたくてやってたけど、まさかできると思わなかったね。隣の同性カップルが応援してくれてたらしくて、そのおかげかな？笑写真撮るだけなのにこんなに楽しくてこんなに幸せなのはみなみさんとだからなんだろうな。どの写真も宝物です。
+
+まだまだこれからも楽しい思い出増やしていこうね。心から愛しています。</p>
         </div>
-        <div class="author">— Yuna</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
-    <!-- 特殊ページ：クイズ＆おみくじ＆パスワード秘密の手紙 -->
-    <article class="page">
+    <!-- EPILOGUE -->
+    <article class="page layout-photocard" id="page20">
       <div class="photo-column">
         <div class="photo-frame">
           <div class="photo-inner">
-            <div class="photo-front">
-              <img id="epilogueRandomImg" src="images/prologue.png" alt="二人の宝物">
-            </div>
-            <div class="photo-back">
-              <div class="back-text">二人の愛は永遠に続きます。</div>
-            </div>
+            <div class="photo-front"><img id="epilogueRandomImg" src="images/prologue.png" alt="秘密のメッセージ"></div>
+            <div class="photo-back"><p class="back-text">🔑 ふたりの秘密の暗号だよ</p></div>
           </div>
         </div>
         <div class="photo-btn-group">
-          <button class="photo-zoom-btn">🔍 拡大表示</button>
+          <button class="photo-zoom-btn">🔍 写真を拡大</button>
         </div>
       </div>
       <div class="diary-entry">
-        <div>
-          <div class="page-tag">019 - SPECIAL ENDING</div>
-          <div class="date-title">二人のためのスペシャルコーナー</div>
-          
-          <!-- ミニクイズ -->
-          <div class="quiz-box" style="margin-top: 10px; padding: 10px; background: #faf6f0; border-radius: 8px; border: 1px solid #e0d5c5;">
-            <p style="font-size: 0.8rem; font-weight: 600; color: #8c6a2d; margin-bottom: 6px;">Q. 二人が初めてキスした思い出の場所は？</p>
-            <div style="display: flex; gap: 6px;">
-              <button class="quiz-btn" data-correct="false" style="font-size: 0.72rem; padding: 4px 8px;">1. すみだ水族館</button>
-              <button class="quiz-btn" data-correct="true" style="font-size: 0.72rem; padding: 4px 8px;">2. カラオケ</button>
-              <button class="quiz-btn" data-correct="false" style="font-size: 0.72rem; padding: 4px 8px;">3. 映画館</button>
-            </div>
-            <div class="quiz-result" style="font-size: 0.75rem; margin-top: 6px; font-weight: 600;"></div>
-          </div>
+        <div class="entry-content">
+          <span class="page-tag">EPILOGUE</span>
+          <h2 class="date-title">秘密のメッセージ</h2>
+          <p class="text">最後までアルバムを見てくれてありがとう！
 
-          <!-- パスワード解除秘密の手紙 -->
+ふたりの大切な記念日（4桁）を入力すると、特別なお手紙が開きます。</p>
+
           <div class="secret-pass-box">
-            <div class="pass-title">🔑 4桁の記念日パスワードを入力（0703）</div>
+            <div class="pass-title">🔒 秘密の鍵（ふたりが付き合った月日4桁を入力）</div>
             <div class="pass-input-group">
-              <input type="password" id="passInput" placeholder="4桁数字" maxlength="4">
-              <button id="unlockBtn">解除</button>
+              <input type="password" id="passInput" maxlength="4" placeholder="例: 0101">
+              <button id="unlockBtn">UNLOCK</button>
             </div>
-            <div id="passMessage" style="font-size: 0.75rem; margin-top: 4px; font-weight: 600;"></div>
-          </div>
+            <div id="passMessage" class="pass-msg"></div>
+            <div id="secretLetter" class="secret-letter" style="display: none;">
+              <h3> I Love You </h3>
+              <p>みなみさんへ
 
-          <div class="secret-letter" id="secretLetter" style="display: none;">
-            <h3>💌 みなみさんへのお手紙</h3>
-            <p>みなみさん、いつもたくさんの愛と笑顔をありがとう。
-君と出会ってからの毎日は、どれも眩しくて宝物のような瞬間ばかりです。
-これからも手をつないで、たくさんの夢を叶えていこうね。
-世界で一番大好きです。ずっと隣にいさせてね。</p>
+付き合ってから今日まで、みなみさんと過ごしたすべての時間が私の宝物です。
+
+照れくさくて普段は直接言えないけれど、みなみさんの笑顔も、真っ直ぐなところも、甘えてくるところも、少し変なところも、一緒にいて楽しいところも、ダンス頑張っているところも全部全部愛おしいよ。
+
+これからもずっと一番近くでみなみさんを応援させてね。
+何があっても私たちが手をつないでいれば大丈夫。
+どんなことだって乗り越えていける。
+だから安心して好きなことをやり続けていこうね。
+
+これからも自分たちのペースで少しずつお互いのこと知っていこうね
+一生かけてみなみさんのこと知り尽くす所存です。
+大好きだよ。
+
+結南より</p>
+            </div>
           </div>
 
         </div>
-        <div class="author">— FOREVER WITH YOU</div>
+        <div class="author">結南</div>
       </div>
     </article>
 
   </main>
 
-  <!-- ページナビゲーション -->
+  <!-- 拡大ライトボックス Modal -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightboxImg" src="" alt="拡大画像">
+  </div>
+
+  <!-- 制御コントローラー -->
   <div class="page-indicator">
+    <span class="indicator-label">PAGE</span>
     <span id="pageNum">1</span> / <span id="totalPages">20</span>
   </div>
 
   <div class="controls">
-    <button id="prevBtn">PREV</button>
-    <button id="nextBtn">NEXT</button>
-  </div>
-
-  <!-- 写真拡大用モーダル -->
-  <div class="lightbox" id="lightbox">
-    <span class="lightbox-close">&times;</span>
-    <img id="lightboxImg" src="" alt="拡大">
+    <button id="prevBtn" disabled aria-label="前のページへ">◀ PREV</button>
+    <button id="nextBtn" aria-label="次のページへ">NEXT ▶</button>
   </div>
 
   <script src="script.js?v=9999999"></script>
