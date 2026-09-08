@@ -184,16 +184,15 @@ window.addEventListener('load', () => {
   startAnniversaryTimer();
 });
 
-// 🎬 画面いっぱいに大きく・儚く回想写真が浮遊する演出（フレームなし）
+// 🎬 ちょうど良い中間サイズで儚く浮遊する回想写真（フレームなし）
 function launchPhotoPageTransition(onComplete) {
   const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
-  const burstCount = 6; // 出現枚数を精選して1枚ごとの存在感を強調
+  const burstCount = 6; 
   const isMobile = window.innerWidth <= 768;
 
   let count = 0;
   let lastTime = performance.now();
-  // 1枚ごとの時間間隔を380ms〜450msとゆったりめに設定
-  const interval = 400;
+  const interval = 380; // ほどよいゆったり感の間隔
 
   function spawnStep(now) {
     if (now - lastTime >= interval && count < burstCount) {
@@ -202,22 +201,22 @@ function launchPhotoPageTransition(onComplete) {
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // 画面中央寄りにゆったりとダイナミック配置
-      const posX = Math.random() * 40 + 30; // 30vw 〜 70vw
-      const posY = Math.random() * 40 + 30; // 30vh 〜 70vh
+      // 画面全体に美しく収まる配置範囲
+      const posX = Math.random() * 50 + 25; // 25vw 〜 75vw
+      const posY = Math.random() * 50 + 25; // 25vh 〜 75vh
       photoContainer.style.left = posX + 'vw';
       photoContainer.style.top = posY + 'vh';
 
-      // 枠なし写真を大きく表示（画面幅の70〜85%級）
-      const cardW = isMobile ? (Math.random() * 100 + 260) : (Math.random() * 150 + 380);
+      // ★ ちょうど良い中間サイズに調整（スマホで横幅 180px〜230px 程度）★
+      const cardW = isMobile ? (Math.random() * 50 + 180) : (Math.random() * 80 + 260);
       photoContainer.style.width = cardW + 'px';
-      photoContainer.style.height = (cardW * 0.72) + 'px'; // 横長シネマ画角
+      photoContainer.style.height = (cardW * 0.75) + 'px'; // 横長シネマ比率
 
       const img = document.createElement('img');
       img.src = shuffledPhotos[count];
       photoContainer.appendChild(img);
 
-      const startRot = (Math.random() - 0.5) * 14;
+      const startRot = (Math.random() - 0.5) * 16;
       const endRot = startRot + (Math.random() - 0.5) * 12;
       photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
       photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
@@ -231,7 +230,7 @@ function launchPhotoPageTransition(onComplete) {
     if (count < burstCount) {
       requestAnimationFrame(spawnStep);
     } else {
-      setTimeout(() => showFinalHeroPhoto(onComplete), 600);
+      setTimeout(() => showFinalHeroPhoto(onComplete), 500);
     }
   }
 
