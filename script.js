@@ -306,18 +306,21 @@ function applyFilmTimestamps() {
   });
 }
 
+// 🎬 画面いっぱいに大きな写真が重なり合いながら迫ってくるシネマ演出
 function launchPhotoPageTransition(onComplete) {
   if (masterPhotoList.length === 0) {
     if (onComplete) onComplete();
     return;
   }
-  const shuffledPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
-  const burstCount = Math.min(6, shuffledPhotos.length);
+  
+  // シャッフルして写真を多め（12枚）に使用
+  const shuffledPhotos = [...masterPhotoList, ...masterPhotoList].sort(() => 0.5 - Math.random());
+  const burstCount = 12; // 枚数を12枚へ大幅増量
   const isMobile = window.innerWidth <= 768;
 
   let count = 0;
   let lastTime = performance.now();
-  const interval = 380;
+  const interval = 220; // ドミノ倒しのように連続してテンポよく出現
 
   function spawnStep(now) {
     if (now - lastTime >= interval && count < burstCount) {
@@ -326,26 +329,37 @@ function launchPhotoPageTransition(onComplete) {
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      const posX = Math.random() * 50 + 25;
-      const posY = Math.random() * 50 + 25;
+      // 画面の上下左右を広く使ってダイナミックに配置
+      const positions = [
+        { x: 30, y: 35 }, { x: 70, y: 40 }, { x: 40, y: 65 }, { x: 65, y: 30 },
+        { x: 25, y: 60 }, { x: 75, y: 65 }, { x: 50, y: 45 }, { x: 35, y: 30 }
+      ];
+      const pos = positions[count % positions.length];
+      
+      // 画面の揺らぎを加えて散らす
+      const posX = pos.x + (Math.random() - 0.5) * 15;
+      const posY = pos.y + (Math.random() - 0.5) * 15;
+      
       photoContainer.style.left = posX + 'vw';
       photoContainer.style.top = posY + 'vh';
 
-      const cardW = isMobile ? (Math.random() * 50 + 180) : (Math.random() * 80 + 260);
+      // ★ 大きく見やすい写真サイズ（スマホで横幅260px〜320px、PCで380px〜480px）
+      const cardW = isMobile ? (Math.random() * 60 + 260) : (Math.random() * 100 + 380);
       photoContainer.style.width = cardW + 'px';
-      photoContainer.style.height = (cardW * 0.75) + 'px';
+      photoContainer.style.height = (cardW * 0.72) + 'px'; // シネマ画角
 
       const img = document.createElement('img');
       img.src = shuffledPhotos[count];
       photoContainer.appendChild(img);
 
-      const startRot = (Math.random() - 0.5) * 16;
-      const endRot = startRot + (Math.random() - 0.5) * 12;
+      // 少しだけ角度をつけて臨場感を出す
+      const startRot = (Math.random() - 0.5) * 14;
+      const endRot = startRot + (Math.random() - 0.5) * 8;
       photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
       photoContainer.style.setProperty('--end-rot', `${endRot}deg`);
 
       document.body.appendChild(photoContainer);
-      setTimeout(() => photoContainer.remove(), 2200);
+      setTimeout(() => photoContainer.remove(), 2400);
 
       count++;
     }
@@ -353,7 +367,7 @@ function launchPhotoPageTransition(onComplete) {
     if (count < burstCount) {
       requestAnimationFrame(spawnStep);
     } else {
-      setTimeout(() => showFinalHeroPhoto(onComplete), 500);
+      setTimeout(() => showFinalHeroPhoto(onComplete), 600);
     }
   }
 

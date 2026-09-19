@@ -577,56 +577,54 @@ body.curtain-closed .curtain-panel-right { animation: curtainCloseRight 2.5s cub
    ========================================================= */
 
 /* =========================================================
-   🎞️ 儚い回想シーン風：ダイナミック写真浮遊（フレーム除去・ソフトエッジ）
+   🎞️ 画面いっぱい迫力飛翔（大サイズ＆高視認性仕様）
    ========================================================= */
 .burst-photo-fly {
   position: fixed;
-  z-index: 100002; /* カーテンの手前に優しく浮かび上がる */
+  z-index: 100002;
   pointer-events: none;
-  background: transparent !important;
-  padding: 0 !important;
-  border: none !important;
-  box-shadow: none !important; /* 白枠やクッキリした影を排除 */
-  border-radius: 0 !important;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 10px;
+  /* 写真同士が重なってもくっきり見やすい重厚な立体影 */
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.85), 
+    0 0 25px rgba(212, 175, 55, 0.4);
   opacity: 0;
-  will-change: transform, opacity, filter;
-  transform: translate(-50%, -50%) scale(0.85);
-  animation: photoMemoryFade 2.2s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%) scale(0.4);
+  animation: photoBigDynamicFly 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .burst-photo-fly img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 6px;
   display: block;
-  /* 画像の縁をフワッと背景に溶け込ませるソフトエッジ効果 */
-  border-radius: 12px;
-  -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
-  mask-image: radial-gradient(circle, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
-  filter: sepia(0.15) contrast(1.05) brightness(1.1);
 }
 
-/* 🎬 画面いっぱいに儚く浮かび上がり、静かに消える回想キーフレーム */
-@keyframes photoMemoryFade {
+/* 🎬 奥から手前に向かって画面いっぱいに迫り出すアニメーション */
+@keyframes photoBigDynamicFly {
   0% {
     opacity: 0;
-    filter: blur(8px);
-    transform: translate(-50%, -50%) scale(0.7) rotate(var(--start-rot, -5deg));
+    filter: blur(6px);
+    transform: translate(-50%, -50%) scale(0.3) rotate(var(--start-rot, -10deg));
   }
-  35% {
-    opacity: 0.88;
+  20% {
+    opacity: 1;
     filter: blur(0px);
+    /* 画面いっぱいに大きく迫る */
     transform: translate(-50%, -50%) scale(1.05) rotate(var(--end-rot, 5deg));
   }
-  70% {
-    opacity: 0.80;
-    filter: blur(1px);
-    transform: translate(-50%, -50%) scale(1.1) rotate(var(--end-rot, 5deg));
+  75% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1.12) rotate(var(--end-rot, 5deg));
   }
   100% {
     opacity: 0;
-    filter: blur(12px);
-    transform: translate(-50%, -50%) scale(1.25) rotate(var(--end-rot, 5deg));
+    filter: blur(8px);
+    transform: translate(-50%, -50%) scale(1.3) rotate(var(--end-rot, 5deg));
   }
 }
 
