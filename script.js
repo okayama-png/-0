@@ -68,14 +68,23 @@ function playHeartbeatSound() {
   }
 }
 
-// === 📖 data.jsからアルバムDOMを動的に生成 ===
+// グローバル変数
+let masterPhotoList = [];
+let pages = [];
+let currentPage = 0;
+
+// === 📖 data.jsからアルバムDOMを自動生成 ===
 function renderAlbumPages() {
   const container = document.getElementById('albumContainer');
-  if (!container || typeof albumData === 'undefined') return;
+  if (!container) return;
+
+  // data.js の albumData を安全に取得
+  const sourceData = (typeof albumData !== 'undefined' && Array.isArray(albumData)) ? albumData : [];
 
   container.innerHTML = '<div class="book-spine"></div>';
 
-  albumData.forEach((item, index) => {
+  // 1〜18ページ（または設定データ分）を生成
+  sourceData.forEach((item, index) => {
     const article = document.createElement('article');
     article.className = `page ${index === 0 ? 'active' : ''}`;
     article.id = `page${index + 1}`;
@@ -135,7 +144,7 @@ function renderAlbumPages() {
         <div class="entry-content">
           <span class="page-tag">${item.tag}</span>
           <h2 class="date-title">${item.title}</h2>
-          <p class="text">${item.text}</p>
+          <p class="text">${item.text.replace(/\n/g, '<br>')}</p>
           ${quizHtml}
         </div>
         <div class="author">結南</div>
@@ -144,9 +153,13 @@ function renderAlbumPages() {
     container.appendChild(article);
   });
 
+  // エピローグページ（秘密のメッセージ）を最後に生成
   const epilogueArticle = document.createElement('article');
   epilogueArticle.className = 'page layout-photocard';
-  epilogueArticle.id = `page${albumData.length + 1}`;
+  epilogueArticle.id = `page${sourceData.length + 1}`;
+  
+  const secretTextFormatted = (typeof secretLetterText !== 'undefined') ? secretLetterText.replace(/\n/g, '<br>') : '';
+
   epilogueArticle.innerHTML = `
     <div class="photo-column">
       <div class="photo-frame">
@@ -163,7 +176,7 @@ function renderAlbumPages() {
       <div class="entry-content">
         <span class="page-tag">EPILOGUE</span>
         <h2 class="date-title">秘密のメッセージ</h2>
-        <p class="text">最後までアルバムを見てくれてありがとう！\n\nふたりの大切な記念日（4桁）を入力すると、特別なお手紙が開きます。</p>
+        <p class="text">最後までアルバムを見てくれてありがとう！<br><br>ふたりの大切な記念日（4桁）を入力すると、特別なお手紙が開きます。</p>
         <div class="secret-pass-box">
           <div class="pass-title">🔒 秘密の鍵（ふたりが付き合った月日4桁を入力）</div>
           <div class="pass-input-group">
@@ -173,7 +186,7 @@ function renderAlbumPages() {
           <div id="passMessage" class="pass-msg"></div>
           <div id="secretLetter" class="secret-letter" style="display: none;">
             <h3> I Love You </h3>
-            <p>${typeof secretLetterText !== 'undefined' ? secretLetterText : ''}</p>
+            <p>${secretTextFormatted}</p>
           </div>
         </div>
       </div>
@@ -183,12 +196,11 @@ function renderAlbumPages() {
   container.appendChild(epilogueArticle);
 }
 
-// 📱 オープニングカバー上に上下4枚ずつのポラロイド写真を生成する関数
+// 📱 オープニングカバー上にポラロイド写真を自動生成
 function renderCoverPolaroids() {
   const openingCover = document.getElementById('opening-cover');
   if (!openingCover) return;
 
-  // コンテナの準備
   let randomContainer = document.getElementById('random-photos-container');
   if (!randomContainer) {
     randomContainer = document.createElement('div');
@@ -198,7 +210,7 @@ function renderCoverPolaroids() {
     randomContainer.innerHTML = '';
   }
 
-  if (typeof masterPhotoList === 'undefined' || masterPhotoList.length === 0) return;
+  if (masterPhotoList.length === 0) return;
 
   const shuffled = [...masterPhotoList].sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 8);
@@ -212,27 +224,28 @@ function renderCoverPolaroids() {
     pDiv.appendChild(pImg);
     randomContainer.appendChild(pDiv);
     
-    // 時間差でふわっとフェードイン
     setTimeout(() => { pDiv.style.opacity = '0.96'; }, 100 + idx * 70);
   });
 }
 
-// 画像リストの定義
-let masterPhotoList = [];
-
-// イニシャライズ
-const openingCover = document.getElementById('opening-cover');
-
-window.addEventListener('load', () => {
-  renderAlbumPages();
-
-  if (typeof albumData !== 'undefined') {
+// === メイン初期化関数 ===
+function initAllApp() {
+  if (typeof albumData !== 'undefined' && Array.isArray(albumData)) {
     masterPhotoList = albumData.map(d => d.image);
-    // 拡張写真があれば追加
-    const extraPhotos = ['images/extra11.png', 'images/extra12.png', 'images/extra13.png', 'images/extra14.png', 'images/extra15.png', 'images/extra16.png'];
-    masterPhotoList.push(...extraPhotos);
+  } else {
+    masterPhotoList = [
+      "images/prologue.png", "images/page01.png", "images/page02.png", "images/page03.png",
+      "images/page04.png", "images/page05.png", "images/page06.png", "images/page07.png",
+      "images/page08.png", "images/page09.png", "images/page10.png", "images/page11.png",
+      "images/page12.png", "images/page13.png", "images/page14.png", "images/page15.png",
+      "images/page16.png", "images/page17.png", "images/page18.png"
+    ];
   }
 
+  // DOM構築
+  renderAlbumPages();
+
+  const openingCover = document.getElementById('opening-cover');
   if (window.location.hash === '#album') {
     document.body.classList.remove('cover-active');
     if (openingCover) {
@@ -241,7 +254,6 @@ window.addEventListener('load', () => {
     }
   } else {
     document.body.classList.add('cover-active');
-    // オープニング写真の浮遊表示を生成
     renderCoverPolaroids();
   }
 
@@ -254,25 +266,32 @@ window.addEventListener('load', () => {
   initPassUnlock();
   initInteractiveTouch();
   startAnniversaryTimer();
-});
 
-// オープニングボタン動作
-const startBtn = document.getElementById('startBtn');
-if (startBtn) {
-  startBtn.addEventListener('click', () => {
-    startBtn.style.display = 'none';
-    document.body.classList.add('curtain-closed');
-    launchPhotoPageTransition(() => {
-      document.body.classList.remove('cover-active');
-      if (openingCover) {
-        openingCover.classList.add('open-book');
-        openingCover.style.display = 'none';
-      }
-      setTimeout(() => {
-        document.body.classList.remove('curtain-closed');
-      }, 100);
+  // OPEN ALBUMボタン
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      startBtn.style.display = 'none';
+      document.body.classList.add('curtain-closed');
+      launchPhotoPageTransition(() => {
+        document.body.classList.remove('cover-active');
+        if (openingCover) {
+          openingCover.classList.add('open-book');
+          openingCover.style.display = 'none';
+        }
+        setTimeout(() => {
+          document.body.classList.remove('curtain-closed');
+        }, 100);
+      });
     });
-  });
+  }
+}
+
+// DOM読み込み完了時に初期化を呼び出し
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAllApp);
+} else {
+  initAllApp();
 }
 
 function setupRandomEpiloguePhoto() {
@@ -306,21 +325,20 @@ function applyFilmTimestamps() {
   });
 }
 
-// 🎬 画面いっぱいに大きな写真が重なり合いながら迫ってくるシネマ演出
+// 🎬 12枚飛翔演出
 function launchPhotoPageTransition(onComplete) {
   if (masterPhotoList.length === 0) {
     if (onComplete) onComplete();
     return;
   }
   
-  // シャッフルして写真を多め（12枚）に使用
   const shuffledPhotos = [...masterPhotoList, ...masterPhotoList].sort(() => 0.5 - Math.random());
-  const burstCount = 12; // 枚数を12枚へ大幅増量
+  const burstCount = 12;
   const isMobile = window.innerWidth <= 768;
 
   let count = 0;
   let lastTime = performance.now();
-  const interval = 220; // ドミノ倒しのように連続してテンポよく出現
+  const interval = 220;
 
   function spawnStep(now) {
     if (now - lastTime >= interval && count < burstCount) {
@@ -329,30 +347,26 @@ function launchPhotoPageTransition(onComplete) {
       const photoContainer = document.createElement('div');
       photoContainer.className = 'burst-photo-fly';
 
-      // 画面の上下左右を広く使ってダイナミックに配置
       const positions = [
         { x: 30, y: 35 }, { x: 70, y: 40 }, { x: 40, y: 65 }, { x: 65, y: 30 },
         { x: 25, y: 60 }, { x: 75, y: 65 }, { x: 50, y: 45 }, { x: 35, y: 30 }
       ];
       const pos = positions[count % positions.length];
       
-      // 画面の揺らぎを加えて散らす
       const posX = pos.x + (Math.random() - 0.5) * 15;
       const posY = pos.y + (Math.random() - 0.5) * 15;
       
       photoContainer.style.left = posX + 'vw';
       photoContainer.style.top = posY + 'vh';
 
-      // ★ 大きく見やすい写真サイズ（スマホで横幅260px〜320px、PCで380px〜480px）
       const cardW = isMobile ? (Math.random() * 60 + 260) : (Math.random() * 100 + 380);
       photoContainer.style.width = cardW + 'px';
-      photoContainer.style.height = (cardW * 0.72) + 'px'; // シネマ画角
+      photoContainer.style.height = (cardW * 0.72) + 'px';
 
       const img = document.createElement('img');
       img.src = shuffledPhotos[count];
       photoContainer.appendChild(img);
 
-      // 少しだけ角度をつけて臨場感を出す
       const startRot = (Math.random() - 0.5) * 14;
       const endRot = startRot + (Math.random() - 0.5) * 8;
       photoContainer.style.setProperty('--start-rot', `${startRot}deg`);
@@ -434,7 +448,7 @@ function initPhotoFlipAndZoom() {
     const zoomBtn = col.querySelector('.photo-zoom-btn');
 
     if (frame) {
-      frame.addEventListener('click', (e) => {
+      frame.addEventListener('click', () => {
         frame.classList.toggle('flipped-photo');
       });
     }
@@ -510,9 +524,6 @@ function initInteractiveTouch() {
 }
 
 // ページめくり制御
-let pages = [];
-let currentPage = 0;
-
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const pageNum = document.getElementById('pageNum');
@@ -542,23 +553,23 @@ function updateActivePage() {
 }
 
 if (nextBtn) {
-  nextBtn.addEventListener('click', () => {
+  nextBtn.onclick = () => {
     if (currentPage < pages.length - 1) {
       currentPage++;
       updateActivePage();
       updateUI();
     }
-  });
+  };
 }
 
 if (prevBtn) {
-  prevBtn.addEventListener('click', () => {
+  prevBtn.onclick = () => {
     if (currentPage > 0) {
       currentPage--;
       updateActivePage();
       updateUI();
     }
-  });
+  };
 }
 
 function updateUI() {
@@ -574,7 +585,7 @@ function initQuiz() {
     const resultDiv = box.querySelector('.quiz-result');
 
     btns.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.onclick = () => {
         const isCorrect = btn.getAttribute('data-correct') === 'true';
         if (isCorrect) {
           resultDiv.style.color = '#2d8a4e';
@@ -583,7 +594,7 @@ function initQuiz() {
           resultDiv.style.color = '#c0392b';
           resultDiv.textContent = '残念、もう一度確認してみてください。';
         }
-      });
+      };
     });
   });
 }
@@ -615,8 +626,8 @@ function initOmikuji() {
     '【ずっと一緒吉】未来の「いってらっしゃい」にまた一歩近づく日です'
   ];
 
-  omikujiBtn.addEventListener('click', () => {
+  omikujiBtn.onclick = () => {
     const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
     alert(`🎲 今日のふたりの運勢 🎲\n\n${randomFortune}`);
-  });
+  };
 }
