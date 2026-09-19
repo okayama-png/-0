@@ -78,7 +78,6 @@ function renderAlbumPages() {
   const container = document.getElementById('albumContainer');
   if (!container) return;
 
-  // window.albumData または global albumData を確実に取得
   let sourceData = [];
   if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
     sourceData = window.albumData;
@@ -88,7 +87,7 @@ function renderAlbumPages() {
 
   container.innerHTML = '<div class="book-spine"></div>';
 
-  // 000〜018 の全シーンを順に生成
+  // 000〜018 の全19シーンを順に生成
   sourceData.forEach((item, index) => {
     const article = document.createElement('article');
     article.className = `page ${index === 0 ? 'active' : ''}`;
@@ -305,11 +304,7 @@ function initAllApp() {
 }
 
 // 実行タイミングの完全保証
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initAllApp);
-} else {
-  initAllApp();
-}
+window.addEventListener('load', initAllApp);
 
 function setupRandomEpiloguePhoto() {
   const epilogueImg = document.getElementById('epilogueRandomImg');
