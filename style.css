@@ -52,7 +52,7 @@ body {
   box-shadow: 0 0 20px rgba(212,175,55,0.3);
 }
 
-/* 🌸 ポラロイド（約1.3倍に拡大＆フレーム余白最小限設定） */
+/* 🌸 浮遊写真（四辺均等の薄枠＆さらにサイズ拡大） */
 #random-photos-container {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none; overflow: hidden;
@@ -60,19 +60,20 @@ body {
 
 .random-polaroid {
   position: absolute;
-  /* サイズを約1.3倍に拡大 */
-  width: clamp(100px, 16vw, 155px);
-  height: clamp(118px, 18.5vw, 182px);
+  /* 写真サイズをさらに大きく拡大 */
+  width: clamp(115px, 18vw, 180px);
+  height: clamp(130px, 20vw, 200px);
   background: #ffffff;
-  padding: 4px 4px 12px 4px;
-  border-radius: 5px;
-  box-shadow: 0 12px 25px rgba(0,0,0,0.75), 0 0 10px rgba(212,175,55,0.15);
+  /* 上下左右すべての辺の余白を均等に（4px）設定 */
+  padding: 4px;
+  border-radius: 6px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.8), 0 0 12px rgba(212,175,55,0.2);
   opacity: 0;
   transition: opacity 0.8s ease;
   will-change: transform;
 }
 
-/* 各画面での最適配置 */
+/* 配置バランスの微調整 */
 .polaroid-1 { top: 2%; left: 2%; animation: floatPath1 8s ease-in-out infinite alternate; }
 .polaroid-2 { top: 3%; left: 26%; animation: floatPath2 9s ease-in-out infinite alternate; animation-delay: 0.8s; }
 .polaroid-3 { top: 2%; right: 26%; animation: floatPath3 8.5s ease-in-out infinite alternate; animation-delay: 1.5s; }
@@ -83,7 +84,7 @@ body {
 .polaroid-7 { bottom: 3%; right: 26%; animation: floatPath1 9.5s ease-in-out infinite alternate; animation-delay: 0.5s; }
 .polaroid-8 { bottom: 2%; right: 2%; animation: floatPath2 8s ease-in-out infinite alternate; animation-delay: 1.7s; }
 
-/* 🌸 動きの振れ幅（移動量・回転角度）を従来比「半分」に制限したマイルド浮遊 */
+/* 🌸 マイルドで心地よい浮遊アニメーション */
 @keyframes floatPath1 {
   0%   { transform: translate(0, 0) rotate(-4deg); }
   50%  { transform: translate(4px, -5px) rotate(-2deg); }
