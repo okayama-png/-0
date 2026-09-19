@@ -53,32 +53,66 @@ body {
   box-shadow: 0 0 20px rgba(212,175,55,0.3);
 }
 
-/* オープニングで浮遊するポラロイド */
+/* 🌸 オープニングでゆったり浮遊する大判ポラロイド（枠最小化＆多方向ゆらぎ） */
 #random-photos-container {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none; overflow: hidden;
 }
 
 .random-polaroid {
-  position: absolute; width: 85px; height: 105px; background: #fff; padding: 5px;
-  border-radius: 4px; box-shadow: 0 10px 20px rgba(0,0,0,0.6);
-  opacity: 0; transition: opacity 0.8s ease; animation: polaroidFloat 6s ease-in-out infinite alternate;
+  position: absolute;
+  /* 枠（白縁）を最小限のパディングに設定 */
+  width: 105px; height: 120px;
+  background: #ffffff;
+  padding: 4px 4px 14px 4px; /* 下部だけ少し余白を残してポラロイド感を演出 */
+  border-radius: 5px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.75), 0 0 10px rgba(212,175,55,0.15);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  will-change: transform;
 }
-.random-polaroid img { width: 100%; height: 75px; object-fit: cover; }
 
-.polaroid-1 { top: 3%; left: 4%; transform: rotate(-8deg); }
-.polaroid-2 { top: 5%; left: 28%; transform: rotate(5deg); animation-delay: 1s; }
-.polaroid-3 { top: 3%; right: 28%; transform: rotate(-5deg); animation-delay: 2s; }
-.polaroid-4 { top: 4%; right: 4%; transform: rotate(10deg); animation-delay: 0.5s; }
+.random-polaroid img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
 
-.polaroid-5 { bottom: 4%; left: 4%; transform: rotate(6deg); animation-delay: 1.5s; }
-.polaroid-6 { bottom: 3%; left: 28%; transform: rotate(-7deg); animation-delay: 2.5s; }
-.polaroid-7 { bottom: 5%; right: 28%; transform: rotate(8deg); animation-delay: 0.8s; }
-.polaroid-8 { bottom: 3%; right: 4%; transform: rotate(-6deg); animation-delay: 1.8s; }
+/* 上下エリアを埋め尽くす初期配置 */
+.polaroid-1 { top: 2%; left: 2%; animation: floatPath1 8s ease-in-out infinite alternate; }
+.polaroid-2 { top: 3%; left: 26%; animation: floatPath2 9s ease-in-out infinite alternate; animation-delay: 0.8s; }
+.polaroid-3 { top: 2%; right: 26%; animation: floatPath3 8.5s ease-in-out infinite alternate; animation-delay: 1.5s; }
+.polaroid-4 { top: 3%; right: 2%; animation: floatPath4 9.5s ease-in-out infinite alternate; animation-delay: 0.3s; }
 
-@keyframes polaroidFloat {
-  0% { transform: translateY(0px); }
-  100% { transform: translateY(-10px); }
+.polaroid-5 { bottom: 3%; left: 2%; animation: floatPath3 9s ease-in-out infinite alternate; animation-delay: 1.2s; }
+.polaroid-6 { bottom: 2%; left: 26%; animation: floatPath4 8.5s ease-in-out infinite alternate; animation-delay: 2s; }
+.polaroid-7 { bottom: 3%; right: 26%; animation: floatPath1 9.5s ease-in-out infinite alternate; animation-delay: 0.5s; }
+.polaroid-8 { bottom: 2%; right: 2%; animation: floatPath2 8s ease-in-out infinite alternate; animation-delay: 1.7s; }
+
+/* 上下・左右・回転を掛け合わせた心地よい立体浮遊アニメーション */
+@keyframes floatPath1 {
+  0%   { transform: translate(0, 0) rotate(-7deg); }
+  50%  { transform: translate(8px, -10px) rotate(-3deg); }
+  100% { transform: translate(-6px, -16px) rotate(-9deg); }
+}
+
+@keyframes floatPath2 {
+  0%   { transform: translate(0, 0) rotate(6deg); }
+  50%  { transform: translate(-10px, -12px) rotate(10deg); }
+  100% { transform: translate(6px, -8px) rotate(4deg); }
+}
+
+@keyframes floatPath3 {
+  0%   { transform: translate(0, 0) rotate(-5deg); }
+  50%  { transform: translate(-8px, -8px) rotate(-10deg); }
+  100% { transform: translate(10px, -15px) rotate(-3deg); }
+}
+
+@keyframes floatPath4 {
+  0%   { transform: translate(0, 0) rotate(8deg); }
+  50%  { transform: translate(9px, -14px) rotate(4deg); }
+  100% { transform: translate(-7px, -6px) rotate(11deg); }
 }
 
 /* ヘッダー */
@@ -94,7 +128,7 @@ h1 { font-size: 1.15rem; color: #fff; margin: 2px 0; font-weight: 600; }
   font-size: 0.72rem; text-decoration: none; cursor: pointer;
 }
 
-/* アルバムカードコンテナ（スマホ画面に合わせて縦幅を調整） */
+/* アルバムカードコンテナ */
 .album-container {
   width: 100%; max-width: 440px;
   height: calc(100vh - 210px);
@@ -102,7 +136,7 @@ h1 { font-size: 1.15rem; color: #fff; margin: 2px 0; font-weight: 600; }
   position: relative; margin: 5px 0; z-index: 10;
 }
 
-/* 各ページカード（枠内ですべて収まるように調整） */
+/* 各ページカード */
 .page {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: var(--card-bg); border: 1px solid rgba(212, 175, 55, 0.35);
@@ -111,7 +145,7 @@ h1 { font-size: 1.15rem; color: #fff; margin: 2px 0; font-weight: 600; }
   display: flex; flex-direction: column; gap: 10px;
   opacity: 0; pointer-events: none; transform: scale(0.96);
   transition: opacity 0.35s ease, transform 0.35s ease;
-  overflow-y: auto; /* 枠内スクロールを許可 */
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
