@@ -52,7 +52,7 @@ body {
   box-shadow: 0 0 20px rgba(212,175,55,0.3);
 }
 
-/* ポラロイド（端末サイズに合わせて自動リサイズ） */
+/* 🌸 ポラロイド（約1.3倍に拡大＆フレーム余白最小限設定） */
 #random-photos-container {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none; overflow: hidden;
@@ -60,8 +60,9 @@ body {
 
 .random-polaroid {
   position: absolute;
-  width: clamp(75px, 12vw, 120px);
-  height: clamp(90px, 14vw, 140px);
+  /* サイズを約1.3倍に拡大 */
+  width: clamp(100px, 16vw, 155px);
+  height: clamp(118px, 18.5vw, 182px);
   background: #ffffff;
   padding: 4px 4px 12px 4px;
   border-radius: 5px;
@@ -71,38 +72,40 @@ body {
   will-change: transform;
 }
 
-.polaroid-1 { top: 2%; left: 3%; animation: floatPath1 8s ease-in-out infinite alternate; }
-.polaroid-2 { top: 3%; left: 27%; animation: floatPath2 9s ease-in-out infinite alternate; animation-delay: 0.8s; }
-.polaroid-3 { top: 2%; right: 27%; animation: floatPath3 8.5s ease-in-out infinite alternate; animation-delay: 1.5s; }
-.polaroid-4 { top: 3%; right: 3%; animation: floatPath4 9.5s ease-in-out infinite alternate; animation-delay: 0.3s; }
+/* 各画面での最適配置 */
+.polaroid-1 { top: 2%; left: 2%; animation: floatPath1 8s ease-in-out infinite alternate; }
+.polaroid-2 { top: 3%; left: 26%; animation: floatPath2 9s ease-in-out infinite alternate; animation-delay: 0.8s; }
+.polaroid-3 { top: 2%; right: 26%; animation: floatPath3 8.5s ease-in-out infinite alternate; animation-delay: 1.5s; }
+.polaroid-4 { top: 3%; right: 2%; animation: floatPath4 9.5s ease-in-out infinite alternate; animation-delay: 0.3s; }
 
-.polaroid-5 { bottom: 3%; left: 3%; animation: floatPath3 9s ease-in-out infinite alternate; animation-delay: 1.2s; }
-.polaroid-6 { bottom: 2%; left: 27%; animation: floatPath4 8.5s ease-in-out infinite alternate; animation-delay: 2s; }
-.polaroid-7 { bottom: 3%; right: 27%; animation: floatPath1 9.5s ease-in-out infinite alternate; animation-delay: 0.5s; }
-.polaroid-8 { bottom: 2%; right: 3%; animation: floatPath2 8s ease-in-out infinite alternate; animation-delay: 1.7s; }
+.polaroid-5 { bottom: 3%; left: 2%; animation: floatPath3 9s ease-in-out infinite alternate; animation-delay: 1.2s; }
+.polaroid-6 { bottom: 2%; left: 26%; animation: floatPath4 8.5s ease-in-out infinite alternate; animation-delay: 2s; }
+.polaroid-7 { bottom: 3%; right: 26%; animation: floatPath1 9.5s ease-in-out infinite alternate; animation-delay: 0.5s; }
+.polaroid-8 { bottom: 2%; right: 2%; animation: floatPath2 8s ease-in-out infinite alternate; animation-delay: 1.7s; }
 
+/* 🌸 動きの振れ幅（移動量・回転角度）を従来比「半分」に制限したマイルド浮遊 */
 @keyframes floatPath1 {
-  0%   { transform: translate(0, 0) rotate(-7deg); }
-  50%  { transform: translate(8px, -10px) rotate(-3deg); }
-  100% { transform: translate(-6px, -16px) rotate(-9deg); }
+  0%   { transform: translate(0, 0) rotate(-4deg); }
+  50%  { transform: translate(4px, -5px) rotate(-2deg); }
+  100% { transform: translate(-3px, -8px) rotate(-5deg); }
 }
 
 @keyframes floatPath2 {
-  0%   { transform: translate(0, 0) rotate(6deg); }
-  50%  { transform: translate(-10px, -12px) rotate(10deg); }
-  100% { transform: translate(6px, -8px) rotate(4deg); }
+  0%   { transform: translate(0, 0) rotate(3deg); }
+  50%  { transform: translate(-5px, -6px) rotate(5deg); }
+  100% { transform: translate(3px, -4px) rotate(2deg); }
 }
 
 @keyframes floatPath3 {
-  0%   { transform: translate(0, 0) rotate(-5deg); }
-  50%  { transform: translate(-8px, -8px) rotate(-10deg); }
-  100% { transform: translate(10px, -15px) rotate(-3deg); }
+  0%   { transform: translate(0, 0) rotate(-3deg); }
+  50%  { transform: translate(-4px, -4px) rotate(-5deg); }
+  100% { transform: translate(5px, -7px) rotate(-2deg); }
 }
 
 @keyframes floatPath4 {
-  0%   { transform: translate(0, 0) rotate(8deg); }
-  50%  { transform: translate(9px, -14px) rotate(4deg); }
-  100% { transform: translate(-7px, -6px) rotate(11deg); }
+  0%   { transform: translate(0, 0) rotate(4deg); }
+  50%  { transform: translate(4px, -7px) rotate(2deg); }
+  100% { transform: translate(-3px, -3px) rotate(6deg); }
 }
 
 /* ヘッダー */
