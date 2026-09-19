@@ -72,8 +72,9 @@ function playHeartbeatSound() {
 let masterPhotoList = [];
 let pages = [];
 let currentPage = 0;
+let polaroidSlideTimer = null;
 
-// === 📖 album_main.html からアルバムDOMを自動生成 ===
+// === 📖 アルバムDOM生成 ===
 function renderAlbumPages() {
   const container = document.getElementById('albumContainer');
   if (!container) return;
@@ -158,7 +159,6 @@ function renderAlbumPages() {
     container.appendChild(article);
   });
 
-  // エピローグ生成（全20ページ目）
   const epilogueArticle = document.createElement('article');
   epilogueArticle.className = 'page layout-photocard';
   epilogueArticle.id = `page${sourceData.length + 1}`;
@@ -202,7 +202,7 @@ function renderAlbumPages() {
   container.appendChild(epilogueArticle);
 }
 
-// 📱 オープニングカバー上にポラロイド写真（上下4枚ずつ）を自動生成
+// 📱 2枚同時にじわ〜っと写真がフェード切り替えされるオープニング演出
 function renderCoverPolaroids() {
   const openingCover = document.getElementById('opening-cover');
   if (!openingCover) return;
@@ -224,17 +224,65 @@ function renderCoverPolaroids() {
   selected.forEach((src, idx) => {
     const pDiv = document.createElement('div');
     pDiv.className = `random-polaroid polaroid-${idx + 1}`;
+    
+    const imgContainer = document.createElement('div');
+    imgContainer.className = 'polaroid-img-box';
+    imgContainer.style.width = '100%';
+    imgContainer.style.height = '100%';
+    imgContainer.style.position = 'relative';
+    imgContainer.style.overflow = 'hidden';
+    imgContainer.style.borderRadius = '2px';
+
     const pImg = document.createElement('img');
     pImg.src = src;
-    pImg.onerror = () => pDiv.remove();
-    pDiv.appendChild(pImg);
+    pImg.style.width = '100%';
+    pImg.style.height = '100%';
+    pImg.style.objectFit = 'cover';
+    pImg.style.transition = 'opacity 1.2s ease-in-out';
+    pImg.style.opacity = '1';
+
+    imgContainer.appendChild(pImg);
+    pDiv.appendChild(imgContainer);
     randomContainer.appendChild(pDiv);
     
     setTimeout(() => { pDiv.style.opacity = '0.96'; }, 100 + idx * 70);
   });
+
+  if (polaroidSlideTimer) clearInterval(polaroidSlideTimer);
+  
+  let unusedPhotos = masterPhotoList.filter(p => !selected.includes(p));
+  if (unusedPhotos.length === 0) unusedPhotos = [...masterPhotoList];
+
+  // 🌸 3.2秒ごとに「2枚同時に」写真をフェード切り替え
+  polaroidSlideTimer = setInterval(() => {
+    const frames = Array.from(document.querySelectorAll('.random-polaroid img'));
+    if (frames.length < 2) return;
+
+    const shuffledIndices = frames.map((_, i) => i).sort(() => 0.5 - Math.random());
+    const targetIdx1 = shuffledIndices[0];
+    const targetIdx2 = shuffledIndices[1];
+
+    const img1 = frames[targetIdx1];
+    const img2 = frames[targetIdx2];
+
+    if (unusedPhotos.length < 2) unusedPhotos = [...masterPhotoList].sort(() => 0.5 - Math.random());
+    const newSrc1 = unusedPhotos.shift();
+    const newSrc2 = unusedPhotos.shift();
+
+    img1.style.opacity = '0';
+    img2.style.opacity = '0';
+
+    setTimeout(() => {
+      img1.src = newSrc1;
+      img2.src = newSrc2;
+      img1.style.opacity = '1';
+      img2.style.opacity = '1';
+    }, 1200);
+
+  }, 3200);
 }
 
-// === メイン初期化処理 ===
+// メイン初期化
 function initAllApp() {
   let sourceData = [];
   if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
@@ -256,7 +304,7 @@ function initAllApp() {
   }
 
   renderAlbumPages();
-  initPages(); // ページ切り替えを確実に初期化
+  initPages();
 
   const openingCover = document.getElementById('opening-cover');
   if (window.location.hash === '#album') {
@@ -282,6 +330,7 @@ function initAllApp() {
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
     startBtn.onclick = () => {
+      if (polaroidSlideTimer) clearInterval(polaroidSlideTimer);
       startBtn.style.display = 'none';
       document.body.classList.add('curtain-closed');
       launchPhotoPageTransition(() => {
@@ -331,7 +380,6 @@ function applyFilmTimestamps() {
   });
 }
 
-// 🎬 12枚飛翔演出（オープニングボタン押下時）
 function launchPhotoPageTransition(onComplete) {
   if (masterPhotoList.length === 0) {
     if (onComplete) onComplete();
@@ -529,7 +577,6 @@ function initInteractiveTouch() {
   });
 }
 
-// ページめくり制御（スマホで反転・逆向きにならない正方向3Dめくり）
 function initPages() {
   pages = Array.from(document.querySelectorAll('.page'));
   const totalPages = document.getElementById('totalPages');

@@ -16,13 +16,10 @@
       --gold-light: #f3e5ab;
       --text-main: #f5f0eb;
       --font-en: 'Cormorant Garamond', Georgia, serif;
-      --font-ja: 'Shippori Mincho', "游明朝", "Yu Mincho", serif;
+      --font-ja: 'Shippori Mincho', "游明朝", serif;
     }
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0; padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body.cinema-body {
       background-color: var(--bg-dark);
@@ -42,269 +39,94 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 20px 0;
+      padding: clamp(15px, 3vh, 30px) 0;
     }
 
-    .cinema-header {
-      text-align: center;
-      padding: 10px 20px;
-      z-index: 10;
-    }
-
+    .cinema-header { text-align: center; padding: 0 20px; z-index: 10; }
     .header-brand {
-      font-family: var(--font-en);
-      font-size: 0.75rem;
-      letter-spacing: 0.35em;
-      color: var(--gold-primary);
-      text-transform: uppercase;
-      margin-bottom: 4px;
+      font-family: var(--font-en); font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+      letter-spacing: 0.35em; color: var(--gold-primary); text-transform: uppercase; margin-bottom: 4px;
     }
 
     .cinema-header h2 {
-      font-family: var(--font-en);
-      font-size: 2rem;
-      letter-spacing: 0.12em;
-      color: #ffffff;
-      margin-bottom: 12px;
-      font-weight: 500;
+      font-family: var(--font-en); font-size: clamp(1.5rem, 4vw, 2.2rem);
+      letter-spacing: 0.12em; color: #ffffff; margin-bottom: 12px; font-weight: 500;
     }
 
     .back-to-album-btn {
-      display: inline-block;
-      color: var(--gold-light);
-      text-decoration: none;
-      font-size: 0.85rem;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      padding: 6px 16px;
-      border-radius: 20px;
-      background: rgba(22, 18, 15, 0.6);
-      backdrop-filter: blur(5px);
-      transition: all 0.3s ease;
+      display: inline-block; color: var(--gold-light); text-decoration: none;
+      font-size: clamp(0.75rem, 2vw, 0.85rem); border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 6px 16px; border-radius: 20px; background: rgba(22, 18, 15, 0.6);
+      backdrop-filter: blur(5px); transition: all 0.3s ease;
     }
 
-    .back-to-album-btn:hover {
-      background: var(--gold-primary);
-      color: #000;
-    }
+    .back-to-album-btn:hover { background: var(--gold-primary); color: #000; }
 
     .film-viewer {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      margin: auto 0;
-      width: 100%;
-      overflow: hidden;
-      padding: 20px 0;
+      display: flex; flex-direction: column; gap: clamp(15px, 3vh, 25px);
+      margin: auto 0; width: 100%; overflow: hidden; padding: 10px 0;
     }
 
-    .film-track-wrapper {
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-      cursor: grab;
-      user-select: none;
-    }
+    .film-track-wrapper { width: 100%; overflow: hidden; position: relative; cursor: grab; user-select: none; }
+    .film-track-wrapper:active { cursor: grabbing; }
 
-    .film-track-wrapper:active {
-      cursor: grabbing;
-    }
-
-    .film-track {
-      display: flex;
-      gap: 18px;
-      width: max-content;
-      will-change: transform;
-    }
+    .film-track { display: flex; gap: 18px; width: max-content; will-change: transform; }
 
     .film-frame {
       position: relative;
-      width: 220px;
-      height: 150px;
-      background: #1a1614;
-      border: 8px solid #2a2420;
-      border-radius: 8px;
-      flex-shrink: 0;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      width: clamp(180px, 30vw, 260px);
+      height: clamp(120px, 20vw, 175px);
+      background: #1a1614; border: 6px solid #2a2420; border-radius: 8px;
+      flex-shrink: 0; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.7);
       transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
-    .film-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: brightness(0.85);
-      transition: filter 0.3s ease;
-    }
-
-    .film-frame:hover, .film-frame.is-center {
-      transform: scale(1.05);
-      border-color: var(--gold-primary);
-    }
-
-    .film-frame:hover img, .film-frame.is-center img {
-      filter: brightness(1.05);
-    }
+    .film-frame img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.85); }
+    .film-frame:hover { transform: scale(1.05); border-color: var(--gold-primary); }
 
     .frame-title {
-      position: absolute;
-      bottom: 0;
-      left: 0; right: 0;
+      position: absolute; bottom: 0; left: 0; right: 0;
       background: linear-gradient(transparent, rgba(0,0,0,0.85));
-      color: #fff;
-      font-size: 0.72rem;
-      padding: 15px 8px 6px;
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: #fff; font-size: clamp(0.65rem, 1.5vw, 0.75rem); padding: 12px 8px 6px;
+      text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
     .frame-stamp {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      font-family: monospace;
-      font-size: 0.65rem;
-      color: #ff9d00;
-      background: rgba(0,0,0,0.6);
-      padding: 2px 6px;
-      border-radius: 4px;
+      position: absolute; top: 6px; right: 6px; font-family: monospace;
+      font-size: 0.65rem; color: #ff9d00; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;
     }
 
-    .cinema-guide-text {
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--gold-light);
-      letter-spacing: 0.1em;
-      opacity: 0.8;
-    }
+    .cinema-guide-text { text-align: center; font-size: clamp(0.7rem, 2vw, 0.8rem); color: var(--gold-light); opacity: 0.8; }
 
-    /* 🎬 モーダル（両面カード） */
+    /* モーダル */
     .photo-modal-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(8px);
-      z-index: 99999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.88); backdrop-filter: blur(8px); z-index: 99999;
+      display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
     }
 
-    .photo-modal-overlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .photo-modal-overlay.show { opacity: 1; pointer-events: auto; }
 
     .pop-card-inner {
-      width: 90%;
-      max-width: 420px;
-      background: #1a1614;
-      border: 1px solid var(--gold-primary);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(212,175,55,0.2);
-      position: relative;
-      transform: scale(0.9);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 90%; max-width: 420px; background: #1a1614;
+      border: 1px solid var(--gold-primary); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9); position: relative;
     }
 
-    .photo-modal-overlay.show .pop-card-inner {
-      transform: scale(1);
-    }
-
-    .pop-card-front, .pop-card-back {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .pop-card-back {
-      display: none;
-    }
-
+    .pop-card-front, .pop-card-back { padding: clamp(16px, 4vw, 24px); display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .pop-card-back { display: none; }
     .pop-card-inner.is-flipped .pop-card-front { display: none; }
     .pop-card-inner.is-flipped .pop-card-back { display: flex; }
 
-    .modal-close-btn {
-      position: absolute;
-      top: 12px; right: 16px;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.8rem;
-      cursor: pointer;
-      z-index: 10;
-    }
+    .modal-close-btn { position: absolute; top: 12px; right: 16px; background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 10; }
+    .pop-photo-wrapper { position: relative; width: 100%; height: clamp(180px, 30vh, 240px); border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+    .pop-photo-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .pop-stamp { position: absolute; bottom: 8px; right: 8px; font-family: monospace; color: #ff9d00; background: rgba(0,0,0,0.7); padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; }
 
-    .pop-photo-wrapper {
-      position: relative;
-      width: 100%;
-      height: 240px;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-
-    .pop-photo-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .pop-stamp {
-      position: absolute;
-      bottom: 8px; right: 8px;
-      font-family: monospace;
-      color: #ff9d00;
-      background: rgba(0,0,0,0.7);
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-    }
-
-    .pop-caption-area h3, .pop-back-content h3 {
-      font-size: 1.1rem;
-      color: var(--gold-light);
-      margin-bottom: 12px;
-    }
-
-    .flip-hint-btn {
-      background: linear-gradient(135deg, #2b231d, #42352b);
-      border: 1px solid var(--gold-primary);
-      color: var(--gold-light);
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .back-tag {
-      font-family: var(--font-en);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      color: var(--gold-primary);
-      margin-bottom: 8px;
-    }
-
-    .pop-back-content p {
-      font-size: 0.88rem;
-      line-height: 1.8;
-      color: #d1c7bc;
-      text-align: left;
-      margin-bottom: 16px;
-      max-height: 260px;
-      overflow-y: auto;
-    }
+    .pop-caption-area h3, .pop-back-content h3 { font-size: 1.05rem; color: var(--gold-light); margin-bottom: 8px; }
+    .flip-hint-btn { background: linear-gradient(135deg, #2b231d, #42352b); border: 1px solid var(--gold-primary); color: var(--gold-light); padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; margin-top: 8px; }
+    .back-tag { font-family: var(--font-en); font-size: 0.7rem; letter-spacing: 0.2em; color: var(--gold-primary); margin-bottom: 6px; }
+    .pop-back-content p { font-size: 0.85rem; line-height: 1.8; color: #d1c7bc; text-align: left; margin-bottom: 12px; max-height: 240px; overflow-y: auto; }
   </style>
 </head>
 <body class="cinema-body">
@@ -331,7 +153,6 @@
     </main>
   </div>
 
-  <!-- 🎬 ポップアップモーダル (両面カード) -->
   <div class="photo-modal-overlay" id="photoModal">
     <div class="pop-card-inner" id="popCardInner">
       <div class="pop-card-front">
@@ -359,103 +180,26 @@
   </div>
 
   <script>
-    // 📝 シネマ用文章データ
     const albumData = [
-      {
-        id: "000", cinemaDate: "'26.07.03", title: "000 - Prologue",
-        cinemaDesc: "あの日、偶然入ったあのバーでみなみさんと出会えたこと。もしどちらかが少しでも違う選択をしていたらと思うと、奇跡としか思えない夜でした。見えなくなるまで改札でずっと手を振り続けてくれたあの笑顔は、今も私の胸の中でずっと輝いています。ずっとずっとみなみさんが笑顔でいてくれることを祈ってます。",
-        image: "images/prologue.png"
-      },
-      {
-        id: "001", cinemaDate: "'26.07.03", title: "001 - 付き合った日",
-        cinemaDesc: "仕事終わりにお迎えに行って食べたもんじゃ焼き。張り切って焼いてくれた姿が可愛くて、それだけで幸せだった。その後のカラオケでまだ付き合ってもないのにしちゃった、心臓が破裂しそうな初キス。公園で声を震わせながらした告白。緊張しすぎててぎこちなかったと思うけど、受け入れてくれてありがとう。幸せになろうね。",
-        image: "images/page01.png"
-      },
-      {
-        id: "002", cinemaDate: "'26.07.05", title: "002 - 初めてダンスを見た日",
-        cinemaDesc: "ステージの上で踊るみなみさんは、息をのむほど格好良くて圧倒されっぱなしだった。終演後に花束を渡した時の無邪気な笑顔も、そのあと公園でスムージーを飲みながら過ごしたやわらかな時間も全部宝物。大好きな人の一番近くで輝きを見つめられる幸せを噛みしめてました。",
-        image: "images/page02.png"
-      },
-      {
-        id: "003", cinemaDate: "'26.07.07", title: "003 - 七夕",
-        cinemaDesc: "七夕の夜に送り合った短冊。「ずっと隣で笑い合えますように」と願いを込めたけれど、みなみさんが書いてくれた美しい字と直筆の「大好き」の文字を見た瞬間、胸がぎゅっとなるくらい惚れ直してしまった。どんな壁があってもこの人となら乗り越えていける、そう強く確信したよ。",
-        image: "images/page03.png"
-      },
-      {
-        id: "004", cinemaDate: "'26.07.10", title: "004 - 初めてのお弁当",
-        cinemaDesc: "寝ぼけて炊き込みご飯の水の量を間違えちゃったけれど、「味はすごく美味しいよ」って優しく微笑んで食べてくれたその温もりが嬉しかった。いつか同じ家でお弁当を作ってそれを渡して「いってらっしゃい」と言いたいなと思い描いた日。",
-        image: "images/page04.png"
-      },
-      {
-        id: "005", cinemaDate: "'26.07.11", title: "005 - 水族館と初お泊り",
-        cinemaDesc: "一日中ダンスで疲れているはずなのに、嫌な顔ひとつせずお迎えに来てくれた深すぎる優しさ。すみだ水族館の青く静かな光の中に浮かび上がるみなみさんは、まるで女神みたいに綺麗だった。そして初めてのお泊り。あまりにも幸せだったね。",
-        image: "images/page05.png"
-      },
-      {
-        id: "006", cinemaDate: "'26.07.12", title: "006 - お泊り",
-        cinemaDesc: "「会いたい」という私のわがままを優しく受け止めてくれて実現した、みなみさん家でのお泊り。カメラを向けると照れてそっぽを向いちゃったり、アイスを食べながら目が合うだけで恥ずかしそうに笑う顔が愛おしすぎてメロメロ。少しずつ縮まっていくふたりの距離がたまらなく愛おしい。",
-        image: "images/page06.png"
-      },
-      {
-        id: "007", cinemaDate: "'26.07.14", title: "007 - 映画とお泊り",
-        cinemaDesc: "『トイ・ストーリー4』を見に行った日。映画館の一番後ろの席を取ろうとしてチケットを1枚しか取っていなかった私の大ポカも笑い飛ばしてくれてありがとう。映画館の暗闇の中で重ねたキス写真はずっと私のお気に入り。翌朝作ってくれたお弁当の美味しさと優しさに、胸がいっぱいになりました。ありがとう。",
-        image: "images/page07.png"
-      },
-      {
-        id: "008", cinemaDate: "'26.07.16", title: "008 - お泊り",
-        cinemaDesc: "「明日お弁当持っていきたい」と言ったら、まさかのみなみさんからお泊りの誘い！お互いに「今日は疲れたから即寝る」って意気込んでいたはずなのに、気づいたら始まっちゃうふたり。双方そろって忍耐力ゼロなところも愛おしい。ちょっぴりSっ気満載なみなみさんに、今日もメロメロです。",
-        image: "images/page08.png"
-      },
-      {
-        id: "009", cinemaDate: "'26.07.18", title: "009 - 飲みとお泊り",
-        cinemaDesc: "馬場飲みからのみなみさん家にお泊り。「チンチロしたい！」って大はしゃぎして案の定メガジョッキを引き当てるお茶目な姿に爆笑。結局半分くらい私が飲んでた気もするけどね笑飾らないありのままのみなみさんと過ごす時間は、私にとって世界で一番心地いい居場所です。",
-        image: "images/page09.png"
-      },
-      {
-        id: "010", cinemaDate: "'26.07.19", title: "010 - ダンスの送迎",
-        cinemaDesc: "ダンス公演に行けない寂しさを埋めたくて、埼玉会館まで送迎した日。内緒でお揃いのスマホケースを買おうとコソコソいじっていたら怪しまれて、焦って自爆したサプライズ大失敗。でも、あんなに嬉しそうな笑顔が見られたから大成功ってことでいいよね。みなみさんと出会えた奇跡に感謝する毎日です。",
-        image: "images/page10.png"
-      },
-      {
-        id: "011", cinemaDate: "'26.07.23", title: "011 - お泊り",
-        cinemaDesc: "仕事終わりに直行して一緒に作った豚の角煮。私の帰りを待ちながら作ってくれてた姿を想像するとたまらないです。ご飯も炊きたてを食べさせようとしてくれてて愛感じたよ。全部とってもおいしかったよありがとう。「プレゼントがあります！」ってにっこにこ顔で渡された袋を開けると、サウナハット。私のポロッと言った言葉を覚えていてくれたその優しさに、心から愛が溢れました。",
-        image: "images/page11.png"
-      },
-      {
-        id: "012", cinemaDate: "'26.07.26", title: "012 - お泊まり",
-        cinemaDesc: "馬場でお寿司を食べてゲーセンで太鼓の達人にマリカー、モグラ叩きまで本気で大はしゃぎ。お泊りした翌朝のキスマ攻防戦も、じゃれ合いすぎて出かけるギリギリになっちゃうのもふたりのお約束。「会えない時間や距離に僕らは試されている」——離れている時間さえも愛を深めてくれる大切な存在です。",
-        image: "images/page12.png"
-      },
-      {
-        id: "013", cinemaDate: "'26.07.28", title: "013 - 花火大会",
-        cinemaDesc: "告白する予定だった日に、恋人同士として見れた花火大会。夜空を見上げる横顔が咲き誇るどの花火よりも綺麗で、途中の小雨のおかげで傘という二人だけの小さな死角のなかで重ねた唇。BGMで流れていた『愛は勝つ』は、一生忘れられないふたりだけの特別なテーマソング。来年もこの先もずっと隣で見ようね。来年はどこに見に行こうか。",
-        image: "images/page13.png"
-      },
-      {
-        id: "014", cinemaDate: "'26.08.09", title: "014 - 葛西臨海公園",
-        cinemaDesc: "ダンス送迎のあとに向かった夜の葛西臨海公園。美味しいものを頬張ったあと、海辺へ移動してふたりでずーーっとキス。空が深い闇に包まれるまで時間を忘れて重ね合った唇。夜のひまわりのライトアップに照らされたみなみさんは、今日も飛び切りの綺麗さで私の心を奪っていきました。",
-        image: "images/page14.png"
-      },
-      {
-        id: "015", cinemaDate: "'26.08.16", title: "015 - ダンス公演",
-        cinemaDesc: "ダンス公演で見せる圧巻のパフォーマンス。ステージの上で踊る姿は一瞬で目を奪われるほど格好良くて、何回見ても胸が熱くなる。たくさん練習して努力してるんだろうなと思わされるほど、伝わってくる圧倒的な表現力。これからもたくさんの公演を見に行けたら嬉しいです。",
-        image: "images/page15.png"
-      },
-      {
-        id: "016", cinemaDate: "'26.08.22", title: "016 - 九十九里浜ドライブ",
-        cinemaDesc: "九十九里浜広かったな。到着してすぐに海へ飛び込んで、ずぶ濡れになりながら笑い合った青春みたいな一日。美味しいハンバーグを食べて、夜は韓国料理屋さんで夢中になってゲームを語る無邪気な姿が愛おしかった。時間がいくらあっても足りないくらい楽しい日々をありがとう。",
-        image: "images/page16.png"
-      },
-      {
-        id: "017", cinemaDate: "'26.08.21", title: "017 - 5日間のお泊り",
-        cinemaDesc: "気づけばなんと5日連続のお泊り。お洗濯をしてお料理を作って、大好きな人の帰りをワクワクしながら待つ時間は言葉にできないほど幸せだった。同棲への夢がもっと膨らんだ日々。練習したピアノも優しく褒めてくれてありがとう。ギターも頑張るから、いつか絶対にふたりで合奏しようね。",
-        image: "images/page17.png"
-      },
-      {
-        id: "018", cinemaDate: "'26.09.01", title: "018 - ディズニーシー",
-        cinemaDesc: "ふたりで初めて行った夢のディズニーシー。アトラクションで叫びすぎて喉がやられたのも、ポップコーンを6個も食べて帰りにお腹すいたって言うみなみさんも最高に愛おしいです。地球儀の前で膝を抱えて撮った写真も宝物。みなみさんといると何気ない瞬間もすべてが幸せに変わるよ。ずっと愛しています。",
-        image: "images/page18.png"
-      }
+      { id: "000", cinemaDate: "'26.07.03", title: "000 - Prologue", cinemaDesc: "あの日、偶然入ったあのバーでみなみさんと出会えたこと。もしどちらかが少しでも違う選択をしていたらと思うと、奇跡としか思えない夜でした。見えなくなるまで改札でずっと手を振り続けてくれたあの笑顔は、今も私の胸の中でずっと輝いています。ずっとずっとみなみさんが笑顔でいてくれることを祈ってます。", image: "images/prologue.png" },
+      { id: "001", cinemaDate: "'26.07.03", title: "001 - 付き合った日", cinemaDesc: "仕事終わりにお迎えに行って食べたもんじゃ焼き。張り切って焼いてくれた姿が可愛くて、それだけで幸せだった。その後のカラオケでまだ付き合ってもないのにしちゃった、心臓が破裂しそうな初キス。公園で声を震わせながらした告白。緊張しすぎててぎこちなかったと思うけど、受け入れてくれてありがとう。幸せになろうね。", image: "images/page01.png" },
+      { id: "002", cinemaDate: "'26.07.05", title: "002 - 初めてダンスを見た日", cinemaDesc: "ステージの上で踊るみなみさんは、息をのむほど格好良くて圧倒されっぱなしだった。終演後に花束を渡した時の無邪気な笑顔も、そのあと公園でスムージーを飲みながら過ごしたやわらかな時間も全部宝物。大好きな人の一番近くで輝きを見つめられる幸せを噛みしめてました。", image: "images/page02.png" },
+      { id: "003", cinemaDate: "'26.07.07", title: "003 - 七夕", cinemaDesc: "七夕の夜に送り合った短冊。「ずっと隣で笑い合えますように」と願いを込めたけれど、みなみさんが書いてくれた美しい字と直筆の「大好き」の文字を見た瞬間、胸がぎゅっとなるくらい惚れ直してしまった。どんな壁があってもこの人となら乗り越えていける、そう強く確信したよ。", image: "images/page03.png" },
+      { id: "004", cinemaDate: "'26.07.10", title: "004 - 初めてのお弁当", cinemaDesc: "寝ぼけて炊き込みご飯の水の量を間違えちゃったけれど、「味はすごく美味しいよ」って優しく微笑んで食べてくれたその温もりが嬉しかった。いつか同じ家でお弁当を作ってそれを渡して「いってらっしゃい」と言いたいなと思い描いた日。", image: "images/page04.png" },
+      { id: "005", cinemaDate: "'26.07.11", title: "005 - 水族館と初お泊り", cinemaDesc: "一日中ダンスで疲れているはずなのに、嫌な顔ひとつせずお迎えに来てくれた深すぎる優しさ。すみだ水族館の青く静かな光の中に浮かび上がるみなみさんは、まるで女神みたいに綺麗だった。そして初めてのお泊り。あまりにも幸せだったね。", image: "images/page05.png" },
+      { id: "006", cinemaDate: "'26.07.12", title: "006 - お泊り", cinemaDesc: "「会いたい」という私のわがままを優しく受け止めてくれて実現した、みなみさん家でのお泊り。カメラを向けると照れてそっぽを向いちゃったり、アイスを食べながら目が合うだけで恥ずかしそうに笑う顔が愛おしすぎてメロメロ。少しずつ縮まっていくふたりの距離がたまらなく愛おしい。", image: "images/page06.png" },
+      { id: "007", cinemaDate: "'26.07.14", title: "007 - 映画とお泊り", cinemaDesc: "『トイ・ストーリー4』を見に行った日。映画館の一番後ろの席を取ろうとしてチケットを1枚しか取っていなかった私の大ポカも笑い飛ばしてくれてありがとう。映画館の暗闇の中で重ねたキス写真はずっと私のお気に入り。翌朝作ってくれたお弁当の美味しさと優しさに、胸がいっぱいになりました。ありがとう。", image: "images/page07.png" },
+      { id: "008", cinemaDate: "'26.07.16", title: "008 - お泊り", cinemaDesc: "「明日お弁当持っていきたい」と言ったら、まさかのみなみさんからお泊りの誘い！お互いに「今日は疲れたから即寝る」って意気込んでいたはずなのに、気づいたら始まっちゃうふたり。双方そろって忍耐力ゼロなところも愛おしい。ちょっぴりSっ気満載なみなみさんに、今日もメロメロです。", image: "images/page08.png" },
+      { id: "009", cinemaDate: "'26.07.18", title: "009 - 飲みとお泊り", cinemaDesc: "馬場飲みからのみなみさん家にお泊り。「チンチロしたい！」って大はしゃぎして案の定メガジョッキを引き当てるお茶目な姿に爆笑。結局半分くらい私が飲んでた気もするけどね笑飾らないありのままのみなみさんと過ごす時間は、私にとって世界で一番心地いい居場所です。", image: "images/page09.png" },
+      { id: "010", cinemaDate: "'26.07.19", title: "010 - ダンスの送迎", cinemaDesc: "ダンス公演に行けない寂しさを埋めたくて、埼玉会館まで送迎した日。内緒でお揃いのスマホケースを買おうとコソコソいじっていたら怪しまれて、焦って自爆したサプライズ大失敗。でも、あんなに嬉しそうな笑顔が見られたから大成功ってことでいいよね。みなみさんと出会えた奇跡に感謝する毎日です。", image: "images/page10.png" },
+      { id: "011", cinemaDate: "'26.07.23", title: "011 - お泊り", cinemaDesc: "仕事終わりに直行して一緒に作った豚の角煮。私の帰りを待ちながら作ってくれてた姿を想像するとたまらないです。ご飯も炊きたてを食べさせようとしてくれてて愛感じたよ。全部とってもおいしかったよありがとう。「プレゼントがあります！」ってにっこにこ顔で渡された袋を開けると、サウナハット。私のポロッと言った言葉を覚えていてくれたその優しさに、心から愛が溢れました。", image: "images/page11.png" },
+      { id: "012", cinemaDate: "'26.07.26", title: "012 - お泊まり", cinemaDesc: "馬場でお寿司を食べてゲーセンで太鼓の達人にマリカー、モグラ叩きまで本気で大はしゃぎ。お泊りした翌朝のキスマ攻防戦も、じゃれ合いすぎて出かけるギリギリになっちゃうのもふたりのお約束。「会えない時間や距離に僕らは試されている」——離れている時間さえも愛を深めてくれる大切な存在です。", image: "images/page12.png" },
+      { id: "013", cinemaDate: "'26.07.28", title: "013 - 花火大会", cinemaDesc: "告白する予定だった日に、恋人同士として見れた花火大会。夜空を見上げる横顔が咲き誇るどの花火よりも綺麗で、途中の小雨のおかげで傘という二人だけの小さな死角のなかで重ねた唇。BGMで流れていた『愛は勝つ』は、一生忘れられないふたりだけの特別なテーマソング。来年もこの先もずっと隣で見ようね。来年はどこに見に行こうか。", image: "images/page13.png" },
+      { id: "014", cinemaDate: "'26.08.09", title: "014 - 葛西臨海公園", cinemaDesc: "ダンス送迎のあとに向かった夜の葛西臨海公園。美味しいものを頬張ったあと、海辺へ移動してふたりでずーーっとキス。空が深い闇に包まれるまで時間を忘れて重ね合った唇。夜のひまわりのライトアップに照らされたみなみさんは、今日も飛び切りの綺麗さで私の心を奪っていきました。", image: "images/page14.png" },
+      { id: "015", cinemaDate: "'26.08.16", title: "015 - ダンス公演", cinemaDesc: "ダンス公演で見せる圧巻のパフォーマンス。ステージの上で踊る姿は一瞬で目を奪われるほど格好良くて、何回見ても胸が熱くなる。たくさん練習して努力してるんだろうなと思わされるほど、伝わってくる圧倒的な表現力。これからもたくさんの公演を見に行けたら嬉しいです。", image: "images/page15.png" },
+      { id: "016", cinemaDate: "'26.08.22", title: "016 - 九十九里浜ドライブ", cinemaDesc: "九十九里浜広かったな。到着してすぐに海へ飛び込んで、ずぶ濡れになりながら笑い合った青春みたいな一日。美味しいハンバーグを食べて、夜は韓国料理屋さんで夢中になってゲームを語る無邪気な姿が愛おしかった。時間がいくらあっても足りないくらい楽しい日々をありがとう。", image: "images/page16.png" },
+      { id: "017", cinemaDate: "'26.08.21", title: "017 - 5日間のお泊り", cinemaDesc: "気づけばなんと5日連続のお泊り。お洗濯をしてお料理を作って、大好きな人の帰りをワクワクしながら待つ時間は言葉にできないほど幸せだった。同棲への夢がもっと膨らんだ日々。練習したピアノも優しく褒めてくれてありがとう。ギターも頑張るから、いつか絶対にふたりで合奏しようね。", image: "images/page17.png" },
+      { id: "018", cinemaDate: "'26.09.01", title: "018 - ディズニーシー", cinemaDesc: "ふたりで初めて行った夢のディズニーシー。アトラクションで叫びすぎて喉がやられたのも、ポップコーンを6個も食べて帰りにお腹すいたって言うみなみさんも最高に愛おしいです。地球儀の前で膝を抱えて撮った写真も宝物。みなみさんといると何気ない瞬間もすべてが幸せに変わるよ。ずっと愛しています。", image: "images/page18.png" }
     ];
 
     function createFrame(item) {
@@ -463,26 +207,17 @@
       frame.className = 'film-frame';
       
       const img = document.createElement('img');
-      img.src = item.image;
-      img.alt = item.title;
+      img.src = item.image; img.alt = item.title;
       
       const title = document.createElement('div');
-      title.className = 'frame-title';
-      title.textContent = item.title;
+      title.className = 'frame-title'; title.textContent = item.title;
 
       const stamp = document.createElement('div');
-      stamp.className = 'frame-stamp';
-      stamp.textContent = item.cinemaDate;
+      stamp.className = 'frame-stamp'; stamp.textContent = item.cinemaDate;
       
-      frame.appendChild(img);
-      frame.appendChild(title);
-      frame.appendChild(stamp);
+      frame.appendChild(img); frame.appendChild(title); frame.appendChild(stamp);
       
-      frame.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openModal(item);
-      });
-      
+      frame.addEventListener('click', (e) => { e.stopPropagation(); openModal(item); });
       return frame;
     }
 
@@ -492,33 +227,21 @@
 
       if (topEl && bottomEl) {
         const multiList = [...albumData, ...albumData, ...albumData, ...albumData];
-
-        topEl.innerHTML = '';
-        multiList.forEach(item => topEl.appendChild(createFrame(item)));
-
-        bottomEl.innerHTML = '';
-        [...multiList].reverse().forEach(item => bottomEl.appendChild(createFrame(item)));
+        topEl.innerHTML = ''; multiList.forEach(item => topEl.appendChild(createFrame(item)));
+        bottomEl.innerHTML = ''; [...multiList].reverse().forEach(item => bottomEl.appendChild(createFrame(item)));
       }
     }
 
-    let topX = -2000;
-    let bottomX = -2000;
-    let baseSpeedTop = -0.6;
-    let baseSpeedBottom = 0.6;
-    let velocityTop = 0;
-    let velocityBottom = 0;
-    let isDragging = false;
-    let dragTarget = null;
-    let lastClientX = 0;
-    let lastTime = 0;
+    let topX = -2000, bottomX = -2000;
+    let baseSpeedTop = -0.6, baseSpeedBottom = 0.6;
+    let velocityTop = 0, velocityBottom = 0;
+    let isDragging = false, dragTarget = null, lastClientX = 0, lastTime = 0;
     const LOOP_WIDTH = 4180;
 
     function animateFilm() {
       if (!isDragging) {
-        velocityTop *= 0.94;
-        velocityBottom *= 0.94;
-        topX += baseSpeedTop + velocityTop;
-        bottomX += baseSpeedBottom + velocityBottom;
+        velocityTop *= 0.94; velocityBottom *= 0.94;
+        topX += baseSpeedTop + velocityTop; bottomX += baseSpeedBottom + velocityBottom;
       }
 
       while (topX < -LOOP_WIDTH * 2) topX += LOOP_WIDTH;
@@ -540,36 +263,19 @@
       const bottomTrack = document.getElementById('filmTrackBottom');
 
       const handleStart = (clientX, target) => {
-        isDragging = true;
-        dragTarget = target;
-        lastClientX = clientX;
-        lastTime = performance.now();
-        if (target === 'top') velocityTop = 0;
-        if (target === 'bottom') velocityBottom = 0;
+        isDragging = true; dragTarget = target; lastClientX = clientX; lastTime = performance.now();
+        if (target === 'top') velocityTop = 0; if (target === 'bottom') velocityBottom = 0;
       };
 
       const handleMove = (clientX) => {
         if (!isDragging) return;
-        const now = performance.now();
-        const dt = Math.max(1, now - lastTime);
-        const diffX = clientX - lastClientX;
-
-        if (dragTarget === 'top') {
-          topX += diffX;
-          velocityTop = (diffX / dt) * 14;
-        } else if (dragTarget === 'bottom') {
-          bottomX += diffX;
-          velocityBottom = (diffX / dt) * 14;
-        }
-
-        lastClientX = clientX;
-        lastTime = now;
+        const now = performance.now(); const dt = Math.max(1, now - lastTime); const diffX = clientX - lastClientX;
+        if (dragTarget === 'top') { topX += diffX; velocityTop = (diffX / dt) * 14; }
+        else if (dragTarget === 'bottom') { bottomX += diffX; velocityBottom = (diffX / dt) * 14; }
+        lastClientX = clientX; lastTime = now;
       };
 
-      const handleEnd = () => {
-        isDragging = false;
-        dragTarget = null;
-      };
+      const handleEnd = () => { isDragging = false; dragTarget = null; };
 
       if (topTrack) {
         topTrack.addEventListener('mousedown', (e) => handleStart(e.clientX, 'top'));
@@ -583,34 +289,25 @@
 
       window.addEventListener('mousemove', (e) => handleMove(e.clientX));
       window.addEventListener('mouseup', handleEnd);
-
-      window.addEventListener('touchmove', (e) => {
-        if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX);
-      }, { passive: true });
+      window.addEventListener('touchmove', (e) => { if (e.touches && e.touches[0]) handleMove(e.touches[0].clientX); }, { passive: true });
       window.addEventListener('touchend', handleEnd);
     }
 
     function openModal(item) {
       const modal = document.getElementById('photoModal');
       const inner = document.getElementById('popCardInner');
-      
       if (modal) {
         document.getElementById('modalImg').src = item.image;
         document.getElementById('modalStamp').textContent = item.cinemaDate;
         document.getElementById('modalTitle').textContent = item.title;
         document.getElementById('modalBackTitle').textContent = item.title;
         document.getElementById('modalDesc').textContent = item.cinemaDesc;
-        
         if (inner) inner.classList.remove('is-flipped');
         modal.classList.add('show');
       }
     }
 
-    function toggleFlip(e) {
-      if (e) e.stopPropagation();
-      const inner = document.getElementById('popCardInner');
-      if (inner) inner.classList.toggle('is-flipped');
-    }
+    function toggleFlip(e) { if (e) e.stopPropagation(); const inner = document.getElementById('popCardInner'); if (inner) inner.classList.toggle('is-flipped'); }
 
     function setupEvents() {
       const flipToBackBtn = document.getElementById('flipToBackBtn');
@@ -625,16 +322,11 @@
       const closeModal = () => { if (modal) modal.classList.remove('show'); };
       if (modalCloseFront) modalCloseFront.onclick = closeModal;
       if (modalCloseBack) modalCloseBack.onclick = closeModal;
-      if (modal) {
-        modal.onclick = (e) => { if (e.target === modal) closeModal(); };
-      }
+      if (modal) modal.onclick = (e) => { if (e.target === modal) closeModal(); };
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      initFilmTracks();
-      setupEvents();
-      setupDragEvents();
-      animateFilm();
+      initFilmTracks(); setupEvents(); setupDragEvents(); animateFilm();
     });
   </script>
 </body>

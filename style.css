@@ -18,12 +18,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 10px 25px 10px;
+  padding: clamp(10px, 2vh, 20px) 10px;
   overflow-x: hidden;
   position: relative;
 }
 
-/* 背景粒子 */
 #bg-canvas {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   z-index: 1; pointer-events: none; opacity: 0.4;
@@ -42,18 +41,18 @@ body {
 }
 
 .cover-content { text-align: center; padding: 20px; position: relative; z-index: 10; }
-.luxury-badge { font-family: var(--font-en); font-size: 0.75rem; letter-spacing: 0.35em; color: var(--gold-primary); margin-bottom: 12px; }
-.cover-title { font-family: var(--font-en); font-size: 2.2rem; color: #fff; margin-bottom: 6px; }
-.cover-sub { font-size: 0.9rem; color: var(--gold-glow); margin-bottom: 30px; }
+.luxury-badge { font-family: var(--font-en); font-size: clamp(0.65rem, 1.8vw, 0.85rem); letter-spacing: 0.35em; color: var(--gold-primary); margin-bottom: 12px; }
+.cover-title { font-family: var(--font-en); font-size: clamp(1.8rem, 5vw, 2.8rem); color: #fff; margin-bottom: 6px; }
+.cover-sub { font-size: clamp(0.8rem, 2.2vw, 1rem); color: var(--gold-glow); margin-bottom: 30px; }
 .open-btn {
   background: linear-gradient(135deg, #2b231d, #42352b);
   border: 1px solid var(--gold-primary); color: var(--gold-glow);
-  padding: 12px 36px; border-radius: 30px; font-size: 0.9rem;
+  padding: 12px clamp(28px, 5vw, 45px); border-radius: 30px; font-size: clamp(0.85rem, 2vw, 1rem);
   cursor: pointer; letter-spacing: 0.15em;
   box-shadow: 0 0 20px rgba(212,175,55,0.3);
 }
 
-/* 🌸 オープニングでゆったり浮遊する大判ポラロイド（枠最小化＆多方向ゆらぎ） */
+/* ポラロイド（端末サイズに合わせて自動リサイズ） */
 #random-photos-container {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none; overflow: hidden;
@@ -61,10 +60,10 @@ body {
 
 .random-polaroid {
   position: absolute;
-  /* 枠（白縁）を最小限のパディングに設定 */
-  width: 105px; height: 120px;
+  width: clamp(75px, 12vw, 120px);
+  height: clamp(90px, 14vw, 140px);
   background: #ffffff;
-  padding: 4px 4px 14px 4px; /* 下部だけ少し余白を残してポラロイド感を演出 */
+  padding: 4px 4px 12px 4px;
   border-radius: 5px;
   box-shadow: 0 12px 25px rgba(0,0,0,0.75), 0 0 10px rgba(212,175,55,0.15);
   opacity: 0;
@@ -72,25 +71,16 @@ body {
   will-change: transform;
 }
 
-.random-polaroid img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  border-radius: 2px;
-  display: block;
-}
+.polaroid-1 { top: 2%; left: 3%; animation: floatPath1 8s ease-in-out infinite alternate; }
+.polaroid-2 { top: 3%; left: 27%; animation: floatPath2 9s ease-in-out infinite alternate; animation-delay: 0.8s; }
+.polaroid-3 { top: 2%; right: 27%; animation: floatPath3 8.5s ease-in-out infinite alternate; animation-delay: 1.5s; }
+.polaroid-4 { top: 3%; right: 3%; animation: floatPath4 9.5s ease-in-out infinite alternate; animation-delay: 0.3s; }
 
-/* 上下エリアを埋め尽くす初期配置 */
-.polaroid-1 { top: 2%; left: 2%; animation: floatPath1 8s ease-in-out infinite alternate; }
-.polaroid-2 { top: 3%; left: 26%; animation: floatPath2 9s ease-in-out infinite alternate; animation-delay: 0.8s; }
-.polaroid-3 { top: 2%; right: 26%; animation: floatPath3 8.5s ease-in-out infinite alternate; animation-delay: 1.5s; }
-.polaroid-4 { top: 3%; right: 2%; animation: floatPath4 9.5s ease-in-out infinite alternate; animation-delay: 0.3s; }
+.polaroid-5 { bottom: 3%; left: 3%; animation: floatPath3 9s ease-in-out infinite alternate; animation-delay: 1.2s; }
+.polaroid-6 { bottom: 2%; left: 27%; animation: floatPath4 8.5s ease-in-out infinite alternate; animation-delay: 2s; }
+.polaroid-7 { bottom: 3%; right: 27%; animation: floatPath1 9.5s ease-in-out infinite alternate; animation-delay: 0.5s; }
+.polaroid-8 { bottom: 2%; right: 3%; animation: floatPath2 8s ease-in-out infinite alternate; animation-delay: 1.7s; }
 
-.polaroid-5 { bottom: 3%; left: 2%; animation: floatPath3 9s ease-in-out infinite alternate; animation-delay: 1.2s; }
-.polaroid-6 { bottom: 2%; left: 26%; animation: floatPath4 8.5s ease-in-out infinite alternate; animation-delay: 2s; }
-.polaroid-7 { bottom: 3%; right: 26%; animation: floatPath1 9.5s ease-in-out infinite alternate; animation-delay: 0.5s; }
-.polaroid-8 { bottom: 2%; right: 2%; animation: floatPath2 8s ease-in-out infinite alternate; animation-delay: 1.7s; }
-
-/* 上下・左右・回転を掛け合わせた心地よい立体浮遊アニメーション */
 @keyframes floatPath1 {
   0%   { transform: translate(0, 0) rotate(-7deg); }
   50%  { transform: translate(8px, -10px) rotate(-3deg); }
@@ -116,47 +106,43 @@ body {
 }
 
 /* ヘッダー */
-header { text-align: center; margin-bottom: 10px; width: 100%; position: relative; z-index: 10; }
-.header-brand { font-family: var(--font-en); font-size: 0.68rem; letter-spacing: 0.3em; color: var(--gold-primary); }
-h1 { font-size: 1.15rem; color: #fff; margin: 2px 0; font-weight: 600; }
-.subtitle { font-family: var(--font-en); font-size: 0.75rem; color: #8c8275; }
-.anniversary-timer { font-size: 0.75rem; color: var(--gold-glow); margin-top: 4px; }
+header { text-align: center; margin-bottom: 8px; width: 100%; position: relative; z-index: 10; }
+.header-brand { font-family: var(--font-en); font-size: clamp(0.6rem, 1.5vw, 0.75rem); letter-spacing: 0.3em; color: var(--gold-primary); }
+h1 { font-size: clamp(1.05rem, 3.2vw, 1.5rem); color: #fff; margin: 2px 0; font-weight: 600; }
+.subtitle { font-family: var(--font-en); font-size: clamp(0.7rem, 2vw, 0.85rem); color: #8c8275; }
+.anniversary-timer { font-size: clamp(0.7rem, 2vw, 0.82rem); color: var(--gold-glow); margin-top: 4px; }
 .header-btn-group { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
 .omikuji-btn, .cinema-nav-btn {
   background: rgba(212, 175, 55, 0.15); border: 1px solid var(--gold-primary);
   color: var(--gold-glow); padding: 5px 12px; border-radius: 18px;
-  font-size: 0.72rem; text-decoration: none; cursor: pointer;
+  font-size: clamp(0.68rem, 1.8vw, 0.78rem); text-decoration: none; cursor: pointer;
 }
 
-/* アルバムカードコンテナ */
+/* メインカードコンテナ（全画面対応） */
 .album-container {
-  width: 100%; max-width: 440px;
-  height: calc(100vh - 210px);
-  min-height: 480px; max-height: 620px;
-  position: relative; margin: 5px 0; z-index: 10;
+  width: 100%; max-width: 480px;
+  height: clamp(450px, 62vh, 650px);
+  position: relative; margin: 4px 0; z-index: 10;
 }
 
-/* 各ページカード */
 .page {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   background: var(--card-bg); border: 1px solid rgba(212, 175, 55, 0.35);
-  border-radius: 12px; padding: 16px 14px;
+  border-radius: 12px; padding: clamp(12px, 3vh, 20px) clamp(12px, 3vw, 18px);
   box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-  display: flex; flex-direction: column; gap: 10px;
+  display: flex; flex-direction: column; gap: 8px;
   opacity: 0; pointer-events: none; transform: scale(0.96);
   transition: opacity 0.35s ease, transform 0.35s ease;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
 }
 
-.page.active {
-  opacity: 1; pointer-events: auto; transform: scale(1); z-index: 10;
-}
+.page.active { opacity: 1; pointer-events: auto; transform: scale(1); z-index: 10; }
 
 /* 写真エリア */
 .photo-column { width: 100%; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 .photo-frame {
-  width: 100%; max-width: 300px; height: 185px;
+  width: 100%; max-width: 320px;
+  height: clamp(160px, 25vh, 230px);
   border-radius: 8px; overflow: hidden; border: 3px solid #2a2420;
   box-shadow: 0 6px 16px rgba(0,0,0,0.7); position: relative; cursor: pointer;
 }
@@ -172,18 +158,18 @@ h1 { font-size: 1.15rem; color: #fff; margin: 2px 0; font-weight: 600; }
   padding: 12px; text-align: center; font-size: 0.82rem;
   transform: rotateY(180deg); border: 1px solid var(--gold-primary);
 }
-.photo-zoom-btn { background: none; border: none; color: var(--gold-primary); font-size: 0.7rem; cursor: pointer; margin-top: 3px; }
+.photo-zoom-btn { background: none; border: none; color: var(--gold-primary); font-size: 0.7rem; cursor: pointer; margin-top: 2px; }
 
 /* 文章テキスト */
 .diary-entry { width: 100%; display: flex; flex-direction: column; flex-grow: 1; }
 .page-tag { font-family: var(--font-en); font-size: 0.62rem; color: var(--gold-primary); letter-spacing: 0.2em; }
-.date-title { font-size: 0.98rem; color: var(--gold-glow); margin: 2px 0 6px 0; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 3px; }
-.text { font-size: 0.82rem; line-height: 1.75; color: #d1c7bc; margin-bottom: 8px; }
+.date-title { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: var(--gold-glow); margin: 2px 0 4px 0; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 2px; }
+.text { font-size: clamp(0.78rem, 2vw, 0.85rem); line-height: 1.75; color: #d1c7bc; margin-bottom: 6px; }
 .author { text-align: right; font-size: 0.72rem; color: var(--gold-primary); margin-top: auto; padding-top: 4px; }
 
-/* ページ下部コントロールナビゲーション */
-.page-indicator { font-family: var(--font-en); font-size: 0.82rem; color: var(--gold-primary); margin-top: 6px; z-index: 20; text-align: center; }
-.controls { display: flex; gap: 16px; margin-top: 6px; z-index: 20; justify-content: center; width: 100%; }
+/* ページナビボタン */
+.page-indicator { font-family: var(--font-en); font-size: 0.82rem; color: var(--gold-primary); margin-top: 4px; z-index: 20; text-align: center; }
+.controls { display: flex; gap: 16px; margin-top: 4px; z-index: 20; justify-content: center; width: 100%; }
 .controls button {
   background: linear-gradient(135deg, #2b231d, #42352b);
   border: 1px solid var(--gold-primary); color: var(--gold-glow);
@@ -192,7 +178,7 @@ h1 { font-size: 1.15rem; color: #fff; margin: 2px 0; font-weight: 600; }
 .controls button:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* クイズ & 秘密の手紙 */
-.quiz-box { margin-top: 8px; background: rgba(0,0,0,0.35); padding: 8px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.2); }
+.quiz-box { margin-top: 6px; background: rgba(0,0,0,0.35); padding: 8px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.2); }
 .quiz-title { font-size: 0.75rem; color: var(--gold-glow); }
 .quiz-q { font-size: 0.75rem; margin-bottom: 6px; color: #eee; }
 .quiz-options { display: flex; flex-direction: column; gap: 4px; }
