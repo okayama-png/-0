@@ -73,7 +73,7 @@ let masterPhotoList = [];
 let pages = [];
 let currentPage = 0;
 
-// === 📖 album_main.html の window.albumData からアルバムDOMを自動生成 ===
+// === 📖 album_main.html からアルバムDOMを自動生成 ===
 function renderAlbumPages() {
   const container = document.getElementById('albumContainer');
   if (!container) return;
@@ -87,7 +87,6 @@ function renderAlbumPages() {
 
   container.innerHTML = '<div class="book-spine"></div>';
 
-  // 000〜018 の全19シーンを順に生成
   sourceData.forEach((item, index) => {
     const article = document.createElement('article');
     article.className = `page ${index === 0 ? 'active' : ''}`;
@@ -159,7 +158,7 @@ function renderAlbumPages() {
     container.appendChild(article);
   });
 
-  // エピローグページ（秘密のメッセージ）を最後に生成（計20ページ）
+  // エピローグ生成（全20ページ目）
   const epilogueArticle = document.createElement('article');
   epilogueArticle.className = 'page layout-photocard';
   epilogueArticle.id = `page${sourceData.length + 1}`;
@@ -203,7 +202,7 @@ function renderAlbumPages() {
   container.appendChild(epilogueArticle);
 }
 
-// 📱 オープニングカバー上にポラロイド写真を自動生成
+// 📱 オープニングカバー上にポラロイド写真（上下4枚ずつ）を自動生成
 function renderCoverPolaroids() {
   const openingCover = document.getElementById('opening-cover');
   if (!openingCover) return;
@@ -256,11 +255,8 @@ function initAllApp() {
     ];
   }
 
-  // 1. DOMを生成
   renderAlbumPages();
-
-  // 2. 生成されたDOMを元にページ管理配列を初期化（スマホでの表示不具合を完全解決）
-  initPages();
+  initPages(); // ページ切り替えを確実に初期化
 
   const openingCover = document.getElementById('opening-cover');
   if (window.location.hash === '#album') {
@@ -283,7 +279,6 @@ function initAllApp() {
   initInteractiveTouch();
   startAnniversaryTimer();
 
-  // OPEN ALBUMボタンイベント
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
     startBtn.onclick = () => {
@@ -303,7 +298,6 @@ function initAllApp() {
   }
 }
 
-// 実行タイミングの完全保証
 window.addEventListener('load', initAllApp);
 
 function setupRandomEpiloguePhoto() {
@@ -337,7 +331,7 @@ function applyFilmTimestamps() {
   });
 }
 
-// 🎬 12枚飛翔演出
+// 🎬 12枚飛翔演出（オープニングボタン押下時）
 function launchPhotoPageTransition(onComplete) {
   if (masterPhotoList.length === 0) {
     if (onComplete) onComplete();
@@ -535,7 +529,7 @@ function initInteractiveTouch() {
   });
 }
 
-// ページめくり制御
+// ページめくり制御（スマホで反転・逆向きにならない正方向3Dめくり）
 function initPages() {
   pages = Array.from(document.querySelectorAll('.page'));
   const totalPages = document.getElementById('totalPages');
