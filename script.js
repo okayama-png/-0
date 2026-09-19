@@ -73,17 +73,22 @@ let masterPhotoList = [];
 let pages = [];
 let currentPage = 0;
 
-// === 📖 data.jsからアルバムDOMを自動生成 ===
+// === 📖 album_main.html の window.albumData からアルバムDOMを自動生成 ===
 function renderAlbumPages() {
   const container = document.getElementById('albumContainer');
   if (!container) return;
 
-  // data.js の albumData を安全に取得
-  const sourceData = (typeof albumData !== 'undefined' && Array.isArray(albumData)) ? albumData : [];
+  // window.albumData または global albumData を確実に取得
+  let sourceData = [];
+  if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
+    sourceData = window.albumData;
+  } else if (typeof albumData !== 'undefined' && Array.isArray(albumData)) {
+    sourceData = albumData;
+  }
 
   container.innerHTML = '<div class="book-spine"></div>';
 
-  // 1〜18ページ（または設定データ分）を生成
+  // 000〜018 の全シーンを順に生成
   sourceData.forEach((item, index) => {
     const article = document.createElement('article');
     article.className = `page ${index === 0 ? 'active' : ''}`;
@@ -128,6 +133,8 @@ function renderAlbumPages() {
         </div>`;
     }
 
+    const textFormatted = item.text ? item.text.replace(/\n/g, '<br>') : '';
+
     article.innerHTML = `
       <div class="photo-column">
         <div class="photo-frame" title="タップで裏面を見る">
@@ -144,7 +151,7 @@ function renderAlbumPages() {
         <div class="entry-content">
           <span class="page-tag">${item.tag}</span>
           <h2 class="date-title">${item.title}</h2>
-          <p class="text">${item.text.replace(/\n/g, '<br>')}</p>
+          <p class="text">${textFormatted}</p>
           ${quizHtml}
         </div>
         <div class="author">結南</div>
@@ -153,12 +160,13 @@ function renderAlbumPages() {
     container.appendChild(article);
   });
 
-  // エピローグページ（秘密のメッセージ）を最後に生成
+  // エピローグページ（秘密のメッセージ）を最後に生成（計20ページ）
   const epilogueArticle = document.createElement('article');
   epilogueArticle.className = 'page layout-photocard';
   epilogueArticle.id = `page${sourceData.length + 1}`;
   
-  const secretTextFormatted = (typeof secretLetterText !== 'undefined') ? secretLetterText.replace(/\n/g, '<br>') : '';
+  const letterText = window.secretLetterText || (typeof secretLetterText !== 'undefined' ? secretLetterText : '');
+  const secretTextFormatted = letterText ? letterText.replace(/\n/g, '<br>') : '';
 
   epilogueArticle.innerHTML = `
     <div class="photo-column">
@@ -228,10 +236,17 @@ function renderCoverPolaroids() {
   });
 }
 
-// === メイン初期化関数 ===
+// === メイン初期化処理 ===
 function initAllApp() {
-  if (typeof albumData !== 'undefined' && Array.isArray(albumData)) {
-    masterPhotoList = albumData.map(d => d.image);
+  let sourceData = [];
+  if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
+    sourceData = window.albumData;
+  } else if (typeof albumData !== 'undefined' && Array.isArray(albumData)) {
+    sourceData = albumData;
+  }
+
+  if (sourceData.length > 0) {
+    masterPhotoList = sourceData.map(d => d.image);
   } else {
     masterPhotoList = [
       "images/prologue.png", "images/page01.png", "images/page02.png", "images/page03.png",
@@ -242,8 +257,11 @@ function initAllApp() {
     ];
   }
 
-  // DOM構築
+  // 1. DOMを生成
   renderAlbumPages();
+
+  // 2. 生成されたDOMを元にページ管理配列を初期化（スマホでの表示不具合を完全解決）
+  initPages();
 
   const openingCover = document.getElementById('opening-cover');
   if (window.location.hash === '#album') {
@@ -259,7 +277,6 @@ function initAllApp() {
 
   setupRandomEpiloguePhoto();
   applyFilmTimestamps();
-  initPages();
   initQuiz();
   initOmikuji();
   initPhotoFlipAndZoom();
@@ -267,10 +284,10 @@ function initAllApp() {
   initInteractiveTouch();
   startAnniversaryTimer();
 
-  // OPEN ALBUMボタン
+  // OPEN ALBUMボタンイベント
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
-    startBtn.addEventListener('click', () => {
+    startBtn.onclick = () => {
       startBtn.style.display = 'none';
       document.body.classList.add('curtain-closed');
       launchPhotoPageTransition(() => {
@@ -283,11 +300,11 @@ function initAllApp() {
           document.body.classList.remove('curtain-closed');
         }, 100);
       });
-    });
+    };
   }
 }
 
-// DOM読み込み完了時に初期化を呼び出し
+// 実行タイミングの完全保証
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initAllApp);
 } else {
@@ -448,26 +465,26 @@ function initPhotoFlipAndZoom() {
     const zoomBtn = col.querySelector('.photo-zoom-btn');
 
     if (frame) {
-      frame.addEventListener('click', () => {
+      frame.onclick = () => {
         frame.classList.toggle('flipped-photo');
-      });
+      };
     }
 
     if (zoomBtn && frame) {
-      zoomBtn.addEventListener('click', (e) => {
+      zoomBtn.onclick = (e) => {
         e.stopPropagation();
         const img = frame.querySelector('.photo-front img');
         if (img) {
           lightboxImg.src = img.src;
           lightbox.classList.add('active');
         }
-      });
+      };
     }
   });
 
   if (lightboxClose) {
-    lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
-    lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+    lightboxClose.onclick = () => lightbox.classList.remove('active');
+    lightbox.onclick = () => lightbox.classList.remove('active');
   }
 }
 
@@ -478,7 +495,7 @@ function initPassUnlock() {
   const secretLetter = document.getElementById('secretLetter');
 
   if (unlockBtn) {
-    unlockBtn.addEventListener('click', () => {
+    unlockBtn.onclick = () => {
       if (passInput.value === '0703') {
         passMessage.style.color = '#2d8a4e';
         passMessage.textContent = '鍵が開きました🔑💖';
@@ -488,7 +505,7 @@ function initPassUnlock() {
         passMessage.style.color = '#c0392b';
         passMessage.textContent = 'パスワードが違います（ヒント: 0703）';
       }
-    });
+    };
   }
 }
 
@@ -524,13 +541,9 @@ function initInteractiveTouch() {
 }
 
 // ページめくり制御
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const pageNum = document.getElementById('pageNum');
-const totalPages = document.getElementById('totalPages');
-
 function initPages() {
   pages = Array.from(document.querySelectorAll('.page'));
+  const totalPages = document.getElementById('totalPages');
   if (totalPages) totalPages.textContent = pages.length;
 
   currentPage = 0;
@@ -551,6 +564,9 @@ function updateActivePage() {
     }
   });
 }
+
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 
 if (nextBtn) {
   nextBtn.onclick = () => {
@@ -573,6 +589,7 @@ if (prevBtn) {
 }
 
 function updateUI() {
+  const pageNum = document.getElementById('pageNum');
   if (prevBtn) prevBtn.disabled = currentPage === 0;
   if (nextBtn) nextBtn.disabled = currentPage === pages.length - 1;
   if (pageNum) pageNum.textContent = currentPage + 1;
