@@ -4,6 +4,7 @@
   --cinema-bg: #0a0807;
   --gold-primary: #d4af37;
   --gold-glow: #f3e5ab;
+  --gold-dark: #8c6a2d;
   --font-en: 'Cormorant Garamond', Georgia, serif;
   --font-ja: 'Shippori Mincho', "游明朝", serif;
 }
@@ -20,190 +21,177 @@ html, body {
   color: #ffffff;
   font-family: var(--font-ja);
   overflow: hidden;
-  position: fixed;
 }
 
-/* 🎞️ シネマ・オープニングカーテン */
-.cinema-curtain {
-  position: fixed;
-  top: 0;
-  width: 50vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #1c1611 0%, #080605 100%);
-  border-color: var(--gold-primary);
-  z-index: 999;
-  pointer-events: none;
-}
-
-.curtain-left {
-  left: 0;
-  border-right: 2px solid var(--gold-primary);
-  animation: openCurtainLeft 1.8s cubic-bezier(0.77, 0, 0.175, 1) 0.3s forwards;
-}
-
-.curtain-right {
-  right: 0;
-  border-left: 2px solid var(--gold-primary);
-  animation: openCurtainRight 1.8s cubic-bezier(0.77, 0, 0.175, 1) 0.3s forwards;
-}
-
-@keyframes openCurtainLeft {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
-@keyframes openCurtainRight {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(100%); }
-}
-
-.cinema-bg {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: radial-gradient(circle at center, #231c15 0%, #080605 100%);
-  z-index: 0;
-}
-
-/* ヘッダー */
-.cinema-header {
-  position: fixed;
-  top: 15px; left: 0; width: 100%;
-  text-align: center;
-  z-index: 10;
-  pointer-events: none;
-  padding: 0 15px;
-}
-
-.cinema-header .brand {
-  font-family: var(--font-en);
-  font-size: 0.65rem;
-  letter-spacing: 0.35em;
-  color: var(--gold-primary);
-  text-transform: uppercase;
-}
-
-.cinema-header h1 {
-  font-family: var(--font-en);
-  font-size: 1.5rem;
-  letter-spacing: 0.12em;
-  font-weight: 600;
-  margin-top: 1px;
-  color: #ffffff;
-}
-
-.cinema-header .sub {
-  font-size: 0.7rem;
-  color: #a89f91;
-  letter-spacing: 0.1em;
-}
-
-/* 🎞️ 画面全体に広がる2段フィルムビューポート */
-.film-viewport-double {
-  position: fixed;
-  top: 52%; left: 0;
-  width: 100vw;
-  height: 480px;
-  transform: translateY(-50%);
-  z-index: 5;
+body.cinema-body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 100vh;
 }
 
-.film-track-row {
-  position: relative;
+.cinema-container {
   width: 100%;
-  height: 225px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(10px, 2vh, 20px) 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ヘッダー位置の調整 */
+.cinema-header {
+  text-align: center;
+  padding: 0 15px;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.cinema-header .header-brand {
+  font-family: var(--font-en);
+  font-size: clamp(0.65rem, 1.8vw, 0.8rem);
+  letter-spacing: 0.35em;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.cinema-header h2 {
+  font-family: var(--font-en);
+  font-size: clamp(1.3rem, 3.8vw, 2rem);
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.back-to-album-btn {
+  display: inline-block;
+  color: var(--gold-glow);
+  text-decoration: none;
+  font-size: clamp(0.72rem, 1.8vw, 0.82rem);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: rgba(22, 18, 15, 0.6);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.back-to-album-btn:hover {
+  background: var(--gold-primary);
+  color: #000;
+}
+
+/* フィルム表示領域 */
+.film-viewer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(10px, 2vh, 20px);
+  flex-grow: 1;
+  width: 100%;
   overflow: hidden;
+}
+
+.film-track-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  user-select: none;
+}
+
+.film-track-wrapper:active {
+  cursor: grabbing;
 }
 
 .film-track {
   display: flex;
   gap: 16px;
-  padding: 16px 12px;
+  padding: 12px 0;
+  width: max-content;
   background: #12100e;
-  border-top: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
-  border-bottom: 8px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.2);
-  position: absolute;
-  left: 0;
-  white-space: nowrap;
+  border-top: 6px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
+  border-bottom: 6px repeating-linear-gradient(90deg, #000 0px, #000 10px, #d4af37 10px, #d4af37 18px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
   will-change: transform;
 }
 
 /* 写真コマ */
 .film-frame {
   flex: none;
-  width: 145px;
-  height: 182px;
-  background: #ffffff;
-  padding: 5px 5px 20px 5px;
-  border-radius: 4px;
+  width: clamp(130px, 28vw, 180px);
+  height: clamp(100px, 20vw, 135px);
+  background: #1a1614;
+  border: 4px solid #2a2420;
+  border-radius: 6px;
   position: relative;
+  overflow: hidden;
   box-shadow: 0 6px 18px rgba(0,0,0,0.7);
   cursor: pointer;
-  transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease, outline 0.25s ease;
-  filter: brightness(0.75);
+  transition: transform 0.25s ease, border-color 0.25s ease;
 }
 
 .film-frame.is-center {
-  filter: brightness(1.25) contrast(1.05);
-  transform: scale(1.15) translateY(-3px);
-  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.8), 0 0 25px rgba(243, 229, 171, 0.9);
-  outline: 3px solid #f3e5ab;
-  outline-offset: -1px;
-  z-index: 10;
+  transform: scale(1.08);
+  border-color: var(--gold-primary);
+  box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+  z-index: 5;
 }
 
 .film-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 2px;
   display: block;
   pointer-events: none;
+  filter: brightness(0.85);
 }
 
-.film-frame .frame-stamp {
+.frame-title {
   position: absolute;
-  bottom: 3px; right: 6px;
-  font-family: var(--font-en);
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  color: #fff;
   font-size: 0.65rem;
-  color: #8c6a2d;
-  font-weight: 600;
-  pointer-events: none;
-}
-
-/* ガイド表示 */
-.cinema-guide {
-  position: fixed;
-  bottom: 20px; left: 0; width: 100%;
+  padding: 8px 4px 4px;
   text-align: center;
-  z-index: 10;
-  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.cinema-guide p {
-  font-size: 0.72rem;
+.frame-stamp {
+  position: absolute;
+  top: 4px; right: 4px;
+  font-family: monospace;
+  font-size: 0.6rem;
+  color: #ff9d00;
+  background: rgba(0,0,0,0.6);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.cinema-guide-text {
+  text-align: center;
+  font-size: clamp(0.68rem, 1.8vw, 0.78rem);
   color: var(--gold-glow);
-  background: rgba(20, 16, 12, 0.85);
-  display: inline-block;
-  padding: 6px 16px;
-  border-radius: 25px;
-  border: 1px solid rgba(212, 175, 55, 0.4);
+  opacity: 0.85;
 }
 
-/* モーダル ＆ 裏返し */
+/* 🎬 モーダル（しっかり画面中央にポップアップ） */
 .photo-pop-modal {
   display: none;
   position: fixed;
   top: 0; left: 0;
   width: 100vw; height: 100vh;
-  background: rgba(5, 4, 3, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 100;
+  background: rgba(5, 4, 3, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 99999;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -217,7 +205,7 @@ html, body {
 .pop-card-inner {
   width: 88vw;
   max-width: 340px;
-  height: 380px;
+  height: 420px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -236,97 +224,113 @@ html, body {
   -webkit-backface-visibility: hidden;
   border-radius: 14px;
   padding: 16px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.5);
-  border: 1.5px solid var(--gold-primary);
-  background: #fdfbf7;
-  color: var(--cinema-bg);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.3);
+  border: 1px solid var(--gold-primary);
+  background: #1a1614;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.pop-card-front-face .card-img-wrap {
+.modal-close-btn {
+  position: absolute;
+  top: 10px; right: 14px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+}
+
+.card-img-wrap {
   position: relative;
   width: 100%;
-  height: 210px;
+  height: 220px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-.pop-card-front-face img {
+.card-img-wrap img {
   width: 100%; height: 100%;
   object-fit: cover;
 }
 
 .pop-timestamp {
   position: absolute;
-  bottom: 8px; right: 10px;
-  font-family: var(--font-en);
-  font-size: 0.8rem;
-  color: var(--gold-glow);
-  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  bottom: 6px; right: 8px;
+  font-family: monospace;
+  font-size: 0.7rem;
+  color: #ff9d00;
+  background: rgba(0,0,0,0.7);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
-.pop-card-front-face .pop-card-info h3 {
-  font-size: 1.05rem;
-  color: #1a1a1a;
+.pop-card-info {
+  text-align: center;
   margin-top: 8px;
-  font-weight: 600;
+}
+
+.pop-card-info h3 {
+  font-size: 1rem;
+  color: var(--gold-glow);
+  margin-bottom: 4px;
 }
 
 .flip-hint-text {
   font-size: 0.72rem;
-  color: var(--gold-dark);
-  text-align: center;
-  margin-top: 4px;
-  font-weight: 600;
+  color: #a89f91;
 }
 
 .pop-card-back-face {
   transform: rotateY(180deg);
-  background: linear-gradient(135deg, #fefcf9, #f4ede2);
+  background: #1a1614;
   text-align: center;
-  justify-content: center;
-  gap: 12px;
+}
+
+.back-tag {
+  font-family: var(--font-en);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-primary);
+  display: block;
+  margin-bottom: 4px;
 }
 
 .pop-card-back-face h3 {
-  font-size: 1.1rem;
-  color: #1a1a1a;
-  border-bottom: 1px dashed rgba(212, 175, 55, 0.5);
+  font-size: 1.05rem;
+  color: var(--gold-glow);
+  border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
   padding-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 .pop-card-back-face p {
-  font-size: 0.88rem;
-  line-height: 1.8;
-  color: #4a423a;
-  white-space: pre-wrap;
+  font-size: 0.82rem;
+  line-height: 1.75;
+  color: #d1c7bc;
   text-align: left;
-  max-height: 220px;
+  max-height: 230px;
   overflow-y: auto;
+  padding-right: 4px;
 }
 
 .pop-btn-group {
   display: flex;
-  gap: 8px;
+  justify-content: center;
   margin-top: 8px;
 }
 
 .pop-btn {
-  flex: 1;
-  background: #1a1a1a;
-  color: #ffffff;
+  background: linear-gradient(135deg, #2b231d, #42352b);
+  color: var(--gold-glow);
   border: 1px solid var(--gold-primary);
-  padding: 9px 12px;
+  padding: 8px 18px;
   border-radius: 20px;
-  font-family: var(--font-en);
   font-size: 0.78rem;
   cursor: pointer;
-}
-
-.pop-btn.flip-btn {
-  background: linear-gradient(135deg, #3d3128, #1c1815);
-  border-color: var(--gold-glow);
 }

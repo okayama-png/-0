@@ -35,33 +35,39 @@
   </div>
 
   <!-- 🎬 ポップアップモーダル (両面カード) -->
-  <div class="photo-modal-overlay" id="photoModal">
+  <div class="photo-pop-modal" id="photoModal">
     <div class="pop-card-inner" id="popCardInner">
-      <div class="pop-card-front">
+      
+      <!-- 表面 -->
+      <div class="pop-card-front-face">
         <button class="modal-close-btn" id="modalCloseFront">&times;</button>
-        <div class="pop-photo-wrapper">
+        <div class="card-img-wrap">
           <img id="modalImg" src="" alt="フィルム写真">
-          <div class="pop-stamp" id="modalStamp"></div>
+          <div class="pop-timestamp" id="modalStamp"></div>
         </div>
-        <div class="pop-caption-area">
+        <div class="pop-card-info">
           <h3 id="modalTitle"></h3>
-          <button class="flip-hint-btn" id="flipToBackBtn">💬 想い出の言葉を読む (タップ)</button>
+          <p class="flip-hint-text">💬 想い出の言葉を読む (タップ)</p>
+        </div>
+        <div class="pop-btn-group">
+          <button class="pop-btn flip-btn" id="flipToBackBtn">言葉を読む 💬</button>
         </div>
       </div>
 
-      <div class="pop-card-back">
+      <!-- 裏面 -->
+      <div class="pop-card-back-face">
         <button class="modal-close-btn" id="modalCloseBack">&times;</button>
-        <div class="pop-back-content">
-          <span class="back-tag">CINEMA CAPTION</span>
-          <h3 id="modalBackTitle"></h3>
-          <p id="modalDesc"></p>
-          <button class="flip-hint-btn" id="flipToFrontBtn">🖼️ 写真に戻る</button>
+        <span class="back-tag">CINEMA CAPTION</span>
+        <h3 id="modalBackTitle"></h3>
+        <p id="modalDesc"></p>
+        <div class="pop-btn-group">
+          <button class="pop-btn flip-btn" id="flipToFrontBtn">🖼️ 写真に戻る</button>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- データファイルと動作スクリプトを読み込み -->
   <script src="data.js?v=20260919_final"></script>
   <script src="cinema.js"></script>
 </body>
