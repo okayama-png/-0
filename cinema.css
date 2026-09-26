@@ -23,7 +23,7 @@ html, body {
   position: fixed;
 }
 
-/* === 🎞️ シネマ・オープニングカーテン === */
+/* 🎞️ シネマ・オープニングカーテン */
 .cinema-curtain {
   position: fixed;
   top: 0;
@@ -132,7 +132,7 @@ html, body {
   will-change: transform;
 }
 
-/* 写真コマ（約1.3倍サイズ） */
+/* 写真コマ */
 .film-frame {
   flex: none;
   width: 145px;
@@ -147,7 +147,6 @@ html, body {
   filter: brightness(0.75);
 }
 
-/* 中央に来た写真のズームアップ ＆ 金色グラデーションフレーム枠 */
 .film-frame.is-center {
   filter: brightness(1.25) contrast(1.05);
   transform: scale(1.15) translateY(-3px);
@@ -195,7 +194,7 @@ html, body {
   border: 1px solid rgba(212, 175, 55, 0.4);
 }
 
-/* 💥 モーダル ＆ 裏返し */
+/* モーダル ＆ 裏返し */
 .photo-pop-modal {
   display: none;
   position: fixed;

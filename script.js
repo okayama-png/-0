@@ -79,12 +79,7 @@ function renderAlbumPages() {
   const container = document.getElementById('albumContainer');
   if (!container) return;
 
-  let sourceData = [];
-  if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
-    sourceData = window.albumData;
-  } else if (typeof albumData !== 'undefined' && Array.isArray(albumData)) {
-    sourceData = albumData;
-  }
+  const sourceData = (typeof albumData !== 'undefined' && Array.isArray(albumData)) ? albumData : [];
 
   container.innerHTML = '<div class="book-spine"></div>';
 
@@ -163,7 +158,7 @@ function renderAlbumPages() {
   epilogueArticle.className = 'page layout-photocard';
   epilogueArticle.id = `page${sourceData.length + 1}`;
   
-  const letterText = window.secretLetterText || (typeof secretLetterText !== 'undefined' ? secretLetterText : '');
+  const letterText = typeof secretLetterText !== 'undefined' ? secretLetterText : '';
   const secretTextFormatted = letterText ? letterText.replace(/\n/g, '<br>') : '';
 
   epilogueArticle.innerHTML = `
@@ -283,12 +278,7 @@ function renderCoverPolaroids() {
 
 // メイン初期化
 function initAllApp() {
-  let sourceData = [];
-  if (typeof window.albumData !== 'undefined' && Array.isArray(window.albumData)) {
-    sourceData = window.albumData;
-  } else if (typeof albumData !== 'undefined' && Array.isArray(albumData)) {
-    sourceData = albumData;
-  }
+  const sourceData = (typeof albumData !== 'undefined' && Array.isArray(albumData)) ? albumData : [];
 
   if (sourceData.length > 0) {
     masterPhotoList = sourceData.map(d => d.image);
@@ -307,7 +297,6 @@ function initAllApp() {
 
   const openingCover = document.getElementById('opening-cover');
   
-  // 🌸 #album ハッシュがある場合はオープニングをスキップしてアルバムを表示
   if (window.location.hash === '#album') {
     document.body.classList.remove('cover-active');
     if (openingCover) {
