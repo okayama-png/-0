@@ -253,7 +253,6 @@ function renderCoverPolaroids() {
   let unusedPhotos = masterPhotoList.filter(p => !selected.includes(p));
   if (unusedPhotos.length === 0) unusedPhotos = [...masterPhotoList];
 
-  // 🌸 3.2秒ごとに「2枚同時に」写真をフェード切り替え
   polaroidSlideTimer = setInterval(() => {
     const frames = Array.from(document.querySelectorAll('.random-polaroid img'));
     if (frames.length < 2) return;
@@ -307,6 +306,8 @@ function initAllApp() {
   initPages();
 
   const openingCover = document.getElementById('opening-cover');
+  
+  // 🌸 #album ハッシュがある場合はオープニングをスキップしてアルバムを表示
   if (window.location.hash === '#album') {
     document.body.classList.remove('cover-active');
     if (openingCover) {
