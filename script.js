@@ -73,7 +73,7 @@ let masterPhotoList = [];
 let pages = [];
 let currentPage = 0;
 let polaroidSlideTimer = null;
-let isPageTransitioning = false; // 🔒 連打バグ防止用フラグ
+let isPageTransitioning = false; // 連打バグ防止用
 
 // === 📖 アルバムDOM生成 ===
 function renderAlbumPages() {
@@ -319,7 +319,7 @@ function initAllApp() {
   initPassUnlock();
   initInteractiveTouch();
   startAnniversaryTimer();
-  initTOC();
+  initTOC(); // 目次初期化
 
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
@@ -602,7 +602,6 @@ const nextBtn = document.getElementById('nextBtn');
 
 if (nextBtn) {
   nextBtn.onclick = () => {
-    // 🔒 アニメーション中、または最後のページなら処理しない（連打対策）
     if (isPageTransitioning || currentPage >= pages.length - 1) return;
     
     isPageTransitioning = true;
@@ -618,7 +617,6 @@ if (nextBtn) {
 
 if (prevBtn) {
   prevBtn.onclick = () => {
-    // 🔒 アニメーション中、または最初のページなら処理しない（連打対策）
     if (isPageTransitioning || currentPage <= 0) return;
 
     isPageTransitioning = true;
@@ -691,7 +689,9 @@ function initOmikuji() {
     const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
     alert(`🎲 今日のふたりの運勢 🎲\n\n${randomFortune}`);
   };
-  // === 📖 目次（INDEX）機能の制御 ===
+}
+
+// === 📖 目次（INDEX）機能（エラー防止対策済み） ===
 function initTOC() {
   const tocBtn = document.getElementById('tocBtn');
   const tocModal = document.getElementById('tocModal');
@@ -700,7 +700,6 @@ function initTOC() {
 
   if (!tocBtn || !tocModal || !tocList) return;
 
-  // 目次リストの動的生成
   function generateTOCList() {
     tocList.innerHTML = '';
     const sourceData = (typeof albumData !== 'undefined' && Array.isArray(albumData)) ? albumData : [];
@@ -726,7 +725,6 @@ function initTOC() {
       tocList.appendChild(div);
     });
 
-    // 秘密の手紙（EPILOGUE）もリストに追加
     const epilogueDiv = document.createElement('div');
     epilogueDiv.className = `toc-item ${sourceData.length === currentPage ? 'active-item' : ''}`;
     epilogueDiv.innerHTML = `
@@ -745,7 +743,6 @@ function initTOC() {
     tocList.appendChild(epilogueDiv);
   }
 
-  // モーダルの開閉
   tocBtn.onclick = () => {
     generateTOCList();
     tocModal.classList.add('active');
@@ -758,7 +755,4 @@ function initTOC() {
   tocModal.onclick = (e) => {
     if (e.target === tocModal) tocModal.classList.remove('active');
   };
-}
-
-// ※ initAllApp() の一番最後に initTOC(); を呼び出すように追加します
 }
