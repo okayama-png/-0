@@ -319,6 +319,7 @@ function initAllApp() {
   initPassUnlock();
   initInteractiveTouch();
   startAnniversaryTimer();
+  initTOC();
 
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
@@ -690,4 +691,74 @@ function initOmikuji() {
     const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
     alert(`🎲 今日のふたりの運勢 🎲\n\n${randomFortune}`);
   };
+  // === 📖 目次（INDEX）機能の制御 ===
+function initTOC() {
+  const tocBtn = document.getElementById('tocBtn');
+  const tocModal = document.getElementById('tocModal');
+  const tocClose = document.getElementById('tocClose');
+  const tocList = document.getElementById('tocList');
+
+  if (!tocBtn || !tocModal || !tocList) return;
+
+  // 目次リストの動的生成
+  function generateTOCList() {
+    tocList.innerHTML = '';
+    const sourceData = (typeof albumData !== 'undefined' && Array.isArray(albumData)) ? albumData : [];
+
+    sourceData.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = `toc-item ${index === currentPage ? 'active-item' : ''}`;
+      div.innerHTML = `
+        <div>
+          <span class="toc-item-tag">${item.tag}</span>
+          <span>${item.title.split(' - ')[1] || item.title}</span>
+        </div>
+        <span class="toc-item-date">${item.date}</span>
+      `;
+
+      div.onclick = () => {
+        currentPage = index;
+        updateActivePage();
+        updateUI();
+        tocModal.classList.remove('active');
+      };
+
+      tocList.appendChild(div);
+    });
+
+    // 秘密の手紙（EPILOGUE）もリストに追加
+    const epilogueDiv = document.createElement('div');
+    epilogueDiv.className = `toc-item ${sourceData.length === currentPage ? 'active-item' : ''}`;
+    epilogueDiv.innerHTML = `
+      <div>
+        <span class="toc-item-tag">EPILOGUE</span>
+        <span>秘密のメッセージ 🔒</span>
+      </div>
+      <span class="toc-item-date">LETTER</span>
+    `;
+    epilogueDiv.onclick = () => {
+      currentPage = sourceData.length;
+      updateActivePage();
+      updateUI();
+      tocModal.classList.remove('active');
+    };
+    tocList.appendChild(epilogueDiv);
+  }
+
+  // モーダルの開閉
+  tocBtn.onclick = () => {
+    generateTOCList();
+    tocModal.classList.add('active');
+  };
+
+  if (tocClose) {
+    tocClose.onclick = () => tocModal.classList.remove('active');
+  }
+
+  tocModal.onclick = (e) => {
+    if (e.target === tocModal) tocModal.classList.remove('active');
+  };
+}
+
+// ※ initAllApp() の一番最後に initTOC(); を呼び出すように追加します
 }

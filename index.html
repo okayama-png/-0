@@ -37,8 +37,9 @@
     </div>
 
     <div class="header-btn-group">
-      <button id="omikujiBtn" class="omikuji-btn">🎲 今日のふたりの運勢を占う</button>
-      <a href="cinema.html" class="cinema-nav-btn">🎬 CINEMA FILM を見る</a>
+      <button id="tocBtn" class="toc-btn">📖 目次</button>
+      <button id="omikujiBtn" class="omikuji-btn">🎲 今日の運勢</button>
+      <a href="cinema.html" class="cinema-nav-btn">🎬 CINEMA FILM</a>
     </div>
   </header>
 
@@ -67,5 +68,19 @@
   <!-- データファイルと動作スクリプトを読み込み -->
   <script src="data.js?v=20260919_final"></script>
   <script src="script.js?v=20260919_final"></script>
+
+  <!-- 📖 目次（INDEX）モーダル -->
+  <div id="tocModal" class="toc-modal" aria-hidden="true">
+    <div class="toc-content">
+      <div class="toc-header">
+        <span class="toc-brand">INDEX</span>
+        <h2>思い出の目次</h2>
+        <span class="toc-close" id="tocClose">&times;</span>
+      </div>
+      <div class="toc-list" id="tocList">
+        <!-- JSで動的にリストが生成されます -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>
