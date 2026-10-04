@@ -73,6 +73,7 @@ let masterPhotoList = [];
 let pages = [];
 let currentPage = 0;
 let polaroidSlideTimer = null;
+let isPageTransitioning = false; // 🔒 連打バグ防止用フラグ
 
 // === 📖 アルバムDOM生成 ===
 function renderAlbumPages() {
@@ -570,6 +571,7 @@ function initInteractiveTouch() {
   });
 }
 
+// === ページ管理・連打バグ対策版 ===
 function initPages() {
   pages = Array.from(document.querySelectorAll('.page'));
   const totalPages = document.getElementById('totalPages');
@@ -599,21 +601,33 @@ const nextBtn = document.getElementById('nextBtn');
 
 if (nextBtn) {
   nextBtn.onclick = () => {
-    if (currentPage < pages.length - 1) {
-      currentPage++;
-      updateActivePage();
-      updateUI();
-    }
+    // 🔒 アニメーション中、または最後のページなら処理しない（連打対策）
+    if (isPageTransitioning || currentPage >= pages.length - 1) return;
+    
+    isPageTransitioning = true;
+    currentPage++;
+    updateActivePage();
+    updateUI();
+
+    setTimeout(() => {
+      isPageTransitioning = false;
+    }, 300);
   };
 }
 
 if (prevBtn) {
   prevBtn.onclick = () => {
-    if (currentPage > 0) {
-      currentPage--;
-      updateActivePage();
-      updateUI();
-    }
+    // 🔒 アニメーション中、または最初のページなら処理しない（連打対策）
+    if (isPageTransitioning || currentPage <= 0) return;
+
+    isPageTransitioning = true;
+    currentPage--;
+    updateActivePage();
+    updateUI();
+
+    setTimeout(() => {
+      isPageTransitioning = false;
+    }, 300);
   };
 }
 
