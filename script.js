@@ -83,6 +83,7 @@ function renderAlbumPages() {
 
   container.innerHTML = '<div class="book-spine"></div>';
 
+  // 1. 各思い出ページ (000〜) の生成
   sourceData.forEach((item, index) => {
     const article = document.createElement('article');
     article.className = `page ${index === 0 ? 'active' : ''}`;
@@ -154,6 +155,7 @@ function renderAlbumPages() {
     container.appendChild(article);
   });
 
+  // 2. 最終ページ（秘密のメッセージ ＆ 0703暗証番号）の生成
   const epilogueArticle = document.createElement('article');
   epilogueArticle.className = 'page layout-photocard';
   epilogueArticle.id = `page${sourceData.length + 1}`;
@@ -288,7 +290,7 @@ function initAllApp() {
       "images/page04.png", "images/page05.png", "images/page06.png", "images/page07.png",
       "images/page08.png", "images/page09.png", "images/page10.png", "images/page11.png",
       "images/page12.png", "images/page13.png", "images/page14.png", "images/page15.png",
-      "images/page16.png", "images/page17.png", "images/page18.png"
+      "images/page16.png", "images/page17.png", "images/page18.png", "images/page19.png", "images/page20.png"
     ];
   }
 
@@ -515,6 +517,7 @@ function initPhotoFlipAndZoom() {
   }
 }
 
+// 0703 の暗証番号判定処理
 function initPassUnlock() {
   const unlockBtn = document.getElementById('unlockBtn');
   const passInput = document.getElementById('passInput');
