@@ -4,9 +4,10 @@ canvas.id = 'bg-canvas';
 document.body.prepend(canvas);
 const ctx = canvas.getContext('2d');
 
+let particles = [];
 let lastWindowWidth = window.innerWidth;
+
 function resizeCanvas() {
-  // 幅が変わった時（画面回転時など）のみリサイズ処理を行い、縦方向の高さ変化（キーボード表示）ではページ再描画を抑制
   if (window.innerWidth !== lastWindowWidth) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -14,7 +15,8 @@ function resizeCanvas() {
   }
 }
 window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 class Particle {
   constructor() { this.reset(); }
@@ -80,7 +82,7 @@ let masterPhotoList = [];
 let pages = [];
 let currentPage = 0;
 let polaroidSlideTimer = null;
-let isPageTransitioning = false; // 連打バグ防止用
+let isPageTransitioning = false;
 
 // === 📖 アルバムDOM生成 ===
 function renderAlbumPages() {
@@ -207,7 +209,7 @@ function renderAlbumPages() {
   container.appendChild(epilogueArticle);
 }
 
-// 📱 2枚同時にじわ〜っと写真がフェード切り替えされるオープニング演出
+// 📱 オープニング演出
 function renderCoverPolaroids() {
   const openingCover = document.getElementById('opening-cover');
   if (!openingCover) return;
@@ -326,7 +328,7 @@ function initAllApp() {
   initPassUnlock();
   initInteractiveTouch();
   startAnniversaryTimer();
-  initTOC(); // 目次初期化
+  initTOC();
   initBirthdayPage();
 
   const startBtn = document.getElementById('startBtn');
@@ -534,7 +536,6 @@ function initPassUnlock() {
   const passMessage = document.getElementById('passMessage');
   const secretLetter = document.getElementById('secretLetter');
 
-  // 入力欄をタップした際、背景のクリックイベント（ページめくり等）が暴発するのを防ぐ
   if (passInput) {
     passInput.addEventListener('touchstart', (e) => e.stopPropagation());
     passInput.addEventListener('click', (e) => e.stopPropagation());
@@ -552,8 +553,6 @@ function initPassUnlock() {
         passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
         playHeartbeatSound();
-        
-        // キーボードを閉じる
         passInput.blur();
       } else {
         passMessage.style.color = '#c0392b';
@@ -594,7 +593,7 @@ function initInteractiveTouch() {
   });
 }
 
-// === ページ管理・連打バグ対策版 ===
+// === ページ管理 ===
 function initPages() {
   pages = Array.from(document.querySelectorAll('.page'));
   const totalPages = document.getElementById('totalPages');
@@ -713,7 +712,7 @@ function initOmikuji() {
   };
 }
 
-// === 📖 目次（INDEX）機能（エラー防止対策済み） ===
+// === 📖 目次（INDEX）機能 ===
 function initTOC() {
   const tocBtn = document.getElementById('tocBtn');
   const tocModal = document.getElementById('tocModal');
@@ -778,7 +777,8 @@ function initTOC() {
     if (e.target === tocModal) tocModal.classList.remove('active');
   };
 }
-// 🎂 バースデーページのタイマー・動画解禁制御
+
+// 🎂 バースデーページのタイマー・動画解禁制御（プレビュー対応）
 function initBirthdayPage() {
   const birthdayBtn = document.getElementById('birthdayBtn');
   const birthdayModal = document.getElementById('birthdayModal');
@@ -792,16 +792,18 @@ function initBirthdayPage() {
   // 🎯 解禁日時：2026年10月17日 00:00:00
   const targetDate = new Date('2026-10-17T00:00:00');
 
+  // 🔑 URLに ?preview=true がある場合は結南さん確認用に強制解禁
+  const urlParams = new URLSearchParams(window.location.search);
+  const isPreview = urlParams.get('preview') === 'true';
+
   function checkUnlockStatus() {
     const now = new Date();
     const diff = targetDate - now;
 
-    if (diff <= 0) {
-      // 10/17 0:00 以降 ➔ 解禁！
+    if (diff <= 0 || isPreview) {
       if (lockedView) lockedView.style.display = 'none';
       if (unlockedView) unlockedView.style.display = 'block';
     } else {
-      // 10/17 0:00 前 ➔ ロック状態 ＆ カウントダウン更新
       if (lockedView) lockedView.style.display = 'block';
       if (unlockedView) unlockedView.style.display = 'none';
 
@@ -816,10 +818,8 @@ function initBirthdayPage() {
     }
   }
 
-  // カウントダウン更新（1秒ごと）
   setInterval(checkUnlockStatus, 1000);
 
-  // モーダル開閉
   birthdayBtn.onclick = () => {
     checkUnlockStatus();
     birthdayModal.classList.add('active');
