@@ -520,7 +520,7 @@ function initPhotoFlipAndZoom() {
   }
 }
 
-// 0703 の暗証番号判定処理
+// 0703 の暗証番号判定処理（イベント伝播・リセット防止修正版）
 function initPassUnlock() {
   const unlockBtn = document.getElementById('unlockBtn');
   const passInput = document.getElementById('passInput');
@@ -528,8 +528,14 @@ function initPassUnlock() {
   const secretLetter = document.getElementById('secretLetter');
 
   if (unlockBtn) {
-    unlockBtn.onclick = () => {
-      if (passInput.value === '0703') {
+    unlockBtn.onclick = (e) => {
+      // 🔒 親要素へのイベント伝播とフォーム等のデフォルト挙動を防止
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      if (passInput && passInput.value === '0703') {
         passMessage.style.color = '#2d8a4e';
         passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
