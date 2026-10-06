@@ -4,8 +4,15 @@ canvas.id = 'bg-canvas';
 document.body.prepend(canvas);
 const ctx = canvas.getContext('2d');
 
-let particles = [];
-function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+let lastWindowWidth = window.innerWidth;
+function resizeCanvas() {
+  // 幅が変わった時（画面回転時など）のみリサイズ処理を行い、縦方向の高さ変化（キーボード表示）ではページ再描画を抑制
+  if (window.innerWidth !== lastWindowWidth) {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    lastWindowWidth = window.innerWidth;
+  }
+}
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
@@ -520,16 +527,21 @@ function initPhotoFlipAndZoom() {
   }
 }
 
-// 0703 の暗証番号判定処理（イベント伝播・リセット防止修正版）
+// 0703 の暗証番号判定処理（ズーム＆タッチ波及防止版）
 function initPassUnlock() {
   const unlockBtn = document.getElementById('unlockBtn');
   const passInput = document.getElementById('passInput');
   const passMessage = document.getElementById('passMessage');
   const secretLetter = document.getElementById('secretLetter');
 
+  // 入力欄をタップした際、背景のクリックイベント（ページめくり等）が暴発するのを防ぐ
+  if (passInput) {
+    passInput.addEventListener('touchstart', (e) => e.stopPropagation());
+    passInput.addEventListener('click', (e) => e.stopPropagation());
+  }
+
   if (unlockBtn) {
     unlockBtn.onclick = (e) => {
-      // 🔒 親要素へのイベント伝播とフォーム等のデフォルト挙動を防止
       if (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -540,6 +552,9 @@ function initPassUnlock() {
         passMessage.textContent = '鍵が開きました🔑💖';
         secretLetter.style.display = 'block';
         playHeartbeatSound();
+        
+        // キーボードを閉じる
+        passInput.blur();
       } else {
         passMessage.style.color = '#c0392b';
         passMessage.textContent = 'パスワードが違います（ヒント: 0703）';

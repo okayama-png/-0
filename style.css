@@ -448,3 +448,17 @@ h1 { font-size: clamp(1.05rem, 3.2vw, 1.5rem); color: #fff; margin: 2px 0; font-
   color: var(--gold-primary);
   font-weight: 600;
 }
+
+/* 🔒 暗証番号入力欄（自動ズーム防止） */
+#passInput {
+  font-size: 16px !important;
+  padding: 8px 12px;
+  border: 1px solid var(--gold-primary);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.2em;
+  width: 120px;
+  outline: none;
+}
