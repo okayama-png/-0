@@ -338,3 +338,113 @@ h1 { font-size: clamp(1.05rem, 3.2vw, 1.5rem); color: #fff; margin: 2px 0; font-
   font-size: 0.7rem;
   color: #8c8275;
 }
+/* 🎂 バースデー限定モーダル ＆ 動画エリア */
+.birthday-btn {
+  background: linear-gradient(135deg, #d4af37, #f3e5ab);
+  color: #0d0b0a;
+  border: none;
+  padding: 5px 14px;
+  border-radius: 18px;
+  font-size: clamp(0.68rem, 1.8vw, 0.78rem);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+.birthday-modal {
+  position: fixed; top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(13, 11, 10, 0.94);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 99999;
+  display: flex; justify-content: center; align-items: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  padding: 16px;
+}
+
+.birthday-modal.active { opacity: 1; pointer-events: auto; }
+
+.birthday-content {
+  background: #1a1614;
+  border: 1px solid var(--gold-primary);
+  border-radius: 16px; width: 100%; max-width: 440px;
+  max-height: 90vh; overflow-y: auto;
+  padding: 24px 18px; position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(212,175,55,0.25);
+}
+
+.birthday-close {
+  position: absolute; top: 12px; right: 16px;
+  color: #fff; font-size: 1.8rem; cursor: pointer; line-height: 1; z-index: 10;
+}
+
+/* ロック画面 */
+.birthday-icon { font-size: 2.2rem; margin-bottom: 8px; text-align: center; }
+.birthday-locked-view { text-align: center; padding: 20px 0; }
+.birthday-locked-view h2 { font-family: var(--font-en); color: var(--gold-glow); font-size: 1.4rem; letter-spacing: 0.1em; }
+.birthday-sub { font-size: 0.8rem; color: #a89f91; margin-top: 4px; }
+
+.countdown-box {
+  margin-top: 20px; padding: 16px;
+  background: rgba(0,0,0,0.4); border: 1px dashed var(--gold-primary);
+  border-radius: 10px;
+}
+.countdown-label { font-size: 0.72rem; color: var(--gold-primary); letter-spacing: 0.15em; }
+.countdown-timer { font-size: 1.15rem; color: #fff; font-weight: 600; margin-top: 6px; }
+
+/* 解禁画面 */
+.birthday-header { text-align: center; margin-bottom: 14px; }
+.birthday-tag { font-family: var(--font-en); font-size: 0.65rem; letter-spacing: 0.3em; color: var(--gold-primary); }
+.birthday-header h2 { font-family: var(--font-en); color: var(--gold-glow); font-size: 1.25rem; margin-top: 2px; }
+.birthday-date { font-family: var(--font-en); color: var(--gold-primary); font-size: 0.8rem; }
+
+/* 🎬 YouTube埋め込み枠（16:9のアスペクト比保持） */
+.birthday-video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9比率 */
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #2a2420;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+  margin-bottom: 18px;
+}
+
+.birthday-video-container iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+/* メッセージボックス */
+.birthday-message-box {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: left;
+}
+
+.birthday-message-box h3 {
+  font-size: 0.95rem;
+  color: var(--gold-glow);
+  text-align: center;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+  padding-bottom: 8px;
+}
+
+.birthday-message {
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: #d1c7bc;
+  margin-bottom: 10px;
+}
+
+.birthday-message-box .author {
+  text-align: right;
+  font-size: 0.8rem;
+  color: var(--gold-primary);
+  font-weight: 600;
+}

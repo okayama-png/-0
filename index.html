@@ -36,8 +36,10 @@
       <span id="loveTimer">計算中...</span>
     </div>
 
+    <!-- 💡 ボタンエリアに Birthday ボタンを追加 -->
     <div class="header-btn-group">
       <button id="tocBtn" class="toc-btn">📖 目次</button>
+      <button id="birthdayBtn" class="birthday-btn">🎂 Birthday Page</button>
       <button id="omikujiBtn" class="omikuji-btn">🎲 今日の運勢</button>
       <a href="cinema.html" class="cinema-nav-btn">🎬 CINEMA FILM</a>
     </div>
@@ -82,5 +84,64 @@
       </div>
     </div>
   </div>
+
+  <!-- 💡 🎂 バースデー限定モーダルを追加 -->
+  <div id="birthdayModal" class="birthday-modal" aria-hidden="true">
+    <div class="birthday-content">
+      <span class="birthday-close" id="birthdayClose">&times;</span>
+      
+      <!-- 🔒 10/17 0:00 前に表示されるロック画面 -->
+      <div id="birthdayLocked" class="birthday-locked-view">
+        <div class="birthday-icon">🔒 🎂</div>
+        <h2>HAPPY BIRTHDAY</h2>
+        <p class="birthday-sub">みなみさんのお誕生日までのお楽しみです！</p>
+        <div class="countdown-box">
+          <span class="countdown-label">解禁まで</span>
+          <div id="birthdayCountdown" class="countdown-timer">計算中...</div>
+        </div>
+      </div>
+
+      <!-- 🎁 10/17 0:00 以降に自動解禁される動画＆メッセージ画面 -->
+      <div id="birthdayUnlocked" class="birthday-unlocked-view" style="display: none;">
+        <div class="birthday-header">
+          <span class="birthday-tag">SPECIAL MOVIE</span>
+          <h2>HAPPY BIRTHDAY MINAMI!</h2>
+          <p class="birthday-date">2026.10.17</p>
+        </div>
+
+        <!-- 🎬 YouTube動画埋め込み枠 -->
+        <!-- 💡 YOUR_YOUTUBE_VIDEO_ID 部分を、YouTubeの動画ID（例: dQw4w9WgXcQ）に書き換えてください -->
+        <div class="birthday-video-container">
+          <iframe 
+            id="birthdayVideoIframe"
+            src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID" 
+            title="Happy Birthday Video" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen>
+          </iframe>
+        </div>
+
+      <!-- ✉️ お祝いメッセージ -->
+        <div class="birthday-message-box">
+          <h3>🎉 みなみさん、お誕生日おめでとう 🎉</h3>
+          <p class="birthday-message">
+            みなみさん、お誕生日おめでとう。<br><br>
+            いつもたくさんの笑顔と優しさ、そして幸せをくれて本当にありがとう。<br>
+            出会えたことも、こうして隣でお祝いできることも、私にとってかけがえのない宝物です。<br><br>
+            誕生日動画も心を込めて作ってみたから見てね。<br>
+            私たちの今までの思い出がたくさん詰まった、最高に素敵な動画になりました。<div class=""></div><div class=""></div><br><br>
+            これからもたくさん思い出を作って、来年の誕生日も動画を作れたらいいな。<br>
+            みなみさんがこの世に生まれてきてくれて、私と出会ってくれて、本当に良かったです。<br><br>
+            これからもずっと笑顔で、素敵な1年にしていこうね。<br>
+            ずっとずっと愛しています。
+          </p>
+          <div class="author">結南より</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>

@@ -320,6 +320,7 @@ function initAllApp() {
   initInteractiveTouch();
   startAnniversaryTimer();
   initTOC(); // 目次初期化
+  initBirthdayPage();
 
   const startBtn = document.getElementById('startBtn');
   if (startBtn) {
@@ -754,5 +755,60 @@ function initTOC() {
 
   tocModal.onclick = (e) => {
     if (e.target === tocModal) tocModal.classList.remove('active');
+  };
+}
+// 🎂 バースデーページのタイマー・動画解禁制御
+function initBirthdayPage() {
+  const birthdayBtn = document.getElementById('birthdayBtn');
+  const birthdayModal = document.getElementById('birthdayModal');
+  const birthdayClose = document.getElementById('birthdayClose');
+  const lockedView = document.getElementById('birthdayLocked');
+  const unlockedView = document.getElementById('birthdayUnlocked');
+  const timerEl = document.getElementById('birthdayCountdown');
+
+  if (!birthdayBtn || !birthdayModal) return;
+
+  // 🎯 解禁日時：2026年10月17日 00:00:00
+  const targetDate = new Date('2026-10-17T00:00:00');
+
+  function checkUnlockStatus() {
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      // 10/17 0:00 以降 ➔ 解禁！
+      if (lockedView) lockedView.style.display = 'none';
+      if (unlockedView) unlockedView.style.display = 'block';
+    } else {
+      // 10/17 0:00 前 ➔ ロック状態 ＆ カウントダウン更新
+      if (lockedView) lockedView.style.display = 'block';
+      if (unlockedView) unlockedView.style.display = 'none';
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / 1000 / 60) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      if (timerEl) {
+        timerEl.textContent = `${days}日 ${hours}時間 ${mins}分 ${secs}秒`;
+      }
+    }
+  }
+
+  // カウントダウン更新（1秒ごと）
+  setInterval(checkUnlockStatus, 1000);
+
+  // モーダル開閉
+  birthdayBtn.onclick = () => {
+    checkUnlockStatus();
+    birthdayModal.classList.add('active');
+  };
+
+  if (birthdayClose) {
+    birthdayClose.onclick = () => birthdayModal.classList.remove('active');
+  }
+
+  birthdayModal.onclick = (e) => {
+    if (e.target === birthdayModal) birthdayModal.classList.remove('active');
   };
 }
